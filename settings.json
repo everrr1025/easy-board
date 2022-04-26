@@ -1,0 +1,20 @@
+{
+  "author": "hongda",
+  "url": "https://qa-hcms-dev.jilinxiangyun.com/5c471262aa/feature-demo/pinecone-extension/18775d5762e8e956",
+  "content": {
+    "apps": [
+      {
+        "name": "腾讯文档",
+        "desc": "一款在线文档工具",
+        "url": "https://docs.qq.com/desktop/",
+        "favicon": "https://d29fhpw069ctt2.cloudfront.net/icon/image/38821/preview.svg"
+      },
+      {
+        "name": "ONES",
+        "desc": "aaa",
+        "url": "https://docs.qq.com/desktop/",
+        "favicon": "https://d29fhpw069ctt2.cloudfront.net/icon/image/38821/preview.svg"
+      }
+    ]
+  }
+}

@@ -1,0 +1,71 @@
+body {
+  background-color: #edf1e4;
+  font-family: "CustomFont";
+}
+
+#container {
+  background-color: #fff;
+  margin: 5rem auto;
+  padding: 2rem;
+  width: 60%;
+  height: 40rem;
+  /* border-radius: 20px; */
+}
+#navigation {
+  display: flex;
+}
+
+div.navi {
+  width: 5rem;
+  text-align: center;
+  background-color: #ebf1e6;
+  /* border-radius: 10px; */
+  padding: 0.5rem;
+  margin: 0 1rem 0 0;
+  cursor: pointer;
+}
+div.selected {
+  background-color: #55624c;
+  color: #fff;
+}
+/* #navigation > div:hover {
+  background-color: #55624c;
+  cursor: pointer;
+  color: #fff;
+} */
+
+#content-container {
+  background-color: #ebf1e6;
+  margin: 1rem 0 1rem 0;
+  padding: 2rem;
+  /* border-radius: 10px; */
+}
+#page-view {
+  flex-direction: column;
+}
+#app-view {
+  flex-direction: row;
+}
+.app-item {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+
+  margin: 0 1rem 0 0;
+}
+
+.app-item:hover {
+  background-color: #d9e7cb;
+}
+
+.app-icon {
+  margin: 0 auto;
+  height: 4rem;
+}
+.app-icon > img {
+  width: 3rem;
+}
+@font-face {
+  font-family: "CustomFont";
+  src: url("./static/IndieFlower-Regular.ttf");
+}

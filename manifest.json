@@ -1,0 +1,29 @@
+{
+  "name": "Pinecone",
+  "description": "A test extension integrated with pinecone ability!",
+  "version": "1.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "options_page": "options.html",
+  "chrome_url_overrides": {
+    "newtab": "/src/pinecone.html"
+  },
+  "permissions": ["storage", "tabs", "bookmarks"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "/src/static/pinecone.png",
+      "32": "/src/static/pinecone.png",
+      "48": "/src/static/pinecone.png",
+      "128": "/src/static/pinecone.png"
+    }
+  },
+  "icons": {
+    "16": "/src/static/pinecone.png",
+    "32": "/src/static/pinecone.png",
+    "48": "/src/static/pinecone.png",
+    "128": "/src/static/pinecone.png"
+  }
+}
