@@ -16,6 +16,11 @@ export async function getBookmarksByID(nodeId) {
   return node;
 }
 
+export async function createBookmark(details, cb) {
+  let node = await chrome.bookmarks.create(details);
+  return node;
+}
+
 export const compareNodes = (a, b) => {
   if ((a.url && b.url) || (!a.url && !b.url)) {
     return a.dateAdded > b.dateAdded ? 1 : -1;

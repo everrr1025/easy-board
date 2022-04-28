@@ -10,3 +10,19 @@ export const styleHyphenFormat = (styleIn) => {
 
   return styleOut;
 };
+
+export const getChildren = (bk, id) => {
+  let result;
+  let inner = (bk, id) => {
+    if (bk.id == id) {
+      result = bk;
+    } else {
+      bk.children &&
+        bk.children.forEach((child) => {
+          result = inner(child, id);
+        });
+    }
+    return result;
+  };
+  return inner(bk, id);
+};

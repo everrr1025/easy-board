@@ -18,7 +18,7 @@ const update = () => {
   create();
 };
 
-async function create() {
+function create() {
   const isSelected = getState("navigator").isSelected;
   let view;
   if (document.getElementById("content"))
@@ -29,7 +29,7 @@ async function create() {
   }
 
   if (isSelected === "bookmarks") {
-    let xx = await bookmarks.create();
+    let xx = bookmarks.create();
     view.append(xx);
   }
 

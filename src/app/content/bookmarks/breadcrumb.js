@@ -1,36 +1,9 @@
-import { getState, setState, registerListener } from "../../../state.js";
+import { getState, getState1, setState1, register } from "../../../state.js";
 import { styleHyphenFormat } from "../../utils/utils.js";
-import { getBookmarksByID } from "../../utils/chrome.js";
+
 /**
  * breadcrumb component
  */
-
-// const getPath = (regex, path, index) => {
-//   let num = 0;
-//   let re = new RegExp(`${regex}`, "g");
-//   while (re.exec(path) !== null) {
-//     if (num === index) {
-//       let result = path.substring(0, re.lastIndex);
-//       console.log(result);
-//       return result;
-//       break;
-//     }
-//     num++;
-//   }
-// };
-
-// const toPath = (node) => {
-//   const paths = [];
-
-//   if (node.parentId == 1) {
-//     const pathObj = {};
-//     pathObj.title = node.title;
-//     pathObj.nodeId = node.id;
-//     paths.push(pathObj);
-//   } else {
-//   }
-//   return paths;
-// };
 
 export function toPath(node) {
   return getState("bookmarks").path;
@@ -46,25 +19,23 @@ const PATH_ITEM_STYLE = {
 
 //action
 const onClickBreadcrumb = (e, index) => {
-  const prePath = getState("bookmarks").path;
+  const prePath = getState1("bookmarks.path");
 
   prePath.splice(index + 1, prePath.length - index);
-  setState("bookmarks", {
-    ...getState("bookmarks"),
-    isSelected: prePath[index],
-    path: prePath,
-  });
+
+  setState1("bookmarks.isSelected", prePath[index].id);
+  setState1("bookmarks.path", prePath);
 };
 
 //view
-async function update() {
+function update() {
   if (document.getElementById("breadcrumb")) {
     document.getElementById("breadcrumb").innerHTML = "";
-    await create();
+    create();
   }
 }
 
-async function create() {
+const create = () => {
   let view;
   if (document.getElementById("breadcrumb")) {
     view = document.getElementById("breadcrumb");
@@ -94,9 +65,9 @@ async function create() {
   view.append(x);
   Object.assign(view.style, styleHyphenFormat(VIEW_STYLE));
   return view;
-}
+};
 
-registerListener("bookmarks", update);
+register("bookmarks.isSelected", update);
 const breadcrumb = { create, update };
 
 export default breadcrumb;

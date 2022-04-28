@@ -1,11 +1,14 @@
-import { getState, setState, registerListener } from "../../../state.js";
 import {
-  getBookmarks,
-  getBookmarksByID,
-  compareNodes,
-} from "../../utils/chrome.js";
-import { styleHyphenFormat } from "../../utils/utils.js";
+  getState,
+  getState1,
+  setState,
+  register,
+  setState1,
+} from "../../../state.js";
+import { getBookmarks, compareNodes } from "../../utils/chrome.js";
+import { styleHyphenFormat, getChildren } from "../../utils/utils.js";
 import breadcrumb from "./breadcrumb.js";
+import editBar from "./editBar/editBar.js";
 
 /*
  * component bookmarks
@@ -17,6 +20,7 @@ const VIEW_STYLE = {
 
 const BOOKMARK_VIEW_STYLE = {
   display: "flex",
+  flexWrap: "wrap",
   marginTop: "1rem",
 };
 
@@ -24,7 +28,7 @@ const FOLDER_STYLE = {
   backgroundColor: "#ddd",
   border: "1px solid black",
   padding: "0.5rem",
-  margin: "0 1rem 0 0 ",
+  margin: "0 1rem 1rem 0 ",
   cursor: "pointer",
 };
 
@@ -33,7 +37,7 @@ const BOOKMARK_STYLE = {
   cursor: "pointer",
   border: "1px solid black",
   padding: "0.5rem",
-  margin: "0 1rem 0 0 ",
+  margin: "0 1rem 1rem 0 ",
 };
 
 //actions
@@ -42,13 +46,16 @@ const onClickBookmark = (event, bookmark) => {
   if (bookmark.url) {
     window.open(bookmark.url, "_blank");
   } else {
-    let x = getState("bookmarks").path;
-    x.push(bookmark);
-    setState("bookmarks", {
-      ...getState("bookmarks"),
-      isSelected: bookmark,
-      path: x,
-    });
+    let currentPath = getState1("bookmarks.path");
+    currentPath.push(bookmark);
+    // setState("bookmarks", {
+    //   ...getState("bookmarks"),
+    //   isSelected: bookmark.id,
+    //   path: x,
+    // });
+
+    setState1("bookmarks.isSelected", bookmark.id);
+    setState1("bookmarks.path", currentPath);
   }
 };
 const update = () => {
@@ -58,8 +65,8 @@ const update = () => {
   }
 };
 
-async function create() {
-  const isSelected = getState("bookmarks").isSelected;
+function create() {
+  const isSelected = getState1("bookmarks.isSelected");
   let view;
   let bkView = document.createElement("div");
   if (document.getElementById("bookmarks"))
@@ -70,11 +77,19 @@ async function create() {
   }
 
   let nodes;
+
   if (isSelected) {
-    nodes = isSelected.children.sort(compareNodes);
+    // nodes = getChildren(getState1("bookmarks.bks"), isSelected).sort(
+    //   compareNodes
+    // );
+
+    const bks = getState1("bookmarks.bks");
+    nodes = getChildren(bks, isSelected).children.sort(compareNodes);
+    console.log(nodes);
+    // nodes = getState1("bookmarks.bks").children.sort(compareNodes);
   } else {
-    nodes = bkNodes.children.sort(compareNodes);
-    setState("bookmarks", { ...getState("bookmarks"), isSelected: bkNodes });
+    nodes = getState1("bookmarks.bks").children.sort(compareNodes);
+    setState("bookmarks", { ...getState("bookmarks"), isSelected: bkNodes.id });
   }
 
   nodes.forEach((node) => {
@@ -95,8 +110,9 @@ async function create() {
   });
   Object.assign(bkView.style, styleHyphenFormat(BOOKMARK_VIEW_STYLE));
 
-  view.append(await breadcrumb.create());
+  view.append(breadcrumb.create());
   view.append(bkView);
+  view.append(editBar.create());
   Object.assign(view.style, styleHyphenFormat(VIEW_STYLE));
   return view;
 }
@@ -107,6 +123,7 @@ setState("bookmarks", {
   bks: bkNodes,
   path: [bkNodes],
 });
-registerListener("bookmarks", update);
+register("bookmarks.bks", update);
+register("bookmarks.isSelected", update);
 const bookmarks = { update, create };
 export default bookmarks;
