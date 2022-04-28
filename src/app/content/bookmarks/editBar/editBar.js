@@ -4,14 +4,16 @@ import add from "../editBar/add.js";
 /**
  * edit bar
  */
-const TOOLS = ["add", "delete", "edit"];
+const TOOLS = ["add"];
 
 const VIEW_STYLE = {
   display: "flex",
   marginTop: "2rem",
 };
 const TOOL_STYLE = {
-  padding: "0.3rem 0.3rem 0.3rem 0",
+  padding: "0.3rem",
+  cursor: "pointer",
+  border: "1px solid black",
 };
 
 //actions

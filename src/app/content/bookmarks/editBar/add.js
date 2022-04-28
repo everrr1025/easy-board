@@ -27,51 +27,69 @@ const VIEW_STYLE = {
 const CONTENT_VIEW_STYLE = {
   display: "flex",
   flexDirection: "column",
-  width: "60%",
-  height: "10rem",
+  width: "50%",
   margin: "10% auto auto",
   border: "1px solid black",
   backgroundColor: "white",
-  padding: "1rem",
+  padding: "1.5rem",
 };
 
 const HEAD_STYLE = {
-  backgroundColor: "gray",
+  backgroundColor: "white",
+  marginBottom: "0.5rem",
   height: "20%",
+  fontSize: "14px",
 };
-const BODY_STYLE = { display: "flex", flexDirection: "column", height: "60%" };
+const BODY_STYLE = {
+  display: "flex",
+  flexDirection: "column",
+  height: "60%",
+};
 const FOOT_STYLE = {
-  height: "20%",
+  display: "flex",
+  marginTop: "0.5rem",
 };
 
 const INPUT_DIV_STYLE = {
   display: "flex",
   flexDirection: "column",
+  margin: "0.5rem 0",
+};
+
+const INPUT_STYLE = {
+  marginTop: "0.25rem",
+  boxSizing: "content-box",
+  height: "1.5rem",
 };
 const BUTTON_STYLE = {
-  width: "5rem",
-  backgroundColor: "red",
+  padding: "0.25rem",
+
+  backgroundColor: "white",
+  border: "1px solid black",
 };
 const content = () => {
   let view = document.createElement("div");
   view.id = "modal-content";
   //header
   let head = document.createElement("div");
-  head.innerText = "add bookmark";
+  head.innerText = "Add Bookmark";
   //body
   let body = document.createElement("div");
   let urlDiv = document.createElement("div");
   let urlLabel = document.createElement("label");
   urlLabel.innerText = "URL";
   let urlInput = document.createElement("input");
+  Object.assign(urlInput.style, styleHyphenFormat(INPUT_STYLE));
   urlInput.id = "add-bk-url";
+  urlInput.value = "https://";
   urlDiv.append(urlLabel);
   urlDiv.append(urlInput);
 
   let titleDiv = document.createElement("div");
   let titleLabel = document.createElement("label");
-  titleLabel.innerText = "bookmark name";
+  titleLabel.innerText = "Bookmark Name";
   let titleInput = document.createElement("input");
+  Object.assign(titleInput.style, styleHyphenFormat(INPUT_STYLE));
   titleInput.id = "add-bk-title";
   titleDiv.append(titleLabel);
   titleDiv.append(titleInput);
@@ -83,7 +101,7 @@ const content = () => {
   //foot
   let foot = document.createElement("div");
   let addButton = document.createElement("div");
-  addButton.innerText = "fuck";
+  addButton.innerText = "add";
   foot.append(addButton);
   addButton.addEventListener("click", () => {
     addBookmark({
