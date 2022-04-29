@@ -128,6 +128,7 @@ const content = () => {
 const closeModal = (e) => {
   if (e.target.id == "modal")
     setState1("bookmarks.editBar.add", { active: false });
+  setState1("bookmarks.editBar.current", null);
 };
 const update = () => {
   create();

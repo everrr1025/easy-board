@@ -21,6 +21,12 @@ export async function createBookmark(details, cb) {
   return node;
 }
 
+export async function updateBookmark(details) {
+  const { id, url, title } = details;
+  debugger;
+  return await chrome.bookmarks.update(id, { url, title });
+}
+
 export const compareNodes = (a, b) => {
   if ((a.url && b.url) || (!a.url && !b.url)) {
     return a.dateAdded > b.dateAdded ? 1 : -1;

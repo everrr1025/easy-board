@@ -9,6 +9,7 @@ import { getBookmarks, compareNodes } from "../../utils/chrome.js";
 import { styleHyphenFormat, getChildren } from "../../utils/utils.js";
 import breadcrumb from "./breadcrumb.js";
 import editBar from "./editBar/editBar.js";
+import edit from "../bookmarks/editBar/edit.js";
 
 /*
  * component bookmarks
@@ -33,6 +34,7 @@ const FOLDER_STYLE = {
 };
 
 const BOOKMARK_STYLE = {
+  width: "5rem",
   backgroundColor: "white",
   cursor: "pointer",
   border: "1px solid black",
@@ -42,20 +44,20 @@ const BOOKMARK_STYLE = {
 
 //actions
 
-const onClickBookmark = (event, bookmark) => {
-  if (bookmark.url) {
-    window.open(bookmark.url, "_blank");
-  } else {
-    let currentPath = getState1("bookmarks.path");
-    currentPath.push(bookmark);
-    // setState("bookmarks", {
-    //   ...getState("bookmarks"),
-    //   isSelected: bookmark.id,
-    //   path: x,
-    // });
-
-    setState1("bookmarks.isSelected", bookmark.id);
-    setState1("bookmarks.path", currentPath);
+const onClickBookmark = (event, bookmark, current) => {
+  if (current == null) {
+    if (bookmark.url) {
+      window.open(bookmark.url, "_blank");
+    } else {
+      let currentPath = getState1("bookmarks.path");
+      currentPath.push(bookmark);
+      setState1("bookmarks.isSelected", bookmark.id);
+      setState1("bookmarks.path", currentPath);
+    }
+    return;
+  }
+  if (current == "edit") {
+    setState1("bookmarks.editBar.edit.editing", bookmark);
   }
 };
 const update = () => {
@@ -79,10 +81,6 @@ function create() {
   let nodes;
 
   if (isSelected) {
-    // nodes = getChildren(getState1("bookmarks.bks"), isSelected).sort(
-    //   compareNodes
-    // );
-
     const bks = getState1("bookmarks.bks");
     nodes = getChildren(bks, isSelected).children.sort(compareNodes);
     console.log(nodes);
@@ -97,7 +95,7 @@ function create() {
     bookmarkDiv.innerText = node.title;
     const isFolder = !node.url ? true : false;
     bookmarkDiv.addEventListener("click", (e) => {
-      onClickBookmark(e, node);
+      onClickBookmark(e, node, getState1("bookmarks.editBar.current"));
     });
     Object.assign(
       bookmarkDiv.style,
@@ -106,12 +104,17 @@ function create() {
         : styleHyphenFormat(BOOKMARK_STYLE)
     );
 
+    if (getState1("bookmarks.editBar.edit.active")) {
+      bookmarkDiv.style.border = "1px dashed black";
+    }
+
     bkView.append(bookmarkDiv);
   });
   Object.assign(bkView.style, styleHyphenFormat(BOOKMARK_VIEW_STYLE));
 
   view.append(breadcrumb.create());
   view.append(bkView);
+  view.append(edit.create());
   view.append(editBar.create());
   Object.assign(view.style, styleHyphenFormat(VIEW_STYLE));
   return view;
@@ -125,5 +128,6 @@ setState("bookmarks", {
 });
 register("bookmarks.bks", update);
 register("bookmarks.isSelected", update);
+register("bookmarks.editBar.edit.active", update);
 const bookmarks = { update, create };
 export default bookmarks;

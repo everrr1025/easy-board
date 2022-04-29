@@ -11,6 +11,7 @@ export function toPath(node) {
 
 const VIEW_STYLE = {
   padding: "0.5rem 0",
+  fontSize: "16px",
 };
 //style
 const PATH_ITEM_STYLE = {

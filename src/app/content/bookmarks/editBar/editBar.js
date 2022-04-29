@@ -1,10 +1,10 @@
-import { getState, setState1, register } from "../../../../state.js";
+import { getState, getState1, setState1, register } from "../../../../state.js";
 import { styleHyphenFormat } from "../../../utils/utils.js";
 import add from "../editBar/add.js";
 /**
  * edit bar
  */
-const TOOLS = ["add"];
+const TOOLS = ["add", "edit", "delete"];
 
 const VIEW_STYLE = {
   display: "flex",
@@ -19,8 +19,16 @@ const TOOL_STYLE = {
 //actions
 const onAddClick = (e, popupOn) => {
   setState1("bookmarks.editBar.add", { active: !popupOn });
+  setState1("bookmarks.editBar.current", popupOn ? null : "add");
 };
-
+const onEditClick = (e, editOn) => {
+  console.log(editOn);
+  setState1("bookmarks.editBar.edit.active", !editOn);
+  setState1("bookmarks.editBar.current", editOn ? null : "edit");
+};
+const onDeleteClick = (e, deleteOn) => {
+  setState1("bookmarks.editBar.delete", { active: !deleteOn });
+};
 const createEditTool = () => {
   let view;
 
@@ -62,13 +70,22 @@ const create = () => {
   TOOLS.forEach((tool) => {
     let toolView = document.createElement("div");
     toolView.innerText = tool;
-    toolView.addEventListener("click", (e) => {
-      onAddClick(e, bkStates.editBar.add.active);
-    });
+    tool == "add" &&
+      toolView.addEventListener("click", (e) => {
+        onAddClick(e, getState1("bookmarks.editBar.add.active"));
+      });
+    tool == "edit" &&
+      toolView.addEventListener("click", (e) => {
+        onEditClick(e, getState1("bookmarks.editBar.edit.active"));
+      });
+    tool == "delete" &&
+      toolView.addEventListener("click", (e) => {
+        onDeleteClick(e, getState1("bookmarks.editBar.delete.active"));
+      });
     Object.assign(toolView.style, styleHyphenFormat(TOOL_STYLE));
     view.append(toolView);
   });
-  view.append(popup(bkStates.editBar.add.active));
+  view.append(popup(getState1("bookmarks.editBar.add.active")));
   Object.assign(view.style, styleHyphenFormat(VIEW_STYLE));
   return view;
 };

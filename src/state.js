@@ -5,7 +5,15 @@ let state = {
     bks: null,
     isSelected: null,
     editBar: {
+      current: null, //add,edit,delete
       add: {
+        active: false,
+      },
+      edit: {
+        editing: null,
+        active: false,
+      },
+      delete: {
         active: false,
       },
     },
@@ -31,6 +39,12 @@ let lis = {
     listener: [],
     editBar: {
       add: {
+        listener: [],
+      },
+      edit: {
+        editing: { listener: [] },
+        active: { listener: [] },
+
         listener: [],
       },
     },
@@ -68,19 +82,25 @@ export const setState1 = (path, value) => {
   const cbs = parts.reduce((pre, cur) => {
     return pre[cur];
   }, lis);
-  cbs.listener.forEach((cb) => {
-    cb();
-  });
+
+  cbs &&
+    cbs.listener &&
+    cbs.listener.forEach((cb) => {
+      cb();
+    });
+
+  console.log(state);
 };
 
 export const setState = (key, stateIn) => {
+  console.log(`setState invoked`);
   key ? (state[key] = stateIn) : (state = stateIn);
   if (key) {
     listener[key].forEach((cb) => {
       cb();
     });
   }
-  console.log(state);
+
   return state;
 };
 
