@@ -74,7 +74,6 @@ export const register = (key, callback) => {
     return pre[cur];
   }, lis);
 
-  console.log(`register: ${res}`);
   res.listener.push(callback);
 };
 
@@ -93,14 +92,11 @@ export const setState1 = (path, value) => {
     return pre[cur];
   }, lis);
 
-  console.log(cbs);
   cbs &&
     cbs.listener &&
     cbs.listener.forEach((cb) => {
       cb();
     });
-
-  console.log(state);
 };
 
 export const setState = (key, stateIn) => {
@@ -124,7 +120,7 @@ export const getState1 = (key) => {
   const cbs = parts.reduce((pre, cur) => {
     return pre[cur];
   }, state);
-
+  console.log(state);
   return cbs;
 };
 

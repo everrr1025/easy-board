@@ -87,10 +87,14 @@ const create = () => {
       });
     tool == "edit" &&
       toolView.addEventListener("click", (e) => {
+        if (!["edit", null].includes(getState1("bookmarks.editBar.current")))
+          return;
         onEditClick(e, getState1("bookmarks.editBar.edit.active"));
       });
     tool == "delete" &&
       toolView.addEventListener("click", (e) => {
+        if (!["delete", null].includes(getState1("bookmarks.editBar.current")))
+          return;
         onDeleteClick(e, getState1("bookmarks.editBar.delete.active"));
       });
 
