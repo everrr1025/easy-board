@@ -105,7 +105,7 @@ function create() {
     );
 
     if (getState1("bookmarks.editBar.edit.active")) {
-      bookmarkDiv.style.border = "1px dashed black";
+      bookmarkDiv.style.border = "1px dashed red";
     }
 
     bkView.append(bookmarkDiv);

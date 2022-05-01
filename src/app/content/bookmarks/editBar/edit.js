@@ -91,11 +91,13 @@ const content = () => {
   });
 
   const bnWrapper = document.createElement("div");
+  bnWrapper.style.display = "flex";
+  bnWrapper.style.marginTop = "0.5rem";
   const saveBn = document.createElement("div");
   saveBn.innerText = "save";
-  saveBn.style.display = "inline";
+
   saveBn.style.padding = "0.3rem";
-  saveBn.style.marginTop = "0.5rem";
+
   saveBn.style.cursor = "pointer";
   saveBn.style.border = "1px solid black";
   saveBn.addEventListener("click", () => {

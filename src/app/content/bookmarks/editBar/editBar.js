@@ -80,9 +80,9 @@ const create = () => {
     toolView.innerText = tool;
 
     tool == "add" &&
+      !getState1("bookmarks.editBar.current") &&
       toolView.addEventListener("click", (e) => {
-        getState1("bookmarks.editBar.current") == "add" &&
-          onAddClick(e, getState1("bookmarks.editBar.add.active"));
+        onAddClick(e, getState1("bookmarks.editBar.add.active"));
       });
     tool == "edit" &&
       toolView.addEventListener("click", (e) => {
