@@ -33,6 +33,12 @@ const CONTENT_VIEW_STYLE = {
   padding: "1.5rem",
 };
 
+const HEAD_STYLE = {
+  backgroundColor: "white",
+  marginBottom: "0.5rem",
+  height: "20%",
+  fontSize: "14px",
+};
 const updateBookmarks = (details) => {
   updateBookmark(details).then((e) => {
     bookmarkAdded();
@@ -73,6 +79,10 @@ const content = () => {
     id: "edit-name",
     value: !editing ? "" : editing.title,
   });
+
+  const head = document.createElement("div");
+  head.innerText = "Edit Bookmark";
+  content.append(head);
   content.append(urlInput);
   content.append(nameInput);
 
@@ -80,9 +90,14 @@ const content = () => {
     closeEditModal(e);
   });
 
+  const bnWrapper = document.createElement("div");
   const saveBn = document.createElement("div");
   saveBn.innerText = "save";
-  saveBn.style.width = "2rem";
+  saveBn.style.display = "inline";
+  saveBn.style.padding = "0.3rem";
+  saveBn.style.marginTop = "0.5rem";
+  saveBn.style.cursor = "pointer";
+  saveBn.style.border = "1px solid black";
   saveBn.addEventListener("click", () => {
     updateBookmarks({
       url: document.getElementById("edit-url").value,
@@ -90,10 +105,10 @@ const content = () => {
       id: editing.id,
     });
   });
-
-  content.append(saveBn);
+  bnWrapper.append(saveBn);
+  content.append(bnWrapper);
   view.append(content);
-
+  Object.assign(head.style, styleHyphenFormat(HEAD_STYLE));
   Object.assign(content.style, styleHyphenFormat(CONTENT_VIEW_STYLE));
   Object.assign(view.style, styleHyphenFormat(VIEW_STYLE));
   return view;
@@ -116,5 +131,6 @@ const create = () => {
 };
 
 register("bookmarks.editBar.edit.editing", update);
+register("bookmarks.editBar.edit.active", update);
 const edit = { create, update };
 export default edit;

@@ -10,7 +10,6 @@ let state = {
         active: false,
       },
       edit: {
-        editing: null,
         active: false,
       },
       delete: {
@@ -38,6 +37,9 @@ let lis = {
     },
     listener: [],
     editBar: {
+      current: {
+        listener: [],
+      },
       add: {
         listener: [],
       },

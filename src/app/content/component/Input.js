@@ -6,11 +6,11 @@ import { styleHyphenFormat } from "../../utils/utils.js";
 const STYLE = {
   display: "flex",
   flexDirection: "column",
-  margin: "",
+  margin: "0.5rem 0",
 };
 
 const INPUT_STYLE = {
-  marginTop: "0",
+  marginTop: "0.25rem",
   height: "1.5rem",
 };
 const Input = (details) => {

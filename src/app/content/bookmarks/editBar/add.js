@@ -63,7 +63,7 @@ const INPUT_STYLE = {
 };
 const BUTTON_STYLE = {
   padding: "0.25rem",
-
+  cursor: "pointer",
   backgroundColor: "white",
   border: "1px solid black",
 };

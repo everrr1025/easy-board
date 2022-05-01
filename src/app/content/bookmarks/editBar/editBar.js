@@ -14,15 +14,23 @@ const TOOL_STYLE = {
   padding: "0.3rem",
   cursor: "pointer",
   border: "1px solid black",
+  marginLeft: "0.3rem",
 };
 
+const TOOL_STYLE_ACTIVE = {
+  padding: "0.3rem",
+  cursor: "pointer",
+  border: "1px solid black",
+  marginLeft: "0.3rem",
+  backgroundColor: "black",
+  color: "white",
+};
 //actions
 const onAddClick = (e, popupOn) => {
   setState1("bookmarks.editBar.add", { active: !popupOn });
   setState1("bookmarks.editBar.current", popupOn ? null : "add");
 };
 const onEditClick = (e, editOn) => {
-  console.log(editOn);
   setState1("bookmarks.editBar.edit.active", !editOn);
   setState1("bookmarks.editBar.current", editOn ? null : "edit");
 };
@@ -70,9 +78,11 @@ const create = () => {
   TOOLS.forEach((tool) => {
     let toolView = document.createElement("div");
     toolView.innerText = tool;
+
     tool == "add" &&
       toolView.addEventListener("click", (e) => {
-        onAddClick(e, getState1("bookmarks.editBar.add.active"));
+        getState1("bookmarks.editBar.current") == "add" &&
+          onAddClick(e, getState1("bookmarks.editBar.add.active"));
       });
     tool == "edit" &&
       toolView.addEventListener("click", (e) => {
@@ -82,7 +92,16 @@ const create = () => {
       toolView.addEventListener("click", (e) => {
         onDeleteClick(e, getState1("bookmarks.editBar.delete.active"));
       });
-    Object.assign(toolView.style, styleHyphenFormat(TOOL_STYLE));
+
+    const current = getState1("bookmarks.editBar.current");
+
+    Object.assign(
+      toolView.style,
+      styleHyphenFormat(
+        !current || current != tool ? TOOL_STYLE : TOOL_STYLE_ACTIVE
+      )
+    );
+
     view.append(toolView);
   });
   view.append(popup(getState1("bookmarks.editBar.add.active")));
@@ -91,5 +110,6 @@ const create = () => {
 };
 
 register("bookmarks.editBar.add", update);
+register("bookmarks.editBar.current", update);
 const editBar = { create };
 export default editBar;
