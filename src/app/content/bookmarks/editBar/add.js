@@ -126,9 +126,10 @@ const content = () => {
 //action
 //const createBookmark = () => {};
 const closeModal = (e) => {
-  if (e.target.id == "modal")
+  if (e.target.id == "modal") {
     setState1("bookmarks.editBar.add", { active: false });
-  setState1("bookmarks.editBar.current", null);
+    setState1("bookmarks.editBar.current", null);
+  }
 };
 const update = () => {
   create();

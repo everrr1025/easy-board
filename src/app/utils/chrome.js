@@ -23,8 +23,13 @@ export async function createBookmark(details, cb) {
 
 export async function updateBookmark(details) {
   const { id, url, title } = details;
-  debugger;
+
   return await chrome.bookmarks.update(id, { url, title });
+}
+
+export async function removeBookmark(details) {
+  const { id } = details;
+  return await chrome.bookmarks.remove(id);
 }
 
 export const compareNodes = (a, b) => {

@@ -35,7 +35,8 @@ const onEditClick = (e, editOn) => {
   setState1("bookmarks.editBar.current", editOn ? null : "edit");
 };
 const onDeleteClick = (e, deleteOn) => {
-  setState1("bookmarks.editBar.delete", { active: !deleteOn });
+  setState1("bookmarks.editBar.delete.active", !deleteOn);
+  setState1("bookmarks.editBar.current", deleteOn ? null : "delete");
 };
 const createEditTool = () => {
   let view;

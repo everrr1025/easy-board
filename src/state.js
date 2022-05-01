@@ -10,9 +10,11 @@ let state = {
         active: false,
       },
       edit: {
+        editing: null,
         active: false,
       },
       delete: {
+        deleting: null,
         active: false,
       },
     },
@@ -49,6 +51,11 @@ let lis = {
 
         listener: [],
       },
+      delete: {
+        deleting: { listener: [] },
+        listener: [],
+        active: { listener: [] },
+      },
     },
     path: {
       listener: [],
@@ -67,6 +74,7 @@ export const register = (key, callback) => {
     return pre[cur];
   }, lis);
 
+  console.log(`register: ${res}`);
   res.listener.push(callback);
 };
 
@@ -85,6 +93,7 @@ export const setState1 = (path, value) => {
     return pre[cur];
   }, lis);
 
+  console.log(cbs);
   cbs &&
     cbs.listener &&
     cbs.listener.forEach((cb) => {

@@ -10,6 +10,7 @@ import { styleHyphenFormat, getChildren } from "../../utils/utils.js";
 import breadcrumb from "./breadcrumb.js";
 import editBar from "./editBar/editBar.js";
 import edit from "../bookmarks/editBar/edit.js";
+import del from "../bookmarks/editBar/del.js";
 
 /*
  * component bookmarks
@@ -58,6 +59,8 @@ const onClickBookmark = (event, bookmark, current) => {
   }
   if (current == "edit") {
     setState1("bookmarks.editBar.edit.editing", bookmark);
+  } else if (current === "delete") {
+    setState1("bookmarks.editBar.delete.deleting", bookmark);
   }
 };
 const update = () => {
@@ -104,7 +107,10 @@ function create() {
         : styleHyphenFormat(BOOKMARK_STYLE)
     );
 
-    if (getState1("bookmarks.editBar.edit.active")) {
+    if (
+      getState1("bookmarks.editBar.edit.active") ||
+      getState1("bookmarks.editBar.delete.active")
+    ) {
       bookmarkDiv.style.border = "1px dashed red";
     }
 
@@ -115,6 +121,7 @@ function create() {
   view.append(breadcrumb.create());
   view.append(bkView);
   view.append(edit.create());
+  view.append(del.create());
   view.append(editBar.create());
   Object.assign(view.style, styleHyphenFormat(VIEW_STYLE));
   return view;
@@ -129,5 +136,6 @@ setState("bookmarks", {
 register("bookmarks.bks", update);
 register("bookmarks.isSelected", update);
 register("bookmarks.editBar.edit.active", update);
+register("bookmarks.editBar.delete.active", update);
 const bookmarks = { update, create };
 export default bookmarks;
