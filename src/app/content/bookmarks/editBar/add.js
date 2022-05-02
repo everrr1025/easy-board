@@ -1,9 +1,8 @@
 import { styleHyphenFormat } from "../../../utils/utils.js";
 import { createBookmark } from "../../../utils/chrome.js";
 import { getState1, setState1, bookmarkAdded } from "../../../../state.js";
-import Modal from "../../component/Modal.js";
-import Input from "../../component/Input.js";
-import Button from "../../component/Button.js";
+
+import { Modal, Input, Button } from "../../../component/index.js";
 /**
  * add component in edit bar
  */
@@ -22,6 +21,7 @@ const closeModal = (e) => {
   setState1("bookmarks.editBar.current", null);
 };
 
+//view
 const content = () => {
   const _content = document.createElement("div");
   const urlInput = new Input({

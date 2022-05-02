@@ -1,5 +1,5 @@
 import { styleHyphenFormat } from "../../../utils/utils.js";
-import Input from "../../component/Input.js";
+import { Input } from "../../../component/index.js";
 import {
   register,
   getState1,

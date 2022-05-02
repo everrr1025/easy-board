@@ -1,4 +1,4 @@
-import { styleHyphenFormat } from "../../utils/utils.js";
+import { styleHyphenFormat } from "../utils/utils.js";
 
 /**
  * pure component - input with label

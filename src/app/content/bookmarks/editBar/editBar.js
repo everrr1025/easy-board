@@ -52,7 +52,7 @@ const POPUP_STYLE_HIDE = {
   display: "none",
 };
 const popup = (display) => {
-  let view = document.createElement("div");
+  const view = document.createElement("div");
   view.append(add.create());
   Object.assign(
     view.style,
