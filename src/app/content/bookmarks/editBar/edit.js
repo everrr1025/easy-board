@@ -69,16 +69,16 @@ const content = () => {
 
   const content = document.createElement("div");
 
-  const urlInput = Input({
+  const urlInput = new Input({
     label: "URL",
     id: "edit-url",
     value: !editing ? "" : editing.url,
-  });
-  const nameInput = Input({
+  }).create();
+  const nameInput = new Input({
     label: "Name",
     id: "edit-name",
     value: !editing ? "" : editing.title,
-  });
+  }).create();
 
   const head = document.createElement("div");
   head.innerText = "Edit Bookmark";

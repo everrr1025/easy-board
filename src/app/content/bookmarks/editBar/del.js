@@ -66,18 +66,18 @@ const content = () => {
 
   const content = document.createElement("div");
 
-  const urlInput = Input({
+  const urlInput = new Input({
     label: "URL",
     id: "delete-url",
     disabled: true,
     value: !deleting ? "" : deleting.url,
-  });
-  const nameInput = Input({
+  }).create();
+  const nameInput = new Input({
     label: "Name",
     id: "delete-name",
     disabled: true,
     value: !deleting ? "" : deleting.title,
-  });
+  }).create();
 
   const head = document.createElement("div");
   head.innerText = "Delete Bookmark";

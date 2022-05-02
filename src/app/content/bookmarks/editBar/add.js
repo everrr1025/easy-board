@@ -1,6 +1,9 @@
 import { styleHyphenFormat } from "../../../utils/utils.js";
 import { createBookmark } from "../../../utils/chrome.js";
 import { getState1, setState1, bookmarkAdded } from "../../../../state.js";
+import Modal from "../../component/Modal.js";
+import Input from "../../component/Input.js";
+import Button from "../../component/Button.js";
 /**
  * add component in edit bar
  */
@@ -10,141 +13,53 @@ const addBookmark = (details) => {
   createBookmark(details).then((x) => {
     bookmarkAdded();
     setState1("bookmarks.editBar.add", { active: false });
+    setState1("bookmarks.editBar.current", null);
   });
 };
-const VIEW_STYLE = {
-  display: "block",
-  width: "100%",
-  height: "100%",
-  overflow: "auto",
-  backgroundColor: "rgba(0,0,0,0.4)",
-  zIndex: 1,
-  position: "fixed",
-  left: 0,
-  top: 0,
+
+const closeModal = (e) => {
+  setState1("bookmarks.editBar.add", { active: false });
+  setState1("bookmarks.editBar.current", null);
 };
 
-const CONTENT_VIEW_STYLE = {
-  display: "flex",
-  flexDirection: "column",
-  width: "50%",
-  margin: "10% auto auto",
-  border: "1px solid black",
-  backgroundColor: "white",
-  padding: "1.5rem",
-};
-
-const HEAD_STYLE = {
-  backgroundColor: "white",
-  marginBottom: "0.5rem",
-  height: "20%",
-  fontSize: "14px",
-};
-const BODY_STYLE = {
-  display: "flex",
-  flexDirection: "column",
-  height: "60%",
-};
-const FOOT_STYLE = {
-  display: "flex",
-  marginTop: "0.5rem",
-};
-
-const INPUT_DIV_STYLE = {
-  display: "flex",
-  flexDirection: "column",
-  margin: "0.5rem 0",
-};
-
-const INPUT_STYLE = {
-  marginTop: "0.25rem",
-  boxSizing: "content-box",
-  height: "1.5rem",
-};
-const BUTTON_STYLE = {
-  padding: "0.25rem",
-  cursor: "pointer",
-  backgroundColor: "white",
-  border: "1px solid black",
-};
 const content = () => {
-  let view = document.createElement("div");
-  view.id = "modal-content";
-  //header
-  let head = document.createElement("div");
-  head.innerText = "Add Bookmark";
-  //body
-  let body = document.createElement("div");
-  let urlDiv = document.createElement("div");
-  let urlLabel = document.createElement("label");
-  urlLabel.innerText = "URL";
-  let urlInput = document.createElement("input");
-  Object.assign(urlInput.style, styleHyphenFormat(INPUT_STYLE));
-  urlInput.id = "add-bk-url";
-  urlInput.value = "https://";
-  urlDiv.append(urlLabel);
-  urlDiv.append(urlInput);
-
-  let titleDiv = document.createElement("div");
-  let titleLabel = document.createElement("label");
-  titleLabel.innerText = "Bookmark Name";
-  let titleInput = document.createElement("input");
-  Object.assign(titleInput.style, styleHyphenFormat(INPUT_STYLE));
-  titleInput.id = "add-bk-title";
-  titleDiv.append(titleLabel);
-  titleDiv.append(titleInput);
-
-  //let title = document.createElement("input");
-  body.append(urlDiv);
-  body.append(titleDiv);
-
-  //foot
-  let foot = document.createElement("div");
-  let addButton = document.createElement("div");
-  addButton.innerText = "add";
-  foot.append(addButton);
+  const _content = document.createElement("div");
+  const urlInput = new Input({
+    type: "text",
+    label: "URL",
+    value: "https://",
+    style: { marginTop: "1rem" },
+  });
+  const nameInput = new Input({
+    type: "text",
+    label: "Bookmark Name",
+    style: { marginTop: "1rem" },
+  });
+  _content.append(urlInput.create());
+  _content.append(nameInput.create());
+  const addButton = Button({ label: "add", style: { marginTop: "1rem" } });
   addButton.addEventListener("click", () => {
     addBookmark({
-      url: urlInput.value,
-      title: titleInput.value,
+      url: urlInput.getValue(),
+      title: nameInput.getValue(),
       parentId: getState1("bookmarks.isSelected"),
     });
   });
-  Object.assign(addButton.style, styleHyphenFormat(BUTTON_STYLE));
-  Object.assign(head.style, styleHyphenFormat(HEAD_STYLE));
-  Object.assign(body.style, styleHyphenFormat(BODY_STYLE));
-  Object.assign(foot.style, styleHyphenFormat(FOOT_STYLE));
-  Object.assign(urlDiv.style, styleHyphenFormat(INPUT_DIV_STYLE));
-  Object.assign(titleDiv.style, styleHyphenFormat(INPUT_DIV_STYLE));
-  view.append(head);
-  view.append(body);
-  view.append(foot);
-  Object.assign(view.style, styleHyphenFormat(CONTENT_VIEW_STYLE));
-  return view;
-};
 
-//action
-//const createBookmark = () => {};
-const closeModal = (e) => {
-  if (e.target.id == "modal") {
-    setState1("bookmarks.editBar.add", { active: false });
-    setState1("bookmarks.editBar.current", null);
-  }
-};
-const update = () => {
-  create();
-};
+  _content.append(addButton);
 
-const create = () => {
-  let view = document.createElement("div");
-  view.id = "modal";
-  view.addEventListener("click", (e) => {
-    closeModal(e);
+  return Modal({
+    title: "Add Bookmark",
+    id: "add-modal",
+    content: _content,
+    onClickOverlay: (e) => {
+      closeModal(e);
+    },
   });
-
+};
+const create = () => {
+  const view = document.createElement("div");
   view.append(content());
-
-  Object.assign(view.style, styleHyphenFormat(VIEW_STYLE));
   return view;
 };
 
