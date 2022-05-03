@@ -34,10 +34,10 @@ const Modal = (details) => {
   // id - the id of the main content of modal ( not the content of details )
   // onClickOverlay - modal will be colsed by default if overlay is clicked,
   // use onClickOverlay to pass in the next steps
-
+  //title - either a string or a dom element which will be insert into the header directly
   const { id, title, style, content, onClickOverlay } = details;
   const view = document.createElement("div");
-  view.id = id + "_wrapper";
+  view.id = id + "-wrapper";
   const _content = document.createElement("div");
   _content.id = id;
 
@@ -47,16 +47,19 @@ const Modal = (details) => {
     onClickOverlay(e);
   });
 
-  if (title) {
-    let _title = document.createElement("div");
+  if (title && typeof title == "string") {
+    const _title = document.createElement("div");
+
     _title.innerText = title;
+
     Object.assign(_title.style, styleHyphenFormat(TITLE_STYLE));
+
     _content.append(_title);
-  }
-  if (content) {
-    _content.append(content);
+  } else if (title && title instanceof Element) {
+    _content.append(title);
   }
 
+  _content.append(content);
   view.append(_content);
   Object.assign(_content.style, styleHyphenFormat(CONTENT_STYLE));
   style && Object.assign(_content.style, styleHyphenFormat(style)); //applay the passed in style

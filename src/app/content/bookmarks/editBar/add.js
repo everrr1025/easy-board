@@ -1,6 +1,11 @@
 import { styleHyphenFormat } from "../../../utils/utils.js";
 import { createBookmark } from "../../../utils/chrome.js";
-import { getState1, setState1, bookmarkAdded } from "../../../../state.js";
+import {
+  getState1,
+  setState1,
+  register,
+  bookmarkAdded,
+} from "../../../../state.js";
 
 import { Modal, Input, Button } from "../../../component/index.js";
 /**
@@ -22,7 +27,14 @@ const closeModal = (e) => {
 };
 
 //view
+
+const update = () => {
+  document.getElementById("add-modal-container").innerHTML = "";
+  create();
+};
 const content = () => {
+  let isFolder = getState1("bookmarks.editBar.add.isFolder");
+
   const _content = document.createElement("div");
   const urlInput = new Input({
     type: "text",
@@ -35,12 +47,25 @@ const content = () => {
     label: "Bookmark Name",
     style: { marginTop: "1rem" },
   });
-  _content.append(urlInput.create());
+  const isFolderCheck = new Input({
+    type: "checkbox",
+    label: "is folder",
+    checked: isFolder,
+    style: { display: "inline", paddingLeft: "1rem" },
+    onClick: (e, checked) => {
+      setState1("bookmarks.editBar.add.isFolder", checked);
+    },
+  });
+
+  if (!isFolder) {
+    _content.append(urlInput.create());
+  }
   _content.append(nameInput.create());
+
   const addButton = Button({ label: "add", style: { marginTop: "1rem" } });
   addButton.addEventListener("click", () => {
     addBookmark({
-      url: urlInput.getValue(),
+      url: isFolder ? "" : urlInput.getValue(),
       title: nameInput.getValue(),
       parentId: getState1("bookmarks.isSelected"),
     });
@@ -48,8 +73,14 @@ const content = () => {
 
   _content.append(addButton);
 
+  //create customized title
+  const title = document.createElement("div");
+  title.textContent = "Add Bookmark";
+  title.style.fontSize = "14px";
+  title.append(isFolderCheck.create());
+
   return Modal({
-    title: "Add Bookmark",
+    title: title,
     id: "add-modal",
     content: _content,
     onClickOverlay: (e) => {
@@ -58,11 +89,20 @@ const content = () => {
   });
 };
 const create = () => {
-  const view = document.createElement("div");
+  let view;
+  if (document.getElementById("add-modal-container")) {
+    view = document.getElementById("add-modal-container");
+  } else {
+    view = document.createElement("div");
+    view.id = "add-modal-container";
+  }
+
   view.append(content());
+
   return view;
 };
 
+register("bookmarks.editBar.add.isFolder", update);
 const add = { create };
 
 export default add;

@@ -7,6 +7,7 @@ let state = {
     editBar: {
       current: null, //add,edit,delete
       add: {
+        isFolder: false,
         active: false,
       },
       edit: {
@@ -43,6 +44,9 @@ let lis = {
         listener: [],
       },
       add: {
+        isFolder: {
+          listener: [],
+        },
         listener: [],
       },
       edit: {
