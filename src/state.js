@@ -31,6 +31,12 @@ let listener = {
 };
 
 let lis = {
+  navigator: {
+    listener: [],
+    isSelected: {
+      listener: [],
+    },
+  },
   bookmarks: {
     isSelected: {
       listener: [],
@@ -67,11 +73,6 @@ let lis = {
   },
 };
 
-export const registerListener = (key, callback) => {
-  if (!key) throw new Error("must provide a key");
-  listener[key].push(callback);
-};
-
 export const register = (key, callback) => {
   const path = key.split(".");
   const res = path.reduce((pre, cur) => {
@@ -103,29 +104,13 @@ export const setState1 = (path, value) => {
     });
 };
 
-export const setState = (key, stateIn) => {
-  console.log(`setState invoked`);
-  key ? (state[key] = stateIn) : (state = stateIn);
-  if (key) {
-    listener[key].forEach((cb) => {
-      cb();
-    });
-  }
-
-  return state;
-};
-
-export const getState = (key) => {
-  return key ? structuredClone(state[key]) : state;
-};
-
 export const getState1 = (key) => {
   const parts = key.split(".");
   const cbs = parts.reduce((pre, cur) => {
     return pre[cur];
   }, state);
   console.log(state);
-  return cbs;
+  return structuredClone(cbs);
 };
 
 export const bookmarkAdded = () => {

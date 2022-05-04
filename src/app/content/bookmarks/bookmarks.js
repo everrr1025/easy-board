@@ -1,10 +1,4 @@
-import {
-  getState,
-  getState1,
-  setState,
-  register,
-  setState1,
-} from "../../../state.js";
+import { getState1, register, setState1 } from "../../../state.js";
 import { getBookmarks, compareNodes } from "../../utils/chrome.js";
 import { styleHyphenFormat, getChildren } from "../../utils/utils.js";
 import breadcrumb from "./breadcrumb.js";
@@ -86,11 +80,9 @@ function create() {
   if (isSelected) {
     const bks = getState1("bookmarks.bks");
     nodes = getChildren(bks, isSelected).children.sort(compareNodes);
-    console.log(nodes);
-    // nodes = getState1("bookmarks.bks").children.sort(compareNodes);
   } else {
     nodes = getState1("bookmarks.bks").children.sort(compareNodes);
-    setState("bookmarks", { ...getState("bookmarks"), isSelected: bkNodes.id });
+    setState1("bookmarks.isSelected", bkNodes.id);
   }
 
   nodes.forEach((node) => {
@@ -128,11 +120,9 @@ function create() {
 }
 
 let bkNodes = await getBookmarks();
-setState("bookmarks", {
-  ...getState("bookmarks"),
-  bks: bkNodes,
-  path: [bkNodes],
-});
+
+setState1("bookmarks.bks", bkNodes);
+setState1("bookmarks.path", [bkNodes]);
 register("bookmarks.bks", update);
 register("bookmarks.isSelected", update);
 register("bookmarks.editBar.edit.active", update);

@@ -1,4 +1,4 @@
-import { setState, getState, registerListener } from "../../state.js";
+import { getState1, register } from "../../state.js";
 import { styleHyphenFormat } from "../utils/utils.js";
 import bookmarks from "./bookmarks/bookmarks.js";
 /**
@@ -19,7 +19,7 @@ const update = () => {
 };
 
 function create() {
-  const isSelected = getState("navigator").isSelected;
+  const isSelected = getState1("navigator.isSelected");
   let view;
   if (document.getElementById("content"))
     view = document.getElementById("content");
@@ -37,7 +37,7 @@ function create() {
   return view;
 }
 
-registerListener("navigator", update);
+register("navigator.isSelected", update);
 const content = { create, update };
 
 export default content;

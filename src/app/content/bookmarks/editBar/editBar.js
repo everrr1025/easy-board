@@ -1,4 +1,4 @@
-import { getState, getState1, setState1, register } from "../../../../state.js";
+import { getState1, setState1, register } from "../../../../state.js";
 import { styleHyphenFormat } from "../../../utils/utils.js";
 import add from "../editBar/add.js";
 /**
@@ -68,7 +68,6 @@ const update = () => {
 };
 const create = () => {
   let view;
-  let bkStates = getState("bookmarks");
 
   if (!document.getElementById("edit-bar")) {
     view = document.createElement("div");

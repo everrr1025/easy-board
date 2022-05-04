@@ -1,4 +1,4 @@
-import { getState, setState, registerListener } from "../../state.js";
+import { getState1, register, setState1 } from "../../state.js";
 import { styleHyphenFormat } from "../utils/utils.js";
 import content from "../content/content.js";
 
@@ -36,7 +36,7 @@ const TAB_STYLE_SELECTED = {
 
 //actions
 const onTabClick = (event, tab) => {
-  setState("navigator", { isSelected: tab }); //upadte state
+  setState1("navigator.isSelected", tab);
 };
 
 const updateView = () => {
@@ -54,7 +54,7 @@ const create = () => {
   }
 
   TABS_CATEGORY.forEach((category) => {
-    const isSelected = getState("navigator").isSelected; //upadte state
+    const isSelected = getState1("navigator.isSelected"); //upadte state
     const naviTab = document.createElement("div");
     naviTab.dataset.category = category;
     naviTab.innerText = category;
@@ -74,7 +74,7 @@ const create = () => {
   return view;
 };
 
-registerListener("navigator", updateView);
+register("navigator.isSelected", updateView);
 const navigator = {
   create,
 };

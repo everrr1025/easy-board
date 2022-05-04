@@ -1,4 +1,4 @@
-import { getState, getState1, setState1, register } from "../../../state.js";
+import { getState1, setState1, register } from "../../../state.js";
 import { styleHyphenFormat } from "../../utils/utils.js";
 
 /**
@@ -6,7 +6,7 @@ import { styleHyphenFormat } from "../../utils/utils.js";
  */
 
 export function toPath(node) {
-  return getState("bookmarks").path;
+  return getState1("bookmarks.path");
 }
 
 const VIEW_STYLE = {
@@ -46,7 +46,7 @@ const create = () => {
   }
 
   let x = document.createElement("div");
-  const currentNode = getState("bookmarks").isSelected;
+  const currentNode = getState1("bookmarks.isSelected");
 
   const paths = toPath(currentNode);
 
