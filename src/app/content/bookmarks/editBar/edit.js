@@ -21,8 +21,10 @@ const updateBookmarks = (details) => {
 const closeEditModal = (e) => {
   setState1("bookmarks.editBar.edit.editing", null);
 };
+
+let ID;
 const update = () => {
-  document.getElementById("edit-modal").innerHTML = "";
+  document.getElementById(ID).innerHTML = "";
   create();
 };
 
@@ -62,11 +64,10 @@ const content = () => {
 };
 const create = () => {
   let popup;
-  if (!document.getElementById("edit-modal")) {
+
+  if (!(popup = document.getElementById(ID))) {
     popup = document.createElement("div");
-    popup.id = "edit-modal";
-  } else {
-    popup = document.getElementById("edit-modal");
+    popup.id = ID = "edit-modal-wrapper";
   }
 
   if (getState1("bookmarks.editBar.edit.editing")) {
@@ -74,8 +75,6 @@ const create = () => {
   }
   return popup;
 };
-
 register("bookmarks.editBar.edit.editing", update);
-register("bookmarks.editBar.edit.active", update);
 const edit = { create, update };
 export default edit;

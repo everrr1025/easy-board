@@ -50,9 +50,11 @@ const closeEditModal = (e) => {
     setState1("bookmarks.editBar.delete.deleting", null);
 };
 const update = () => {
-  document.getElementById("yyy").innerHTML = "";
+  document.getElementById(ID).innerHTML = "";
   create();
 };
+
+let ID = "";
 
 const content = () => {
   const { deleting } = getState1("bookmarks.editBar.delete");
@@ -82,7 +84,7 @@ const content = () => {
   const head = document.createElement("div");
   head.innerText = "Delete Bookmark";
   content.append(head);
-  content.append(urlInput);
+  deleting && deleting.url && content.append(urlInput);
   content.append(nameInput);
 
   view.addEventListener("click", (e) => {
@@ -114,22 +116,17 @@ const content = () => {
 };
 const create = () => {
   let popup;
-  if (!document.getElementById("yyy")) {
+
+  if (!(popup = document.getElementById(ID))) {
     popup = document.createElement("div");
-    popup.id = "yyy";
-  } else {
-    popup = document.getElementById("yyy");
+    popup.id = ID = "del-modal-wrapper";
   }
-
   popup.append(content());
-
-  const deleting = getState1("bookmarks.editBar.delete.deleting");
+  const { deleting } = getState1("bookmarks.editBar.delete");
   popup.style.display = deleting ? "block" : "none";
   return popup;
 };
-
 register("bookmarks.editBar.delete.deleting", update);
-register("bookmarks.editBar.delete.active", update);
 const del = { create, update };
 
 export default del;

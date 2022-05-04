@@ -37,10 +37,9 @@ const Modal = (details) => {
   //title - either a string or a dom element which will be insert into the header directly
   const { id, title, style, content, onClickOverlay } = details;
   const view = document.createElement("div");
-  view.id = id + "-wrapper";
   const _content = document.createElement("div");
-  _content.id = id;
-
+  //_content.id = id;
+  view.id = id;
   view.addEventListener("click", (e) => {
     if (e.target.id !== view.id) return;
     view.style.display = "none";

@@ -35,7 +35,6 @@ const FOLDER_STYLE = {
 };
 
 const BOOKMARK_STYLE = {
-  width: "5rem",
   backgroundColor: "white",
   cursor: "pointer",
   border: "1px solid black",
@@ -72,6 +71,7 @@ const update = () => {
 
 function create() {
   const isSelected = getState1("bookmarks.isSelected");
+  const deleting = getState1("bookmarks.editBar.delete.deleting");
   let view;
   let bkView = document.createElement("div");
   if (document.getElementById("bookmarks"))
@@ -137,5 +137,6 @@ register("bookmarks.bks", update);
 register("bookmarks.isSelected", update);
 register("bookmarks.editBar.edit.active", update);
 register("bookmarks.editBar.delete.active", update);
+
 const bookmarks = { update, create };
 export default bookmarks;
