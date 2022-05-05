@@ -11,7 +11,6 @@ import { setState1, register } from "../src/state.js";
 
 async function init() {
   const userData = await getUserData(["easyDashboard"]);
-  debugger;
   if (
     !(userData.easyDashboard && userData.easyDashboard.bookmarks.isSelected)
   ) {
@@ -30,5 +29,5 @@ async function init() {
   }
 }
 
-//register("bookmarks.isSelected", init); //make app crash
+//register("workspace.isSelected", init); //make app crash
 await init();

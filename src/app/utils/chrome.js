@@ -1,3 +1,5 @@
+import { getChildren } from "./utils.js";
+import { getState1, bookmarkAdded } from "../../state.js";
 /**
  * module to encapsulate chrome extension API
  */
@@ -67,3 +69,18 @@ const bk = {
     title:'haha'
 }
 */
+//listen to chrome bookmark updated
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  const { bookmark } = request; //updated bookmark id
+  //check if it belongs to the selected workspace
+  const bks = getState1("bookmarks.bks");
+  const parent = getChildren(bks, bookmark.parentId);
+  //if parent found, then update the workspace bookmark tree
+  if (parent) {
+    bookmarkAdded();
+    sendResponse({ farewell: "workspace bookmarks updated" });
+  } else {
+    sendResponse({ farewell: "do nothing" });
+    return;
+  }
+});

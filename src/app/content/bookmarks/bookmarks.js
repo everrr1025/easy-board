@@ -26,6 +26,7 @@ const FOLDER_STYLE = {
   padding: "0.5rem",
   margin: "0 1rem 1rem 0 ",
   cursor: "pointer",
+  maxWidth: "5rem",
 };
 
 const BOOKMARK_STYLE = {
@@ -34,6 +35,7 @@ const BOOKMARK_STYLE = {
   border: "1px solid black",
   padding: "0.5rem",
   margin: "0 1rem 1rem 0 ",
+  maxWidth: "5rem",
 };
 
 //actions
@@ -83,7 +85,7 @@ function create() {
   if (isSelected && children && children.length > 0) {
     nodes = bks.children.sort(compareNodes);
   } else {
-    nodes = children.children;
+    nodes = children.children.sort(compareNodes);
   }
 
   nodes.forEach((node) => {

@@ -1,10 +1,9 @@
 import { Modal, Input, Button } from "../component/index.js";
 import { createWorkspace } from "../utils/workspace.js";
-import { setState1 } from "../../state.js";
 
 async function onClickCreate(e, details) {
   let ws = await createWorkspace(details);
-  setState1("bookmarks.isSelected", ws);
+  window.location.reload();
 }
 const update = () => {};
 

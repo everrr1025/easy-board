@@ -37,7 +37,7 @@ let lis = {
   workspace: {
     listener: [],
     isSelected: {
-      lisener: [],
+      listener: [],
     },
   },
   navigator: {
@@ -118,7 +118,7 @@ export const getState1 = (key) => {
   const cbs = parts.reduce((pre, cur) => {
     return pre[cur];
   }, state);
-  console.log(state);
+  //console.log(state);
   return structuredClone(cbs); //keep state immutable
 };
 
@@ -132,3 +132,8 @@ export const bookmarkAdded = () => {
     });
   });
 };
+chrome.runtime.onMessage.addListener(function (
+  request,
+  sender,
+  sendResponse
+) {});

@@ -9,3 +9,9 @@
 chrome.tabs.onCreated.addListener(() => {
   console.log(`new tab created`);
 });
+
+chrome.bookmarks.onCreated.addListener((id, bookmark) => {
+  chrome.runtime.sendMessage({ id, bookmark }, function (response) {
+    console.log(response);
+  });
+});
