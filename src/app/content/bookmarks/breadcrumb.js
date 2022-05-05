@@ -11,7 +11,7 @@ export function toPath(node) {
 
 const VIEW_STYLE = {
   padding: "0.5rem 0",
-  fontSize: "16px",
+  fontSize: "14px",
 };
 //style
 const PATH_ITEM_STYLE = {
@@ -52,7 +52,7 @@ const create = () => {
 
   paths.forEach((path, index) => {
     const pathItem = document.createElement("a");
-    pathItem.innerText = path.title;
+    pathItem.innerText = ` ${path.title} `;
     pathItem.dataset.id = path.id;
     pathItem.addEventListener("click", (e) => {
       onClickBreadcrumb(e, index);

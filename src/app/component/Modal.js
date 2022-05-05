@@ -42,8 +42,11 @@ const Modal = (details) => {
   view.id = id;
   view.addEventListener("click", (e) => {
     if (e.target.id !== view.id) return;
-    view.style.display = "none";
-    onClickOverlay(e);
+    if (onClickOverlay) {
+      onClickOverlay(e);
+    } else {
+      view.style.display = "none";
+    }
   });
 
   if (title && typeof title == "string") {

@@ -28,7 +28,13 @@ const content = () => {
   _content.append(_isSync);
   _content.append(_createButton);
 
-  return Modal({ title: "Setting", content: _content });
+  return Modal({
+    title: "Setting",
+    content: _content,
+    onClickOverlay: () => {
+      return;
+    },
+  });
 };
 
 const create = () => {

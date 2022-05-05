@@ -71,6 +71,26 @@ const bk = {
 */
 //listen to chrome bookmark updated
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  const { action } = request;
+  let message;
+  switch (action) {
+    case "create": {
+      message = createHandler(request);
+      break;
+    }
+    case "delete": {
+      message = deleteHandler(request);
+      break;
+    }
+    case "change": {
+      message = changeHandler(request);
+    }
+  }
+
+  sendResponse(message);
+});
+
+const createHandler = (request) => {
   const { bookmark } = request; //updated bookmark id
   //check if it belongs to the selected workspace
   const bks = getState1("bookmarks.bks");
@@ -78,9 +98,35 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   //if parent found, then update the workspace bookmark tree
   if (parent) {
     bookmarkAdded();
-    sendResponse({ farewell: "workspace bookmarks updated" });
+    return { farewell: "workspace bookmarks updated" };
   } else {
-    sendResponse({ farewell: "do nothing" });
-    return;
+    return { farewell: "do nothing" };
   }
-});
+};
+
+const deleteHandler = (request) => {
+  const { id } = request;
+
+  const bks = getState1("bookmarks.bks");
+  const removedBookmark = getChildren(bks, id);
+
+  if (removedBookmark) {
+    bookmarkAdded();
+    return { farewell: "workspace bookmarks updated" };
+  } else {
+    return { farewell: "do nothing" };
+  }
+};
+
+const changeHandler = (request) => {
+  const { id } = request;
+  debugger;
+  const bks = getState1("bookmarks.bks");
+  const changedBookmark = getChildren(bks, id);
+  if (changedBookmark) {
+    bookmarkAdded();
+    return { farewell: "workspace bookmarks updated" };
+  } else {
+    return { farewell: "do nothing" };
+  }
+};

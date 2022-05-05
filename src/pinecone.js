@@ -9,25 +9,45 @@ import {
 } from "./app/utils/chrome.js";
 import { setState1, register } from "../src/state.js";
 
-async function init() {
-  const userData = await getUserData(["easyDashboard"]);
-  if (
-    !(userData.easyDashboard && userData.easyDashboard.bookmarks.isSelected)
-  ) {
-    document.getElementById("container").append(setting.create());
-  } else {
-    const isSelectedNodeId = userData.easyDashboard.bookmarks.isSelected.id;
+// function init() {
+//   const userData = await getUserData(["easyDashboard"]);
+//   if (
+//     !(userData.easyDashboard && userData.easyDashboard.bookmarks.isSelected)
+//   ) {
+//     document.getElementById("container").append(setting.create());
+//   } else {
+//     const isSelectedNodeId = userData.easyDashboard.bookmarks.isSelected.id;
 
-    let bkNodes = await getSubtree(isSelectedNodeId);
+//     let bkNodes = await getSubtree(isSelectedNodeId);
 
-    setState1("bookmarks.bks", bkNodes[0]);
-    setState1("bookmarks.path", [bkNodes[0]]);
-    setState1("bookmarks.isSelected", isSelectedNodeId);
-    setState1("workspace.isSelected", isSelectedNodeId);
-    document.getElementById("container").append(navigator.create());
-    document.getElementById("container").append(content.create());
-  }
+//     setState1("bookmarks.bks", bkNodes[0]);
+//     setState1("bookmarks.path", [bkNodes[0]]);
+//     setState1("bookmarks.isSelected", isSelectedNodeId);
+//     setState1("workspace.isSelected", isSelectedNodeId);
+//     document.getElementById("container").append(navigator.create());
+//     document.getElementById("container").append(content.create());
+//   }
+// }
+
+function init() {
+  getUserData(["easyDashboard"]).then((userData) => {
+    if (
+      !(userData.easyDashboard && userData.easyDashboard.bookmarks.isSelected)
+    ) {
+      document.getElementById("container").append(setting.create());
+    } else {
+      const isSelectedNodeId = userData.easyDashboard.bookmarks.isSelected.id;
+
+      getSubtree(isSelectedNodeId).then((bkNodes) => {
+        setState1("bookmarks.bks", bkNodes[0]);
+        setState1("bookmarks.path", [bkNodes[0]]);
+        setState1("bookmarks.isSelected", isSelectedNodeId);
+        setState1("workspace.isSelected", isSelectedNodeId);
+        document.getElementById("container").append(navigator.create());
+        document.getElementById("container").append(content.create());
+      });
+    }
+  });
 }
-
 //register("workspace.isSelected", init); //make app crash
-await init();
+init();
