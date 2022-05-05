@@ -12,7 +12,6 @@
   },
   "permissions": ["storage", "tabs", "bookmarks"],
   "action": {
-    "default_popup": "popup.html",
     "default_icon": {
       "16": "/src/static/pinecone.png",
       "32": "/src/static/pinecone.png",

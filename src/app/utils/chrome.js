@@ -11,6 +11,9 @@ export async function getBookmarks(folder) {
   return xx[0];
 }
 
+export async function getSubtree(id) {
+  return await chrome.bookmarks.getSubTree(id);
+}
 export async function getBookmarksByID(nodeId) {
   let node = await chrome.bookmarks.get(nodeId);
   return node;
@@ -44,3 +47,23 @@ export const compareNodes = (a, b) => {
     return -1;
   }
 };
+//storage api
+export async function setUserData(obj) {
+  return await chrome.storage.local.set(obj);
+}
+
+export async function getUserData(key) {
+  return await chrome.storage.local.get(key);
+}
+
+/*
+const bk = {
+    children:[],
+    dateAdded:
+    dateGroupModified:
+    id:'558',
+    index:13,
+    parentId:'1',
+    title:'haha'
+}
+*/

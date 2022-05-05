@@ -41,7 +41,7 @@ const HEAD_STYLE = {
 
 const deleteBookmark = (details) => {
   removeBookmark(details).then((e) => {
-    bookmarkAdded();
+    bookmarkAdded(getState1("bookmarks.isSelected"));
     setState1("bookmarks.editBar.delete.deleting", null);
   });
 };

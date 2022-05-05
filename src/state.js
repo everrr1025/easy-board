@@ -1,5 +1,8 @@
-import { getBookmarks } from "../src/app/utils/chrome.js";
+import { getBookmarks, getSubtree } from "../src/app/utils/chrome.js";
 let state = {
+  workspace: {
+    isSelected: null,
+  },
   navigator: { isSelected: "bookmarks" },
   bookmarks: {
     bks: null,
@@ -31,6 +34,12 @@ let listener = {
 };
 
 let lis = {
+  workspace: {
+    listener: [],
+    isSelected: {
+      lisener: [],
+    },
+  },
   navigator: {
     listener: [],
     isSelected: {
@@ -110,12 +119,14 @@ export const getState1 = (key) => {
     return pre[cur];
   }, state);
   console.log(state);
-  return structuredClone(cbs);
+  return structuredClone(cbs); //keep state immutable
 };
 
+//each time adding/deleting bookmark, sych the latest bk tree with chrome
 export const bookmarkAdded = () => {
-  getBookmarks().then((nodes) => {
-    setState1("bookmarks.bks", nodes);
+  const wsId = getState1("workspace.isSelected");
+  getSubtree(wsId).then((nodes) => {
+    setState1("bookmarks.bks", nodes[0]);
     lis.bookmarks.bks.listener.forEach((cb) => {
       cb();
     });

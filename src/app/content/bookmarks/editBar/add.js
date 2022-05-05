@@ -15,7 +15,8 @@ import { Modal, Input, Button } from "../../../component/index.js";
 //action
 const addBookmark = (details) => {
   createBookmark(details).then((x) => {
-    bookmarkAdded();
+    const { parentId } = details;
+    bookmarkAdded(parentId);
     setState1("bookmarks.editBar.add", { active: false });
     setState1("bookmarks.editBar.current", null);
   });

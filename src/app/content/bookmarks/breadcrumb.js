@@ -68,7 +68,7 @@ const create = () => {
   return view;
 };
 
-register("bookmarks.isSelected", update);
+register("bookmarks.path", update);
 const breadcrumb = { create, update };
 
 export default breadcrumb;

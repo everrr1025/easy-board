@@ -18,7 +18,7 @@ const VIEW = {
 const CONTENT_STYLE = {
   //display: "flex",
   //flexDirection: "column",
-  width: "50%",
+  width: "500px",
   margin: "10% auto auto",
   border: "1px solid black",
   backgroundColor: "white",

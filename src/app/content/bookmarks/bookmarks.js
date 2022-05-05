@@ -77,12 +77,13 @@ function create() {
 
   let nodes;
 
-  if (isSelected) {
-    const bks = getState1("bookmarks.bks");
-    nodes = getChildren(bks, isSelected).children.sort(compareNodes);
+  const bks = getState1("bookmarks.bks");
+
+  const children = getChildren(bks, isSelected);
+  if (isSelected && children && children.length > 0) {
+    nodes = bks.children.sort(compareNodes);
   } else {
-    nodes = getState1("bookmarks.bks").children.sort(compareNodes);
-    setState1("bookmarks.isSelected", bkNodes.id);
+    nodes = children.children;
   }
 
   nodes.forEach((node) => {
@@ -119,10 +120,6 @@ function create() {
   return view;
 }
 
-let bkNodes = await getBookmarks();
-
-setState1("bookmarks.bks", bkNodes);
-setState1("bookmarks.path", [bkNodes]);
 register("bookmarks.bks", update);
 register("bookmarks.isSelected", update);
 register("bookmarks.editBar.edit.active", update);
