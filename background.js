@@ -11,7 +11,28 @@ chrome.tabs.onCreated.addListener(() => {
 });
 
 chrome.bookmarks.onCreated.addListener((id, bookmark) => {
-  chrome.runtime.sendMessage({ id, bookmark }, function (response) {
-    console.log(response);
-  });
+  chrome.runtime.sendMessage(
+    { id, bookmark, action: "create" },
+    function (response) {
+      console.log(response);
+    }
+  );
+});
+
+chrome.bookmarks.onRemoved.addListener((id, removeInfo) => {
+  chrome.runtime.sendMessage(
+    { id, removeInfo, action: "delete" },
+    function (response) {
+      console.log(response);
+    }
+  );
+});
+
+chrome.bookmarks.onChanged.addListener((id, changeInfo) => {
+  chrome.runtime.sendMessage(
+    { id, changeInfo, action: "change" },
+    function (response) {
+      console.log(response);
+    }
+  );
 });

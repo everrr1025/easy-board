@@ -14,14 +14,14 @@ const TOOL_STYLE = {
   padding: "0.3rem",
   cursor: "pointer",
   border: "1px solid black",
-  marginLeft: "0.3rem",
+  marginRight: "0.3rem",
 };
 
 const TOOL_STYLE_ACTIVE = {
   padding: "0.3rem",
   cursor: "pointer",
   border: "1px solid black",
-  marginLeft: "0.3rem",
+  marginRight: "0.3rem",
   backgroundColor: "black",
   color: "white",
 };
