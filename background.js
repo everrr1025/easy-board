@@ -36,3 +36,12 @@ chrome.bookmarks.onChanged.addListener((id, changeInfo) => {
     }
   );
 });
+
+chrome.bookmarks.onMoved.addListener((id, moveInfo) => {
+  chrome.runtime.sendMessage(
+    { id, moveInfo, action: "move" },
+    function (response) {
+      console.log(response);
+    }
+  );
+});

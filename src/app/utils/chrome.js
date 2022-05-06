@@ -84,6 +84,11 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
     case "change": {
       message = changeHandler(request);
+      break;
+    }
+    case "move": {
+      message = moveHandler(request);
+      break;
     }
   }
 
@@ -120,10 +125,24 @@ const deleteHandler = (request) => {
 
 const changeHandler = (request) => {
   const { id } = request;
-  debugger;
   const bks = getState1("bookmarks.bks");
   const changedBookmark = getChildren(bks, id);
   if (changedBookmark) {
+    bookmarkAdded();
+    return { farewell: "workspace bookmarks updated" };
+  } else {
+    return { farewell: "do nothing" };
+  }
+};
+
+const moveHandler = (request) => {
+  const { id, moveInfo } = request;
+  const { parentId, oldParentId } = moveInfo;
+  const bks = getState1("bookmarks.bks");
+  const moveIn = getChildren(bks, parentId) ? true : null;
+  const moveOut = getChildren(bks, oldParentId) ? true : null;
+  //check if the new parentId belongs to the workspace
+  if (moveIn || moveOut) {
     bookmarkAdded();
     return { farewell: "workspace bookmarks updated" };
   } else {
