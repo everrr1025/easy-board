@@ -26,3 +26,37 @@ export const getChildren = (bk, id) => {
   };
   return inner(bk, id);
 };
+
+export const getFolders = (bks) => {
+  const result = [];
+  let inner = (bks) => {
+    if (!bks.url) {
+      result.push({ id: bks.id, title: bks.title });
+    }
+    if (bks.children) {
+      for (const node of bks.children) {
+        inner(node);
+      }
+    }
+    return result;
+  };
+  return inner(bks);
+};
+
+export const getFullPath = (ob, id) => {
+  const paths = [];
+
+  const inner = (ob, id) => {
+    const current = getChildren(ob, id);
+    paths.push(current.title);
+
+    if (!current.parentId || current.parentId == 1) {
+      //return;
+    } else {
+      inner(ob, current.parentId);
+    }
+    return paths;
+  };
+
+  return inner(ob, id);
+};

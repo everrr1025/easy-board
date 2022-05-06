@@ -32,6 +32,11 @@ export async function updateBookmark(details) {
   return await chrome.bookmarks.update(id, { url, title });
 }
 
+export async function moveBookmark(details) {
+  const { id, selectedFolderId } = details;
+
+  return await chrome.bookmarks.move(id, { parentId: selectedFolderId });
+}
 export async function removeBookmark(details) {
   const { id } = details;
   return await chrome.bookmarks.remove(id);
@@ -141,7 +146,7 @@ const moveHandler = (request) => {
   const bks = getState1("bookmarks.bks");
   const moveIn = getChildren(bks, parentId) ? true : null;
   const moveOut = getChildren(bks, oldParentId) ? true : null;
-  //check if the new parentId belongs to the workspace
+  //check if the new parentId or old parentId belongs to the workspace
   if (moveIn || moveOut) {
     bookmarkAdded();
     return { farewell: "workspace bookmarks updated" };
