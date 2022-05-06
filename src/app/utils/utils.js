@@ -43,10 +43,14 @@ export const getFolders = (bks) => {
   return inner(bks);
 };
 
-export const getFullPath = (ob, id) => {
-  const paths = [];
+export const getFullPath = (ob, id, fuck) => {
+  let paths = [];
 
   const inner = (ob, id) => {
+    if (id == fuck) {
+      paths = [];
+      return;
+    }
     const current = getChildren(ob, id);
     paths.push(current.title);
 

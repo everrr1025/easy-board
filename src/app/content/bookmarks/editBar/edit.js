@@ -42,10 +42,14 @@ const content = () => {
   const folders = getFolders(bks);
   const options = [];
   for (const folder of folders) {
+    //current folder should be not an option
     if (folder.id != editing.id) {
-      const fullPath = getFullPath(bks, folder.id).reverse().join(" / ");
-
-      options.push({ value: folder.id, title: fullPath });
+      //neither subfolders of current folder
+      const fullPath = getFullPath(bks, folder.id, editing.id).reverse();
+      if (fullPath.length > 0) {
+        const x = fullPath.join(" / ");
+        options.push({ value: folder.id, title: x });
+      }
     }
   }
   const urlInput = new Input({
