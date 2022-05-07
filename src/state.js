@@ -126,10 +126,9 @@ export const getState1 = (key) => {
 export const bookmarkAdded = () => {
   const wsId = getState1("workspace.isSelected");
   getSubtree(wsId).then((nodes) => {
-    console.log(nodes);
     setState1("bookmarks.bks", nodes[0]);
-    lis.bookmarks.bks.listener.forEach((cb) => {
-      cb();
-    });
+    // lis.bookmarks.bks.listener.forEach((cb) => {
+    //   cb();
+    // });
   });
 };

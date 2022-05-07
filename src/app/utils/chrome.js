@@ -75,7 +75,11 @@ const bk = {
 }
 */
 //listen to chrome bookmark updated
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(async function (
+  request,
+  sender,
+  sendResponse
+) {
   const { action } = request;
   let message;
   switch (action) {
@@ -84,7 +88,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       break;
     }
     case "delete": {
-      message = deleteHandler(request);
+      message = await deleteHandler(request);
       break;
     }
     case "change": {
@@ -114,19 +118,26 @@ const createHandler = (request) => {
   }
 };
 
-const deleteHandler = (request) => {
+async function deleteHandler(request) {
   const { id } = request;
-
   const bks = getState1("bookmarks.bks");
-  const removedBookmark = getChildren(bks, id);
 
-  if (removedBookmark) {
-    bookmarkAdded();
-    return { farewell: "workspace bookmarks updated" };
+  //if workspace folder get deleted
+  if (id == bks.id) {
+    //clear workspace info in localStorage,and reload the app
+    await setUserData({ easyDashboard: "" });
+    window.location.reload();
   } else {
-    return { farewell: "do nothing" };
+    const removedBookmark = getChildren(bks, id);
+
+    if (removedBookmark) {
+      bookmarkAdded();
+      return { farewell: "workspace bookmarks updated" };
+    } else {
+      return { farewell: "do nothing" };
+    }
   }
-};
+}
 
 const changeHandler = (request) => {
   const { id } = request;
