@@ -10,16 +10,23 @@ const update = () => {};
 const content = () => {
   const _content = document.createElement("div");
 
-  const _workspace = new Input({ label: "Workspace" });
+  const _workspace = new Input({
+    label: "Workspace",
+    style: { marginTop: "1rem" },
+  });
 
   const _isSync = new Input({
     label: "Sycn with Chrome",
     type: "checkbox",
     labelFirst: true,
     checked: true,
+    style: { marginTop: "1rem" },
   }).create();
 
-  const _createButton = Button({ label: "create" });
+  const _createButton = Button({
+    label: "create",
+    style: { marginTop: "1rem" },
+  });
   _createButton.addEventListener("click", async (e) => {
     await onClickCreate(e, { name: _workspace.getValue(), isSync: true });
   });
