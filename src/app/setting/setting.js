@@ -36,7 +36,7 @@ const content = () => {
   _content.append(_createButton);
 
   return Modal({
-    title: "Setting",
+    title: "Create your workspace",
     content: _content,
     onClickOverlay: () => {
       return;

@@ -26,6 +26,11 @@ const FOLDER_STYLE = {
   padding: "0.5rem",
   margin: "0 1rem 1rem 0 ",
   cursor: "pointer",
+  minWidth: "1rem",
+  maxWidth: "8rem",
+  overflow: "hidden",
+  textAlign: "center",
+  textOverflow: "ellipsis",
 };
 
 const BOOKMARK_STYLE = {
@@ -34,6 +39,11 @@ const BOOKMARK_STYLE = {
   border: "1px solid black",
   padding: "0.5rem",
   margin: "0 1rem 1rem 0 ",
+  minWidth: "1rem",
+  maxWidth: "8rem",
+  overflow: "hidden",
+  textAlign: "center",
+  textOverflow: "ellipsis",
 };
 
 //actions

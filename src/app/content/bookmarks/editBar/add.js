@@ -64,9 +64,14 @@ const content = () => {
   _content.append(nameInput.create());
 
   const addButton = Button({ label: "add", style: { marginTop: "1rem" } });
+
   addButton.addEventListener("click", () => {
+    let url = urlInput.getValue();
+    if (!(url.startsWith("https://") || url.startsWith("http://"))) {
+      url = `http://${url}`;
+    }
     addBookmark({
-      url: isFolder ? "" : urlInput.getValue(),
+      url: isFolder ? "" : url,
       title: nameInput.getValue(),
       parentId: getState1("bookmarks.isSelected"),
     });

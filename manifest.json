@@ -6,12 +6,13 @@
   "background": {
     "service_worker": "background.js"
   },
-  "options_page": "options.html",
+
   "chrome_url_overrides": {
     "newtab": "/src/pinecone.html"
   },
-  "permissions": ["storage", "tabs", "bookmarks"],
+  "permissions": ["storage", "tabs", "bookmarks", "activeTab", "scripting"],
   "action": {
+    "default_popup": "popup.html",
     "default_icon": {
       "16": "/src/static/pinecone.png",
       "32": "/src/static/pinecone.png",
