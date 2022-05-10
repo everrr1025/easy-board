@@ -1,5 +1,5 @@
 import { getChildren } from "./utils.js";
-import { getState1, bookmarkAdded } from "../../state.js";
+import { setState1, getState1, bookmarkAdded } from "../../state.js";
 /**
  * module to encapsulate chrome extension API
  */
@@ -121,6 +121,7 @@ const createHandler = (request) => {
 async function deleteHandler(request) {
   const { id } = request;
   const bks = getState1("bookmarks.bks");
+  const isSelectedNodeId = getState1("bookmarks.isSelected");
 
   //if workspace folder get deleted
   if (id == bks.id) {
@@ -131,6 +132,13 @@ async function deleteHandler(request) {
     const removedBookmark = getChildren(bks, id);
 
     if (removedBookmark) {
+      if (
+        id == isSelectedNodeId ||
+        getChildren(getChildren(bks, id), isSelectedNodeId)
+      ) {
+        //if the current selected folder or its parent is deleted, then render the bookmars and path as root
+        setState1("bookmarks.isSelected", bks.id);
+      }
       bookmarkAdded();
       return { farewell: "workspace bookmarks updated" };
     } else {

@@ -14,7 +14,7 @@ const CHECKBOX_STYLE = {
 };
 const TEXT_STYLE = {
   marginTop: "0.25rem",
-  height: "1.5rem",
+  height: "2rem",
 };
 
 const createCheckbox = (details) => {

@@ -8,7 +8,7 @@ const STYLE = {
 
 const SELECT_STYLE = {
   marginTop: "0.25rem",
-  height: "1.5rem",
+  height: "2rem",
 };
 
 function Select(details) {

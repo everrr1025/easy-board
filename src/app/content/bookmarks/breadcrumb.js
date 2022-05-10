@@ -1,12 +1,19 @@
 import { getState1, setState1, register } from "../../../state.js";
-import { styleHyphenFormat } from "../../utils/utils.js";
+import { styleHyphenFormat, getFullPathNode } from "../../utils/utils.js";
 
 /**
  * breadcrumb component
  */
 
 export function toPath(node) {
-  return getState1("bookmarks.path");
+  const bks = getState1("bookmarks.bks");
+  const currentNodeId = getState1("bookmarks.isSelected");
+
+  const paths_child_parent = getFullPathNode(bks, currentNodeId);
+
+  const paths = paths_child_parent.reverse();
+
+  return paths;
 }
 
 const VIEW_STYLE = {
@@ -68,7 +75,7 @@ const create = () => {
   return view;
 };
 
-register("bookmarks.path", update);
+register("bookmarks.bks", update);
 const breadcrumb = { create, update };
 
 export default breadcrumb;

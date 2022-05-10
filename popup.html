@@ -14,18 +14,11 @@
         margin: 10px;
       }
       .menu {
-        display: flex;
+        display: none;
         flex-direction: column;
         width: 250px;
       }
 
-      .menu > div {
-        padding: 0px;
-      }
-      .menu > div:hover {
-        /* background-color: #f1f2f3; */
-        /* background-color: #dcdcdc; */
-      }
       input {
         width: 100%;
         box-sizing: border-box;
@@ -34,11 +27,12 @@
 
       select {
         width: 100%;
+
         border: 1px solid #dcdcdc;
 
         box-sizing: border-box;
       }
-      #add {
+      .btn {
         text-align: center;
         width: 100%;
         box-sizing: border-box;
@@ -47,17 +41,24 @@
         cursor: pointer;
         padding: 0.5rem 0;
         margin-top: 1rem;
+        font-size: 14px;
       }
-      #add:hover {
+      .btn:hover {
         background-color: #dcdcdc;
       }
     </style>
   </head>
   <body>
-    <div class="menu">
+    <div class="menu" id="createView">
+      <label style="font-size: 14px; text-align: center"
+        >Create your workspace first</label
+      >
+      <div id="create" class="btn">Create</div>
+    </div>
+    <div class="menu" id="addView">
       <div id="name"></div>
       <div id="folder"></div>
-      <div id="add">Add</div>
+      <div id="add" class="btn">Add111</div>
     </div>
     <script type="module" src="popup.js"></script>
   </body>

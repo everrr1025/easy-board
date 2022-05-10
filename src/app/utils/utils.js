@@ -64,3 +64,21 @@ export const getFullPath = (ob, id, exlude) => {
 
   return inner(ob, id);
 };
+export const getFullPathNode = (ob, id) => {
+  let paths = [];
+
+  const inner = (ob, id) => {
+    const current = getChildren(ob, id);
+    if (!current) {
+      return paths;
+    }
+
+    paths.push(current);
+    if (current.parentId && current.parentId != 1) {
+      inner(ob, current.parentId);
+    }
+    return paths;
+  };
+
+  return inner(ob, id);
+};
