@@ -31,6 +31,7 @@ const FOLDER_STYLE = {
   overflow: "hidden",
   textAlign: "center",
   textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
 };
 
 const BOOKMARK_STYLE = {
@@ -44,6 +45,7 @@ const BOOKMARK_STYLE = {
   overflow: "hidden",
   textAlign: "center",
   textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
 };
 
 //actions

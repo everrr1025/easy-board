@@ -1,9 +1,63 @@
 <!DOCTYPE html>
 <html>
-  <head> </head>
+  <head>
+    <style>
+      /* html {
+         box-sizing: border-box;
+      }
+      *,
+      *:before,
+      *:after {
+        box-sizing: inherit;
+      } */
+      body {
+        margin: 10px;
+      }
+      .menu {
+        display: flex;
+        flex-direction: column;
+        width: 250px;
+      }
+
+      .menu > div {
+        padding: 0px;
+      }
+      .menu > div:hover {
+        /* background-color: #f1f2f3; */
+        /* background-color: #dcdcdc; */
+      }
+      input {
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #dcdcdc;
+      }
+
+      select {
+        width: 100%;
+        border: 1px solid #dcdcdc;
+
+        box-sizing: border-box;
+      }
+      #add {
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+        vertical-align: middle;
+        background-color: #eeeeee;
+        cursor: pointer;
+        padding: 0.5rem 0;
+        margin-top: 1rem;
+      }
+      #add:hover {
+        background-color: #dcdcdc;
+      }
+    </style>
+  </head>
   <body>
-    <div>
-      <button id="add">Add</button>
+    <div class="menu">
+      <div id="name"></div>
+      <div id="folder"></div>
+      <div id="add">Add</div>
     </div>
     <script type="module" src="popup.js"></script>
   </body>
