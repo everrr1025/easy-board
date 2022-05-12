@@ -63,17 +63,6 @@ export async function getUserData(key) {
   return await chrome.storage.local.get(key);
 }
 
-/*
-const bk = {
-    children:[],
-    dateAdded:
-    dateGroupModified:
-    id:'558',
-    index:13,
-    parentId:'1',
-    title:'haha'
-}
-*/
 //listen to chrome bookmark updated
 chrome.runtime.onMessage.addListener(async function (
   request,

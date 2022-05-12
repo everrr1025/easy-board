@@ -1,0 +1,20 @@
+{
+  "name": "pinecone",
+  "version": "1.0.0",
+  "description": "a chrome extension to override new tabs",
+  "main": "background.js",
+  "type": "module",
+  "scripts": {
+    "test": "node ./src/app/utils/workspace.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/everrr1025/easy-dashboard.git"
+  },
+  "author": "everrr",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/everrr1025/easy-dashboard/issues"
+  },
+  "homepage": "https://github.com/everrr1025/easy-dashboard#readme"
+}
