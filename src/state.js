@@ -118,7 +118,7 @@ export const getState1 = (key) => {
   const cbs = parts.reduce((pre, cur) => {
     return pre[cur];
   }, state);
-  //console.log(state);
+  console.log(state);
   return structuredClone(cbs); //keep state immutable
 };
 

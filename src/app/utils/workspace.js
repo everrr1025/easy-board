@@ -15,7 +15,7 @@ async function createWorkspace({ name, isSync }) {
     //create the root node
     const root = createNode({ title });
     return await setUserData({
-      KEY: { bookmarks: { isSeleted: root, nodes: root } },
+      KEY: { bookmarks: { isSelected: root, nodes: root } },
     });
   }
 }

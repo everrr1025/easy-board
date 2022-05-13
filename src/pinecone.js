@@ -7,7 +7,7 @@ import {
   getSubtree,
   getBookmarks,
 } from "./app/utils/chrome.js";
-import { setState1, register } from "../src/state.js";
+import { setState1 } from "../src/state.js";
 
 function init() {
   getUserData(["easyDashboard"]).then((userData) => {
@@ -29,5 +29,5 @@ function init() {
     }
   });
 }
-//register("workspace.isSelected", init); //make app crash
+
 init();

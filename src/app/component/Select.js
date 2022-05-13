@@ -27,6 +27,7 @@ function Select(details) {
     this.select = _select;
 
     _label.innerText = label;
+
     for (const option of options) {
       const { value, title } = option;
       const _option = document.createElement("option");

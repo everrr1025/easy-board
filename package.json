@@ -5,7 +5,7 @@
   "main": "background.js",
   "type": "module",
   "scripts": {
-    "test": "node ./src/app/utils/workspace.test.js"
+    "test": "node ./test/test.js"
   },
   "repository": {
     "type": "git",
