@@ -1,6 +1,7 @@
 import { getState1, register, setState1 } from "../../../state.js";
 import { getBookmarks, compareNodes } from "../../utils/chrome.js";
 import { styleHyphenFormat, getChildren } from "../../utils/utils.js";
+import { getTags } from "../../utils/tag.js";
 import breadcrumb from "./breadcrumb.js";
 import editBar from "./editBar/editBar.js";
 import edit from "../bookmarks/editBar/edit.js";
@@ -50,7 +51,7 @@ const BOOKMARK_STYLE = {
 
 //actions
 
-const onClickBookmark = (event, bookmark, current) => {
+async function onClickBookmark(event, bookmark, current) {
   if (current == null) {
     if (bookmark.url) {
       window.open(bookmark.url, "_blank");
@@ -63,11 +64,13 @@ const onClickBookmark = (event, bookmark, current) => {
     return;
   }
   if (current == "edit") {
+    debugger;
+    const tags = await getTags(bookmark.id);
     setState1("bookmarks.editBar.edit.editing", bookmark);
   } else if (current === "delete") {
     setState1("bookmarks.editBar.delete.deleting", bookmark);
   }
-};
+}
 const update = () => {
   if (document.getElementById("bookmarks")) {
     document.getElementById("bookmarks").innerHTML = "";
@@ -102,7 +105,7 @@ function create() {
     const bookmarkDiv = document.createElement("div");
     bookmarkDiv.innerText = node.title;
     const isFolder = !node.url ? true : false;
-    bookmarkDiv.addEventListener("click", (e) => {
+    bookmarkDiv.addEventListener("click", async (e) => {
       onClickBookmark(e, node, getState1("bookmarks.editBar.current"));
     });
     Object.assign(

@@ -1,2 +1,3 @@
-console.log(`-------------- test start ---------------`);
-console.log(`-------------- test end ---------------`);
+import { tagTest } from "./tag.test.js";
+
+tagTest();

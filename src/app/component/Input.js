@@ -64,6 +64,7 @@ function Input(details) {
       disabled,
       style,
       onClick,
+      onInput,
       checked,
       labelFirst,
     } = details;
@@ -89,6 +90,10 @@ function Input(details) {
       _input.addEventListener("change", (e) => {
         this.value = e.target.value;
       });
+      onInput &&
+        _input.addEventListener("input", (e) => {
+          onInput(e);
+        });
       view.append(_label);
       view.append(_input);
       Object.assign(_input.style, styleHyphenFormat(TEXT_STYLE));

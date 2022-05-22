@@ -21,7 +21,7 @@ export async function getBookmarksByID(nodeId) {
   return node;
 }
 
-export async function createBookmark(details, cb) {
+export async function createBookmark(details) {
   let node = await chrome.bookmarks.create(details);
   return node;
 }

@@ -1,4 +1,5 @@
 import { styleHyphenFormat } from "../../../utils/utils.js";
+import { extractTags, extractTitle, saveTags } from "../../../utils/tag.js";
 import { createBookmark } from "../../../utils/chrome.js";
 import {
   getState1,
@@ -8,23 +9,34 @@ import {
 } from "../../../../state.js";
 
 import { Modal, Input, Button } from "../../../component/index.js";
+import tag from "../tag.js";
 /**
  * add component in edit bar
  */
 
 //action
-const addBookmark = (details) => {
-  createBookmark(details).then((x) => {
-    const { parentId } = details;
-    bookmarkAdded(parentId);
-    setState1("bookmarks.editBar.add", { active: false });
-    setState1("bookmarks.editBar.current", null);
+async function addBookmark(details) {
+  const { parentId, title, url } = details;
+  const createdBookmark = await createBookmark({
+    parentId,
+    url,
+    title: extractTitle(title),
   });
-};
+  bookmarkAdded(parentId);
 
+  url && (await saveTags(createdBookmark.id, extractTags(title)));
+  setState1("bookmarks.editBar.add", { active: false });
+  setState1("bookmarks.editBar.current", null);
+}
+
+const onBookmarkNameInput = (e) => {
+  const tags = extractTags(e.target.value);
+  setState1("bookmarks.editBar.tags", tags);
+};
 const closeModal = (e) => {
   setState1("bookmarks.editBar.add", { active: false });
   setState1("bookmarks.editBar.current", null);
+  setState1("bookmarks.editBar.tags", null);
 };
 
 //view
@@ -47,6 +59,9 @@ const content = () => {
     type: "text",
     label: "Bookmark Name",
     style: { marginTop: "1rem" },
+    onInput: (e) => {
+      !isFolder && onBookmarkNameInput(e);
+    },
   });
   const isFolderCheck = new Input({
     type: "checkbox",
@@ -63,14 +78,17 @@ const content = () => {
   }
   _content.append(nameInput.create());
 
+  if (!isFolder) {
+    _content.append(tag.create());
+  }
   const addButton = Button({ label: "add", style: { marginTop: "1rem" } });
 
-  addButton.addEventListener("click", () => {
+  addButton.addEventListener("click", async () => {
     let url = urlInput.getValue();
     if (!(url.startsWith("https://") || url.startsWith("http://"))) {
       url = `http://${url}`;
     }
-    addBookmark({
+    await addBookmark({
       url: isFolder ? "" : url,
       title: nameInput.getValue(),
       parentId: getState1("bookmarks.isSelected"),

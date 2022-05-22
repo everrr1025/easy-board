@@ -6,17 +6,26 @@ async function createWorkspace({ name, isSync }) {
   if (isSync) {
     const ws = await createBookmark({ title: name, parentId: "1" });
     if (ws) {
-      const a = await setUserData({
-        easyDashboard: { bookmarks: { isSelected: ws } },
+      await setUserData({
+        easyDashboard: {
+          bookmarks: { isSelected: ws },
+        },
+      });
+      await setUserData({
+        tags: JSON.stringify([...new Map()]),
+      });
+      await setUserData({
+        bookmarkTags: JSON.stringify([...new Map()]),
       });
     }
+
     return ws;
   } else {
     //create the root node
-    const root = createNode({ title });
-    return await setUserData({
-      KEY: { bookmarks: { isSelected: root, nodes: root } },
-    });
+    // const root = createNode({ title });
+    // return await setUserData({
+    //   KEY: { bookmarks: { isSelected: root, nodes: root } },
+    // });
   }
 }
 
