@@ -27,7 +27,7 @@ const TOOL_STYLE_ACTIVE = {
 };
 //actions
 const onAddClick = (e, popupOn) => {
-  setState1("bookmarks.editBar.add", { active: !popupOn });
+  setState1("bookmarks.editBar.add.active", !popupOn);
   setState1("bookmarks.editBar.current", popupOn ? null : "add");
 };
 const onEditClick = (e, editOn) => {
@@ -45,21 +45,15 @@ const createEditTool = () => {
   return view;
 };
 
-const POPUP_STYLE = {
-  display: "block",
-};
-const POPUP_STYLE_HIDE = {
-  display: "none",
-};
-const popup = (display) => {
-  const view = document.createElement("div");
-  view.append(add.create());
-  Object.assign(
-    view.style,
-    styleHyphenFormat(display ? POPUP_STYLE : POPUP_STYLE_HIDE)
-  );
-  return view;
-};
+// const popup = (display) => {
+//   const view = document.createElement("div");
+//   view.append(add.create());
+//   Object.assign(
+//     view.style,
+//     styleHyphenFormat(display ? POPUP_STYLE : POPUP_STYLE_HIDE)
+//   );
+//   return view;
+// };
 const update = () => {
   if (document.getElementById("edit-bar")) {
     document.getElementById("edit-bar").innerText = "";
@@ -108,7 +102,7 @@ const create = () => {
 
     view.append(toolView);
   });
-  view.append(popup(getState1("bookmarks.editBar.add.active")));
+  //view.append(popup(getState1("bookmarks.editBar.add.active")));
   Object.assign(view.style, styleHyphenFormat(VIEW_STYLE));
   return view;
 };

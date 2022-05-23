@@ -63,6 +63,9 @@ let lis = {
         listener: [],
       },
       add: {
+        active: {
+          listener: [],
+        },
         isFolder: {
           listener: [],
         },

@@ -25,7 +25,7 @@ async function addBookmark(details) {
   bookmarkAdded(parentId);
 
   url && (await saveTags(createdBookmark.id, extractTags(title)));
-  setState1("bookmarks.editBar.add", { active: false });
+  setState1("bookmarks.editBar.add.active", false);
   setState1("bookmarks.editBar.current", null);
 }
 
@@ -34,7 +34,7 @@ const onBookmarkNameInput = (e) => {
   setState1("bookmarks.editBar.tags", tags);
 };
 const closeModal = (e) => {
-  setState1("bookmarks.editBar.add", { active: false });
+  setState1("bookmarks.editBar.add.active", false);
   setState1("bookmarks.editBar.current", null);
   setState1("bookmarks.editBar.tags", null);
 };
@@ -42,7 +42,7 @@ const closeModal = (e) => {
 //view
 
 const update = () => {
-  document.getElementById("add-modal-container").innerHTML = "";
+  document.getElementById(ID).innerHTML = "";
   create();
 };
 const content = () => {
@@ -112,20 +112,20 @@ const content = () => {
     },
   });
 };
-const create = () => {
-  let view;
-  if (document.getElementById("add-modal-container")) {
-    view = document.getElementById("add-modal-container");
-  } else {
-    view = document.createElement("div");
-    view.id = "add-modal-container";
+
+let ID;
+const create = (display) => {
+  let popup;
+  if (!(popup = document.getElementById(ID))) {
+    popup = document.createElement("div");
+    popup.id = ID = "add-modal-wrapper";
   }
-
-  view.append(content());
-
-  return view;
+  if (getState1("bookmarks.editBar.add.active")) {
+    popup.append(content());
+  }
+  return popup;
 };
-
+register("bookmarks.editBar.add.active", update);
 register("bookmarks.editBar.add.isFolder", update);
 const add = { create };
 

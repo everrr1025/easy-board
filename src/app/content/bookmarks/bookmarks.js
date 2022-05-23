@@ -6,6 +6,7 @@ import breadcrumb from "./breadcrumb.js";
 import editBar from "./editBar/editBar.js";
 import edit from "../bookmarks/editBar/edit.js";
 import del from "../bookmarks/editBar/del.js";
+import add from "../bookmarks/editBar/add.js";
 
 /*
  * component bookmarks
@@ -128,6 +129,7 @@ function create() {
 
   view.append(breadcrumb.create());
   view.append(bkView);
+  view.append(add.create());
   view.append(edit.create());
   view.append(del.create());
   view.append(editBar.create());
