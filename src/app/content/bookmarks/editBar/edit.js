@@ -7,6 +7,7 @@ import {
 } from "../../../../state.js";
 import { updateBookmark, moveBookmark } from "../../../utils/chrome.js";
 import { getFolders, getFullPath } from "../../../utils/utils.js";
+import tag from "../tag.js";
 
 /**
  * edit window
@@ -28,6 +29,7 @@ async function onEditSaveClick(details) {
 
 const closeEditModal = (e) => {
   setState1("bookmarks.editBar.edit.editing", null);
+  setState1("bookmarks.editBar.tags", null);
 };
 
 let ID;
@@ -83,6 +85,7 @@ const content = () => {
     _content.append(urlInput.create());
   }
   _content.append(nameInput.create());
+  _content.append(tag.create());
   _content.append(selectFolder.create());
   _content.append(editButton);
   return Modal({

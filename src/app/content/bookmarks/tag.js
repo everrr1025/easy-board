@@ -12,7 +12,9 @@ const TAG_STYLE = {
 };
 
 const update = () => {
-  document.getElementById("tab-bar").innerHTML = "";
+  if (document.getElementById("tab-bar")) {
+    document.getElementById("tab-bar").innerHTML = "";
+  }
   create();
 };
 const create = () => {
@@ -23,12 +25,14 @@ const create = () => {
   if (!(tagBar = document.getElementById(TAG_BAR_ID))) {
     tagBar = document.createElement("div");
     tagBar.id = TAG_BAR_ID;
+  } else {
+    tagBar.innerHTML = "";
   }
 
   if (tags && tags.length > 0) {
     for (const tag of tags) {
       const tagLabel = document.createElement("label");
-      tagLabel.append(document.createTextNode(tag));
+      tagLabel.append(document.createTextNode(tag.title));
       Object.assign(tagLabel.style, styleHyphenFormat(TAG_STYLE));
       tagBar.append(tagLabel);
     }

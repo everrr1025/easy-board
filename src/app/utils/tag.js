@@ -14,7 +14,11 @@ export const extractTags = (bookmarkName) => {
   let tags = [];
   const words = bookmarkName.split("##");
   words.splice(0, 1); //skip the real bookmark name
-  tags = words.filter((tag) => tag).map((tag) => tag.trim());
+  tags = words
+    .filter((tag) => tag)
+    .map((tag) => {
+      return { title: tag.trim() };
+    });
   return tags;
 };
 
