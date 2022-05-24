@@ -1,6 +1,5 @@
 import { getState1, setState1, register } from "../../../../state.js";
 import { styleHyphenFormat } from "../../../utils/utils.js";
-import add from "../editBar/add.js";
 /**
  * edit bar
  */
@@ -102,7 +101,6 @@ const create = () => {
 
     view.append(toolView);
   });
-  //view.append(popup(getState1("bookmarks.editBar.add.active")));
   Object.assign(view.style, styleHyphenFormat(VIEW_STYLE));
   return view;
 };

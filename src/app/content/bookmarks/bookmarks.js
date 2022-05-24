@@ -65,8 +65,10 @@ async function onClickBookmark(event, bookmark, current) {
     return;
   }
   if (current == "edit") {
-    const tags = await getTags(bookmark.id);
-    setState1("bookmarks.editBar.tags", tags);
+    if (bookmark.url) {
+      const tags = await getTags(bookmark.id);
+      setState1("bookmarks.editBar.tags", tags);
+    }
     setState1("bookmarks.editBar.edit.editing", bookmark);
   } else if (current === "delete") {
     setState1("bookmarks.editBar.delete.deleting", bookmark);

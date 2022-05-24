@@ -30,11 +30,11 @@ export const extractTitle = (bookmarkName) => {
 export async function saveTags(bookmarkId, tags) {
   const tagsToUpdate = [];
   for (const tag of tags) {
-    const tagObj = createTag({ title: tag });
+    const tagObj = createTag(tag);
     tagsToUpdate.push(tagObj);
   }
   await updateTagsInStorage(tagsToUpdate);
-  await updateBookmarksInStorage(bookmarkId, tagsToUpdate);
+  await addBookmarksWithTagsInStorage(bookmarkId, tagsToUpdate);
 }
 
 export async function getTags(bookmarkId) {
@@ -52,10 +52,20 @@ async function updateTagsInStorage(tags) {
   }
   return await setUserData({ tags: JSON.stringify([...tagsMap]) });
 }
-async function updateBookmarksInStorage(bookmarkId, tags) {
+async function addBookmarksWithTagsInStorage(bookmarkId, tags) {
   const storage = await getUserData(["bookmarkTags"]); //Map
   const bookmarkTagsMap = new Map(JSON.parse(storage.bookmarkTags));
   bookmarkTagsMap.set(bookmarkId, tags);
+
+  return await setUserData({
+    bookmarkTags: JSON.stringify([...bookmarkTagsMap]),
+  });
+}
+
+export async function removeBookmarksWithTagsInStorage(bookmarkId, tags) {
+  const storage = await getUserData(["bookmarkTags"]); //Map
+  const bookmarkTagsMap = new Map(JSON.parse(storage.bookmarkTags));
+  bookmarkTagsMap.delete(bookmarkId);
 
   return await setUserData({
     bookmarkTags: JSON.stringify([...bookmarkTagsMap]),

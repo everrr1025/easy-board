@@ -85,7 +85,9 @@ const content = () => {
     _content.append(urlInput.create());
   }
   _content.append(nameInput.create());
-  _content.append(tag.create());
+  if (editing.url) {
+    _content.append(tag.create());
+  }
   _content.append(selectFolder.create());
   _content.append(editButton);
   return Modal({

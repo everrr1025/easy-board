@@ -7,6 +7,7 @@ import {
   bookmarkAdded,
 } from "../../../../state.js";
 import { removeBookmark } from "../../../utils/chrome.js";
+import { removeBookmarksWithTagsInStorage } from "../../../utils/tag.js";
 /**
  * edit window
  */
@@ -39,12 +40,12 @@ const HEAD_STYLE = {
   fontSize: "14px",
 };
 
-const deleteBookmark = (details) => {
-  removeBookmark(details).then((e) => {
-    bookmarkAdded(getState1("bookmarks.isSelected"));
-    setState1("bookmarks.editBar.delete.deleting", null);
-  });
-};
+async function deleteBookmark(details) {
+  await removeBookmark(details);
+  await removeBookmarksWithTagsInStorage(details.id);
+  bookmarkAdded(getState1("bookmarks.isSelected"));
+  setState1("bookmarks.editBar.delete.deleting", null);
+}
 const closeEditModal = (e) => {
   if (e.target.id == "delete-modal")
     setState1("bookmarks.editBar.delete.deleting", null);
@@ -101,8 +102,8 @@ const content = () => {
 
   delBn.style.cursor = "pointer";
   delBn.style.border = "1px solid black";
-  delBn.addEventListener("click", () => {
-    deleteBookmark({
+  delBn.addEventListener("click", async () => {
+    await deleteBookmark({
       id: deleting.id,
     });
   });
