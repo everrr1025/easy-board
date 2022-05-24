@@ -40,6 +40,7 @@ const update = () => {
 
 const content = () => {
   const editing = getState1("bookmarks.editBar.edit.editing");
+  const tags = getState1("bookmarks.editBar.tags");
   const bks = getState1("bookmarks.bks");
   const folders = getFolders(bks);
   const options = [];
@@ -59,9 +60,14 @@ const content = () => {
     value: editing.url,
     style: { marginTop: "1rem" },
   });
+  const nameWithTags = editing.url
+    ? tags.reduce((previous, current) => {
+        return previous + "##" + current.title;
+      }, editing.title)
+    : editing.title;
   const nameInput = new Input({
     label: "Bookmark Name",
-    value: editing.title,
+    value: nameWithTags,
     style: { marginTop: "1rem" },
   });
 
