@@ -1,4 +1,5 @@
 import { Input, Modal, Button, Select } from "../../../component/index.js";
+import { extractTags, extractTitle, saveTags } from "../../../utils/tag.js";
 import {
   register,
   getState1,
@@ -17,16 +18,20 @@ async function onEditSaveClick(details) {
   const { editing, title, url, selectedFolderId } = details;
 
   if (editing.title != title || editing.url !== url) {
-    await updateBookmark({ id: editing.id, url, title });
+    await updateBookmark({ id: editing.id, url, title: extractTitle(title) });
   }
   if (editing.parentId != selectedFolderId) {
     await moveBookmark({ id: editing.id, selectedFolderId });
   }
 
   bookmarkAdded();
+  url && (await saveTags(editing.id, extractTags(title)));
   setState1("bookmarks.editBar.edit.editing", null);
 }
-
+const onBookmarkNameInput = (e) => {
+  const tags = extractTags(e.target.value);
+  setState1("bookmarks.editBar.tags", tags);
+};
 const closeEditModal = (e) => {
   setState1("bookmarks.editBar.edit.editing", null);
   setState1("bookmarks.editBar.tags", null);
@@ -69,6 +74,9 @@ const content = () => {
     label: "Bookmark Name",
     value: nameWithTags,
     style: { marginTop: "1rem" },
+    onInput: (e) => {
+      editing.url && onBookmarkNameInput(e);
+    },
   });
 
   const selectFolder = new Select({
