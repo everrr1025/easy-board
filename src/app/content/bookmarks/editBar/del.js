@@ -7,7 +7,7 @@ import {
   bookmarkAdded,
 } from "../../../../state.js";
 import { removeBookmark } from "../../../utils/chrome.js";
-import { removeBookmarksWithTagsInStorage } from "../../../utils/tag.js";
+import { deleteTags } from "../../../utils/tag.js";
 /**
  * edit window
  */
@@ -42,7 +42,7 @@ const HEAD_STYLE = {
 
 async function deleteBookmark(details) {
   await removeBookmark(details);
-  await removeBookmarksWithTagsInStorage(details.id);
+  await deleteTags(details.id);
   bookmarkAdded(getState1("bookmarks.isSelected"));
   setState1("bookmarks.editBar.delete.deleting", null);
 }

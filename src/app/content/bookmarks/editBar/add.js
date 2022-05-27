@@ -24,9 +24,8 @@ async function addBookmark(details) {
   });
   bookmarkAdded(parentId);
 
-  url && (await saveTags(createdBookmark.id, extractTags(title)));
-  setState1("bookmarks.editBar.add.active", false);
-  setState1("bookmarks.editBar.current", null);
+  url && (await saveTags(createdBookmark.id, extractTags(title), "add"));
+  closeModal();
 }
 
 const onBookmarkNameInput = (e) => {

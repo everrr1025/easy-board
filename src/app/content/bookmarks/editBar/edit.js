@@ -25,7 +25,7 @@ async function onEditSaveClick(details) {
   }
 
   bookmarkAdded();
-  url && (await saveTags(editing.id, extractTags(title)));
+  url && (await saveTags(editing.id, extractTags(title), "edit"));
   setState1("bookmarks.editBar.edit.editing", null);
 }
 const onBookmarkNameInput = (e) => {
