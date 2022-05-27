@@ -1,13 +1,13 @@
 import { getState1, register, setState1 } from "../../state.js";
 import { styleHyphenFormat } from "../utils/utils.js";
-import content from "../content/content.js";
+import { getUserData } from "../utils/chrome.js";
 
 /**
  * navigator component
  */
 
 const NAVIGATOR = "navigation";
-const TABS_CATEGORY = ["bookmarks", "tabs", "notes"];
+const TABS_CATEGORY = ["bookmarks", "tags"];
 
 //navi style
 const NAVI_STYLE = {
@@ -35,9 +35,13 @@ const TAB_STYLE_SELECTED = {
 };
 
 //actions
-const onTabClick = (event, tab) => {
+async function onTabClick(event, tab) {
+  if (tab === "tags") {
+    const storage = await getUserData(["tags"]);
+    setState1("tags.tags", new Map(JSON.parse(storage.tags)));
+  }
   setState1("navigator.isSelected", tab);
-};
+}
 
 const updateView = () => {
   document.getElementById("navigator").innerHTML = "";
@@ -58,8 +62,9 @@ const create = () => {
     const naviTab = document.createElement("div");
     naviTab.dataset.category = category;
     naviTab.innerText = category;
-    naviTab.addEventListener("click", (e) =>
-      onTabClick(e, naviTab.dataset.category)
+    naviTab.addEventListener(
+      "click",
+      async (e) => await onTabClick(e, naviTab.dataset.category)
     );
 
     Object.assign(

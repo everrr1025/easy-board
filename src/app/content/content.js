@@ -1,8 +1,8 @@
 import { getState1, register } from "../../state.js";
 import { styleHyphenFormat } from "../utils/utils.js";
 import bookmarks from "./bookmarks/bookmarks.js";
-/**
- * content compoent
+import tags from "./tags/tags.js";
+/* content compoent
  *
  * view to hold the content of bookmarks,tabs,etc.
  */
@@ -30,6 +30,9 @@ function create() {
 
   if (isSelected === "bookmarks") {
     let xx = bookmarks.create();
+    view.append(xx);
+  } else if (isSelected === "tags") {
+    let xx = tags.create();
     view.append(xx);
   }
 

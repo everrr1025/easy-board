@@ -3,6 +3,7 @@ let state = {
   workspace: {
     isSelected: null,
   },
+  tags: { tags: null },
   navigator: { isSelected: "bookmarks" },
   bookmarks: {
     bks: null,
@@ -38,6 +39,12 @@ let lis = {
   workspace: {
     listener: [],
     isSelected: {
+      listener: [],
+    },
+  },
+  tags: {
+    listener: [],
+    tags: {
       listener: [],
     },
   },
