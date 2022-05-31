@@ -9,7 +9,7 @@ const STYLE = {
 const TAG_STYLE = {
   border: "1px solid red",
   padding: "5px",
-  margin: "0 10px 10px 0",
+  margin: "10px 10px 0 0",
   display: "inline-block",
 };
 
