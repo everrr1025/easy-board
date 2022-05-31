@@ -5,6 +5,7 @@ import {
 } from "./src/app/utils/chrome.js";
 import { getFolders, getFullPath } from "./src/app/utils/utils.js";
 import { Select, Input } from "./src/app/component/index.js";
+import { extractTags, extractTitle, saveTags } from "./src/app/utils/tag.js";
 
 //check if workspace has been created.
 let userData = await getUserData(["easyDashboard"]);
@@ -48,7 +49,6 @@ if (!userData.easyDashboard || !userData.easyDashboard.bookmarks) {
 
   const selectFolder = new Select({
     label: "Folder",
-
     selected: "hongda",
     options: options,
     style: { fontSize: "14px" },
@@ -57,11 +57,16 @@ if (!userData.easyDashboard || !userData.easyDashboard.bookmarks) {
 
   //onclick add
   document.getElementById("add").addEventListener("click", async () => {
-    await createBookmark({
+    const createdBookmark = await createBookmark({
       url: tab.url,
-      title: nameInput.getValue(),
+      title: extractTitle(nameInput.getValue()),
       parentId: selectFolder.getValue(),
     });
+    await saveTags(
+      createdBookmark.id,
+      extractTags(nameInput.getValue()),
+      "add"
+    );
     window.close();
   });
 }
