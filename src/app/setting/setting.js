@@ -16,7 +16,7 @@ const content = () => {
   });
 
   const _isSync = new Input({
-    label: "Sycn with Chrome",
+    label: "Sync with Chrome",
     type: "checkbox",
     labelFirst: true,
     checked: true,

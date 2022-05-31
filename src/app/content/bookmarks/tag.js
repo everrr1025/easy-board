@@ -3,12 +3,14 @@ import { register, getState1 } from "../../../state.js";
 
 const STYLE = {
   marginTop: "1rem",
+  display: "flex;",
 };
 
 const TAG_STYLE = {
   border: "1px solid red",
   padding: "5px",
-  marginRight: "5px",
+  margin: "0 10px 10px 0",
+  display: "inline-block",
 };
 
 const update = () => {
