@@ -29,6 +29,14 @@ export const extractTitle = (bookmarkName) => {
   return words[0];
 };
 
+export async function createNewTag(tag) {
+  const storage = await getUserData(["tags"]);
+  const tagsMap = new Map(JSON.parse(storage.tags));
+  !tagsMap.has(tag) && tagsMap.set(tag, { title: tag, bookmarks: [] });
+  await setUserData({ tags: JSON.stringify([...tagsMap]) });
+  return tagsMap;
+}
+
 export async function saveTags(bookmarkId, tags, operation) {
   const toUpdateTags = [];
   const toUpdateBookmarkTags = [];

@@ -1,5 +1,7 @@
-import { getState1 } from "../../../state.js";
+import { getState1, register } from "../../../state.js";
 import { styleHyphenFormat } from "../../utils/utils.js";
+import editBar from "./editBar/editBar.js";
+import add from "../tags/editBar/add.js";
 
 const VIEW_STYLE = {
   display: "flex",
@@ -35,9 +37,22 @@ const createTagsLabel = (tag) => {
   tagWrapper.append(bkNumber);
   return tagWrapper;
 };
+
+const update = () => {
+  if (document.getElementById("tags")) {
+    document.getElementById("tags").innerHTML = "";
+    create();
+  }
+};
 const create = () => {
-  let view = document.createElement("div");
+  let view;
   let tags_view = document.createElement("div");
+
+  if (document.getElementById("tags")) view = document.getElementById("tags");
+  else {
+    view = document.createElement("div");
+    view.id = "tags";
+  }
   const tagsMap = getState1("tags");
 
   const xx = [...tagsMap.tags].sort((a, b) => {
@@ -53,8 +68,11 @@ const create = () => {
   Object.assign(tags_view.style, styleHyphenFormat(TAGS_VIEW_STYLE));
   Object.assign(view.style, styleHyphenFormat(VIEW_STYLE));
   view.append(tags_view);
+  view.append(add.create());
+  view.append(editBar.create());
   return view;
 };
 
+register("tags.tags", update);
 const tags = { create };
 export default tags;

@@ -3,7 +3,25 @@ let state = {
   workspace: {
     isSelected: null,
   },
-  tags: { tags: null },
+  tags: {
+    tags: null,
+    editBar: {
+      current: null, //add,edit,delete
+      tags: null,
+      add: {
+        isFolder: false,
+        active: false,
+      },
+      edit: {
+        editing: null,
+        active: false,
+      },
+      delete: {
+        deleting: null,
+        active: false,
+      },
+    },
+  },
   navigator: { isSelected: "bookmarks" },
   bookmarks: {
     bks: null,
@@ -30,11 +48,6 @@ let state = {
   notes: {},
 };
 
-let listener = {
-  navigator: [],
-  bookmarks: [],
-};
-
 let lis = {
   workspace: {
     listener: [],
@@ -46,6 +59,34 @@ let lis = {
     listener: [],
     tags: {
       listener: [],
+    },
+    editBar: {
+      current: {
+        listener: [],
+      },
+      tags: {
+        listener: [],
+      },
+      add: {
+        active: {
+          listener: [],
+        },
+        isFolder: {
+          listener: [],
+        },
+        listener: [],
+      },
+      edit: {
+        editing: { listener: [] },
+        active: { listener: [] },
+
+        listener: [],
+      },
+      delete: {
+        deleting: { listener: [] },
+        listener: [],
+        active: { listener: [] },
+      },
     },
   },
   navigator: {
