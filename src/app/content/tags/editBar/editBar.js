@@ -1,11 +1,11 @@
 import { styleHyphenFormat } from "../../../utils/utils.js";
-import { getState1, setState1 } from "../../../../state.js";
+import { getState1, setState1, register } from "../../../../state.js";
 
 /**
  * edit bar for tags
  */
 
-const TOOLS = ["add"];
+const TOOLS = ["add", "delete"];
 const ID = "tag-edit-bar";
 
 const VIEW_STYLE = {
@@ -34,11 +34,25 @@ const onAddClick = (e, popupOn) => {
   setState1("tags.editBar.current", popupOn ? null : "add");
 };
 
+const onDeleteClick = (e, deleteOn) => {
+  setState1("tags.editBar.delete.active", !deleteOn);
+  setState1("tags.editBar.current", deleteOn ? null : "delete");
+};
+
+const update = () => {
+  if (document.getElementById(ID)) {
+    document.getElementById(ID).innerHTML = "";
+  }
+  create();
+};
+
 const create = () => {
   let view;
-  view = document.createElement("div");
-  view.id = ID;
 
+  if (!(view = document.getElementById(ID))) {
+    view = document.createElement("div");
+    view.id = ID;
+  }
   TOOLS.forEach((tool) => {
     const toolView = document.createElement("div");
     toolView.innerText = tool;
@@ -47,13 +61,29 @@ const create = () => {
       toolView.addEventListener("click", (e) => {
         onAddClick(e, getState1("tags.editBar.add.active"));
       });
-    Object.assign(toolView.style, styleHyphenFormat(TOOL_STYLE));
+
+    tool == "delete" &&
+      toolView.addEventListener("click", (e) => {
+        // if (!["delete", null].includes(getState1("tags.editBar.current")))
+        //   return;
+        onDeleteClick(e, getState1("tags.editBar.delete.active"));
+      });
+
+    const current = getState1("tags.editBar.current");
+
+    Object.assign(
+      toolView.style,
+      styleHyphenFormat(
+        !current || current != tool ? TOOL_STYLE : TOOL_STYLE_ACTIVE
+      )
+    );
+
     view.append(toolView);
   });
 
   Object.assign(view.style, styleHyphenFormat(VIEW_STYLE));
   return view;
 };
-
+register("tags.editBar.current", update);
 const editBar = { create };
 export default editBar;

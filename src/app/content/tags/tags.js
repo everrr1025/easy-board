@@ -63,6 +63,10 @@ const create = () => {
   mapAsc.forEach((e) => {
     let tag = createTagsLabel(e);
     Object.assign(tag.style, styleHyphenFormat(TAG_STYLE));
+
+    if (getState1("tags.editBar.delete.active")) {
+      tag.style.border = "1px dashed red";
+    }
     tags_view.append(tag);
   });
   Object.assign(tags_view.style, styleHyphenFormat(TAGS_VIEW_STYLE));
@@ -74,5 +78,6 @@ const create = () => {
 };
 
 register("tags.tags", update);
+register("tags.editBar.delete.active", update);
 const tags = { create };
 export default tags;
