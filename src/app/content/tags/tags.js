@@ -1,8 +1,8 @@
-import { getState1, register } from "../../../state.js";
+import { setState1, getState1, register } from "../../../state.js";
 import { styleHyphenFormat } from "../../utils/utils.js";
 import editBar from "./editBar/editBar.js";
 import add from "../tags/editBar/add.js";
-
+import del from "../tags/editBar/del.js";
 const VIEW_STYLE = {
   display: "flex",
   flexDirection: "column",
@@ -26,6 +26,13 @@ const TAG_STYLE = {
   textOverflow: "ellipsis",
   whiteSpace: "nowrap",
 };
+
+async function onClickTag(event, item, current) {
+  if (current === "delete") {
+    setState1("tags.editBar.delete.deleting", item);
+  }
+}
+
 const createTagsLabel = (tag) => {
   const tagWrapper = document.createElement("div");
   const title = document.createTextNode(tag.title + "\n");
@@ -60,10 +67,13 @@ const create = () => {
   });
   const mapAsc = new Map(xx);
 
-  mapAsc.forEach((e) => {
-    let tag = createTagsLabel(e);
+  mapAsc.forEach((item) => {
+    let tag = createTagsLabel(item);
     Object.assign(tag.style, styleHyphenFormat(TAG_STYLE));
 
+    tag.addEventListener("click", async (e) => {
+      await onClickTag(e, item, getState1("tags.editBar.current"));
+    });
     if (getState1("tags.editBar.delete.active")) {
       tag.style.border = "1px dashed red";
     }
@@ -73,6 +83,7 @@ const create = () => {
   Object.assign(view.style, styleHyphenFormat(VIEW_STYLE));
   view.append(tags_view);
   view.append(add.create());
+  view.append(del.create());
   view.append(editBar.create());
   return view;
 };
