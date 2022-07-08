@@ -1,11 +1,11 @@
 import { Input, Button, Modal } from "../../../component/index.js";
 import { setState1, getState1, register } from "../../../../state.js";
-//import { createNewTag } from "../../../utils/tag.js";
+import { deleteTag } from "../../../utils/tag.js";
 
 //action
-async function deleteTag(tagName) {
+async function onDeleteTag(tagName) {
   if (tagName) {
-    const tags = await createNewTag(tagName);
+    const tags = await deleteTag(tagName);
     closeModal();
     setState1("tags.tags", tags);
   } else {
@@ -24,18 +24,19 @@ const content = () => {
   const _content = document.createElement("div");
   const tagInput = new Input({
     type: "text",
+    value: deleting && deleting.title,
     style: { marginTop: "1rem" },
-    onInput: (e) => {},
+    disabled: true,
   });
   const delButton = Button({ label: "delete", style: { marginTop: "1rem" } });
 
   delButton.addEventListener("click", async () => {
     let tagName = tagInput.getValue().trim();
-    await deleteTag(tagName);
+    await onDeleteTag(tagName);
   });
 
   _content.append(tagInput.create());
-  _content.append(addButton);
+  _content.append(delButton);
   return Modal({
     title: "Delete Tag",
     id: "tag-delete-modal",

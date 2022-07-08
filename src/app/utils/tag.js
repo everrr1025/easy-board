@@ -160,3 +160,31 @@ async function removeBookmarksWithTagsInStorage(bookmarkId) {
     bookmarkTags: JSON.stringify([...bookmarkTagsMap]),
   });
 }
+
+/**
+ *
+ * @param {name of tag to delete} tagName
+ */
+export async function deleteTag(tagName) {
+  const { bookmarkTags, tags } = await getUserData(["bookmarkTags", "tags"]);
+  const bookmarkTagsMap = new Map(JSON.parse(bookmarkTags));
+  const tagsMap = new Map(JSON.parse(tags));
+  const tagToDelete = tagsMap.get(tagName);
+  //remove this tag from each bookmark's tag record
+  for (const bookmarkId of tagToDelete.bookmarks) {
+    let tags = bookmarkTagsMap.get(bookmarkId);
+    tags = tags.filter((item) => item.title != tagName);
+    bookmarkTagsMap.set(bookmarkId, tags);
+  }
+  //delete this tag from tags map
+  tagsMap.delete(tagName);
+  //sync with storage
+  await setUserData({
+    tags: JSON.stringify([...tagsMap]),
+  });
+  await setUserData({
+    bookmarkTags: JSON.stringify([...bookmarkTagsMap]),
+  });
+
+  return tagsMap;
+}
