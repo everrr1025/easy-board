@@ -188,3 +188,37 @@ export async function deleteTag(tagName) {
 
   return tagsMap;
 }
+
+/**
+ *
+ * @param {*} editingTag
+ * @param {*} newTagName
+ */
+export async function editTag(editingTag, newTagName) {
+  const { bookmarkTags, tags } = await getUserData(["bookmarkTags", "tags"]);
+  const bookmarkTagsMap = new Map(JSON.parse(bookmarkTags));
+  const tagsMap = new Map(JSON.parse(tags));
+
+  //remove the old tag，set the new one
+  tagsMap.delete(editingTag.title);
+  tagsMap.set(newTagName, {
+    title: newTagName,
+    bookmarks: editingTag.bookmarks,
+  });
+
+  //update bookmark's tag record
+  for (const bookmarkId of editingTag.bookmarks) {
+    let tags = bookmarkTagsMap.get(bookmarkId);
+    tags = tags.filter((item) => item.title != editingTag.title);
+    tags.push({ title: newTagName });
+    bookmarkTagsMap.set(bookmarkId, tags);
+  }
+  //sync with storage
+  await setUserData({
+    tags: JSON.stringify([...tagsMap]),
+  });
+  await setUserData({
+    bookmarkTags: JSON.stringify([...bookmarkTagsMap]),
+  });
+  return tagsMap;
+}

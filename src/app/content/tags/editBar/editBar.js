@@ -5,7 +5,7 @@ import { getState1, setState1, register } from "../../../../state.js";
  * edit bar for tags
  */
 
-const TOOLS = ["add", "delete"];
+const TOOLS = ["add", "edit", "delete"];
 const ID = "tag-edit-bar";
 
 const VIEW_STYLE = {
@@ -39,6 +39,11 @@ const onDeleteClick = (e, deleteOn) => {
   setState1("tags.editBar.current", deleteOn ? null : "delete");
 };
 
+const onEditClick = (e, editOn) => {
+  setState1("tags.editBar.edit.active", !editOn);
+  setState1("tags.editBar.current", editOn ? null : "edit");
+};
+
 const update = () => {
   if (document.getElementById(ID)) {
     document.getElementById(ID).innerHTML = "";
@@ -64,9 +69,14 @@ const create = () => {
 
     tool == "delete" &&
       toolView.addEventListener("click", (e) => {
-        // if (!["delete", null].includes(getState1("tags.editBar.current")))
-        //   return;
+        if (!["delete", null].includes(getState1("tags.editBar.current")))
+          return;
         onDeleteClick(e, getState1("tags.editBar.delete.active"));
+      });
+    tool == "edit" &&
+      toolView.addEventListener("click", (e) => {
+        if (!["edit", null].includes(getState1("tags.editBar.current"))) return;
+        onEditClick(e, getState1("tags.editBar.edit.active"));
       });
 
     const current = getState1("tags.editBar.current");

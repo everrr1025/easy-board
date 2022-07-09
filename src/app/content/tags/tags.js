@@ -3,6 +3,7 @@ import { styleHyphenFormat } from "../../utils/utils.js";
 import editBar from "./editBar/editBar.js";
 import add from "../tags/editBar/add.js";
 import del from "../tags/editBar/del.js";
+import edit from "../tags/editBar/edit.js";
 const VIEW_STYLE = {
   display: "flex",
   flexDirection: "column",
@@ -30,6 +31,8 @@ const TAG_STYLE = {
 async function onClickTag(event, item, current) {
   if (current === "delete") {
     setState1("tags.editBar.delete.deleting", item);
+  } else if (current === "edit") {
+    setState1("tags.editBar.edit.editing", item);
   }
 }
 
@@ -74,7 +77,10 @@ const create = () => {
     tag.addEventListener("click", async (e) => {
       await onClickTag(e, item, getState1("tags.editBar.current"));
     });
-    if (getState1("tags.editBar.delete.active")) {
+    if (
+      getState1("tags.editBar.delete.active") ||
+      getState1("tags.editBar.edit.active")
+    ) {
       tag.style.border = "1px dashed red";
     }
     tags_view.append(tag);
@@ -84,11 +90,13 @@ const create = () => {
   view.append(tags_view);
   view.append(add.create());
   view.append(del.create());
+  view.append(edit.create());
   view.append(editBar.create());
   return view;
 };
 
 register("tags.tags", update);
 register("tags.editBar.delete.active", update);
+register("tags.editBar.edit.active", update);
 const tags = { create };
 export default tags;
