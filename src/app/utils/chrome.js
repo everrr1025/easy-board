@@ -1,5 +1,6 @@
 import { getChildren } from "./utils.js";
 import { setState1, getState1, bookmarkAdded } from "../../state.js";
+import { updateBookmarkTags, deleteTags } from "./tag.js";
 /**
  * module to encapsulate chrome extension API
  */
@@ -85,7 +86,7 @@ chrome.runtime.onMessage.addListener(async function (
       break;
     }
     case "move": {
-      message = moveHandler(request);
+      message = await moveHandler(request);
       break;
     }
   }
@@ -148,17 +149,24 @@ const changeHandler = (request) => {
   }
 };
 
-const moveHandler = (request) => {
+async function moveHandler(request) {
   const { id, moveInfo } = request;
   const { parentId, oldParentId } = moveInfo;
   const bks = getState1("bookmarks.bks");
   const moveIn = getChildren(bks, parentId) ? true : null;
   const moveOut = getChildren(bks, oldParentId) ? true : null;
   //check if the new parentId or old parentId belongs to the workspace
-  if (moveIn || moveOut) {
+  let farewell = { farewell: "workspace bookmarks updated" };
+  if (moveIn && moveOut) {
     bookmarkAdded();
-    return { farewell: "workspace bookmarks updated" };
+  } else if (moveIn && !moveOut) {
+    await updateBookmarkTags(id, []);
+    bookmarkAdded();
+  } else if (!moveIn && moveOut) {
+    await deleteTags(id);
+    bookmarkAdded();
   } else {
-    return { farewell: "do nothing" };
+    farewell = { farewell: "do nothing" };
   }
-};
+  return farewell;
+}

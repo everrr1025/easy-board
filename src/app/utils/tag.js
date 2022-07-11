@@ -222,3 +222,16 @@ export async function editTag(editingTag, newTagName) {
   });
   return tagsMap;
 }
+
+export async function updateBookmarkTags(bookmarkID, tags) {
+  addBookmarksWithTagsInStorage(bookmarkID, tags);
+}
+// export async function removeBookmarkTags(bookmarkID) {
+//   const storage = await getUserData(["bookmarkTags"]); //Map
+//   const bookmarkTagsMap = new Map(JSON.parse(storage.bookmarkTags));
+//   bookmarkTagsMap.set(bookmarkId, tags);
+
+//   return await setUserData({
+//     bookmarkTags: JSON.stringify([...bookmarkTagsMap]),
+//   });
+// }
