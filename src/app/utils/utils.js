@@ -42,6 +42,21 @@ export const getFolders = (bks) => {
   };
   return inner(bks);
 };
+export const getBookmarks = (bks) => {
+  const result = [];
+  let inner = (bks) => {
+    if (bks.url) {
+      result.push({ id: bks.id, title: bks.title });
+    }
+    if (bks.children) {
+      for (const node of bks.children) {
+        inner(node);
+      }
+    }
+    return result;
+  };
+  return inner(bks);
+};
 
 export const getFullPath = (ob, id, exlude) => {
   let paths = [];
@@ -64,6 +79,7 @@ export const getFullPath = (ob, id, exlude) => {
 
   return inner(ob, id);
 };
+
 export const getFullPathNode = (ob, id) => {
   let paths = [];
 

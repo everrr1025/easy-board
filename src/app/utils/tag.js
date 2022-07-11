@@ -1,4 +1,5 @@
 import { setUserData, getUserData } from "./chrome.js";
+import { getBookmarks } from "./utils.js";
 
 /**
  * module to handle tag opreation
@@ -223,8 +224,16 @@ export async function editTag(editingTag, newTagName) {
   return tagsMap;
 }
 
-export async function updateBookmarkTags(bookmarkID, tags) {
-  addBookmarksWithTagsInStorage(bookmarkID, tags);
+export async function updateBookmarkTags(bookmark, tags) {
+  const bk = bookmark[0];
+  if (bk.url) {
+    await addBookmarksWithTagsInStorage(bk.id, tags);
+  } else {
+    const xx = getBookmarks(bk);
+    for (const x of xx) {
+      await addBookmarksWithTagsInStorage(x.id, tags);
+    }
+  }
 }
 // export async function removeBookmarkTags(bookmarkID) {
 //   const storage = await getUserData(["bookmarkTags"]); //Map

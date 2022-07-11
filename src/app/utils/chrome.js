@@ -126,7 +126,7 @@ async function deleteHandler(request) {
         id == isSelectedNodeId ||
         getChildren(getChildren(bks, id), isSelectedNodeId)
       ) {
-        //if the current selected folder or its parent is deleted, then render the bookmars and path as root
+        //if the current selected folder or its parent is deleted, then show the root
         setState1("bookmarks.isSelected", bks.id);
       }
       bookmarkAdded();
@@ -158,10 +158,11 @@ async function moveHandler(request) {
   //check if the new parentId or old parentId belongs to the workspace
   let farewell = { farewell: "workspace bookmarks updated" };
   if (moveIn && moveOut) {
+    //bookmark moved inside workspace
     bookmarkAdded();
   } else if (moveIn && !moveOut) {
-    await updateBookmarkTags(id, []);
     bookmarkAdded();
+    await updateBookmarkTags(await getSubtree(id), []);
   } else if (!moveIn && moveOut) {
     await deleteTags(id);
     bookmarkAdded();
