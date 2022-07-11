@@ -235,12 +235,14 @@ export async function updateBookmarkTags(bookmark, tags) {
     }
   }
 }
-// export async function removeBookmarkTags(bookmarkID) {
-//   const storage = await getUserData(["bookmarkTags"]); //Map
-//   const bookmarkTagsMap = new Map(JSON.parse(storage.bookmarkTags));
-//   bookmarkTagsMap.set(bookmarkId, tags);
-
-//   return await setUserData({
-//     bookmarkTags: JSON.stringify([...bookmarkTagsMap]),
-//   });
-// }
+export async function removeBookmarkTags(bookmark) {
+  const bk = bookmark[0];
+  if (bk.url) {
+    await deleteTags(bk.id);
+  } else {
+    const xx = getBookmarks(bk);
+    for (const x of xx) {
+      await deleteTags(x.id);
+    }
+  }
+}

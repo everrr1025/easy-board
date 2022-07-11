@@ -1,6 +1,6 @@
 import { getChildren } from "./utils.js";
 import { setState1, getState1, bookmarkAdded } from "../../state.js";
-import { updateBookmarkTags, deleteTags } from "./tag.js";
+import { updateBookmarkTags, removeBookmarkTags } from "./tag.js";
 /**
  * module to encapsulate chrome extension API
  */
@@ -164,8 +164,8 @@ async function moveHandler(request) {
     bookmarkAdded();
     await updateBookmarkTags(await getSubtree(id), []);
   } else if (!moveIn && moveOut) {
-    await deleteTags(id);
     bookmarkAdded();
+    await removeBookmarkTags(await getSubtree(id));
   } else {
     farewell = { farewell: "do nothing" };
   }
