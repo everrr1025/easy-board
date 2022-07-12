@@ -43,7 +43,7 @@ const HEAD_STYLE = {
 async function deleteBookmark(details) {
   await removeBookmark(details);
   details.url && (await deleteTags(details.id)); //if not folder, remove related tags info from local storage
-  bookmarkAdded(getState1("bookmarks.isSelected"));
+  await bookmarkAdded(getState1("bookmarks.isSelected"));
   setState1("bookmarks.editBar.delete.deleting", null);
 }
 const closeEditModal = (e) => {

@@ -24,7 +24,7 @@ async function onEditSaveClick(details) {
     await moveBookmark({ id: editing.id, selectedFolderId });
   }
 
-  bookmarkAdded();
+  await bookmarkAdded();
   url && (await saveTags(editing.id, extractTags(title), "edit"));
   setState1("bookmarks.editBar.edit.editing", null);
 }

@@ -173,14 +173,14 @@ export const getState1 = (key) => {
   const cbs = parts.reduce((pre, cur) => {
     return pre[cur];
   }, state);
-  console.log(state);
+  // console.log(state);
   return structuredClone(cbs); //keep state immutable
 };
 
 //each time adding/deleting/moving bookmark, sych the latest bk tree with chrome
-export const bookmarkAdded = () => {
+export async function bookmarkAdded() {
   const wsId = getState1("workspace.isSelected");
-  getSubtree(wsId).then((nodes) => {
-    setState1("bookmarks.bks", nodes[0]);
-  });
-};
+  const nodes = await getSubtree(wsId);
+
+  setState1("bookmarks.bks", nodes[0]);
+}

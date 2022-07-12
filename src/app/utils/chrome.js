@@ -65,16 +65,17 @@ export async function getUserData(key) {
 }
 
 //listen to chrome bookmark updated
-chrome.runtime.onMessage.addListener(async function (
-  request,
-  sender,
-  sendResponse
-) {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  handler(request, sender, sendResponse);
+  return true;
+});
+
+const handler = async (request, sender, sendResponse) => {
   const { action } = request;
   let message;
   switch (action) {
     case "create": {
-      message = createHandler(request);
+      message = await createHandler(request);
       break;
     }
     case "delete": {
@@ -82,7 +83,7 @@ chrome.runtime.onMessage.addListener(async function (
       break;
     }
     case "change": {
-      message = changeHandler(request);
+      message = await changeHandler(request);
       break;
     }
     case "move": {
@@ -92,21 +93,20 @@ chrome.runtime.onMessage.addListener(async function (
   }
 
   sendResponse(message);
-});
-
-const createHandler = (request) => {
+};
+async function createHandler(request) {
   const { bookmark } = request; //updated bookmark id
   //check if it belongs to the selected workspace
   const bks = getState1("bookmarks.bks");
   const parent = getChildren(bks, bookmark.parentId);
   //if parent found, then update the workspace bookmark tree
   if (parent) {
-    bookmarkAdded();
+    await bookmarkAdded();
     return { farewell: "workspace bookmarks updated" };
   } else {
     return { farewell: "do nothing" };
   }
-};
+}
 
 async function deleteHandler(request) {
   const { id } = request;
@@ -129,7 +129,7 @@ async function deleteHandler(request) {
         //if the current selected folder or its parent is deleted, then show the root
         setState1("bookmarks.isSelected", bks.id);
       }
-      bookmarkAdded();
+      await bookmarkAdded();
       return { farewell: "workspace bookmarks updated" };
     } else {
       return { farewell: "do nothing" };
@@ -137,17 +137,17 @@ async function deleteHandler(request) {
   }
 }
 
-const changeHandler = (request) => {
+async function changeHandler(request) {
   const { id } = request;
   const bks = getState1("bookmarks.bks");
   const changedBookmark = getChildren(bks, id);
   if (changedBookmark) {
-    bookmarkAdded();
+    await bookmarkAdded();
     return { farewell: "workspace bookmarks updated" };
   } else {
     return { farewell: "do nothing" };
   }
-};
+}
 
 async function moveHandler(request) {
   const { id, moveInfo } = request;
@@ -159,12 +159,12 @@ async function moveHandler(request) {
   let farewell = { farewell: "workspace bookmarks updated" };
   if (moveIn && moveOut) {
     //bookmark moved inside workspace
-    bookmarkAdded();
+    await bookmarkAdded();
   } else if (moveIn && !moveOut) {
-    bookmarkAdded();
+    await bookmarkAdded();
     await updateBookmarkTags(await getSubtree(id), []);
   } else if (!moveIn && moveOut) {
-    bookmarkAdded();
+    await bookmarkAdded();
     await removeBookmarkTags(await getSubtree(id));
   } else {
     farewell = { farewell: "do nothing" };

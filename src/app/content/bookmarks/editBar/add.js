@@ -21,7 +21,7 @@ async function addBookmark(details) {
     url,
     title: extractTitle(title),
   });
-  bookmarkAdded(parentId);
+  await bookmarkAdded(parentId);
 
   url && (await saveTags(createdBookmark.id, extractTags(title), "add"));
   closeModal();
