@@ -1,9 +1,11 @@
 import { setState1, getState1, register } from "../../../state.js";
 import { styleHyphenFormat } from "../../utils/utils.js";
+import { getBookmarksByID } from "../../utils/chrome.js";
 import editBar from "./editBar/editBar.js";
 import add from "../tags/editBar/add.js";
 import del from "../tags/editBar/del.js";
 import edit from "../tags/editBar/edit.js";
+import bookmarksInTag from "./bookmarksInTag/bookmarksInTag.js";
 const VIEW_STYLE = {
   display: "flex",
   flexDirection: "column",
@@ -33,6 +35,14 @@ async function onClickTag(event, item, current) {
     setState1("tags.editBar.delete.deleting", item);
   } else if (current === "edit") {
     setState1("tags.editBar.edit.editing", item);
+  } else {
+    const bookmarksInTag = [];
+    for (let id of item.bookmarks) {
+      const x = await getBookmarksByID(id);
+      bookmarksInTag.push(x[0]);
+    }
+    setState1("tags.bookmarksInTag.current", { ...item, bookmarksInTag });
+    setState1("tags.bookmarksInTag.active", true);
   }
 }
 
@@ -88,6 +98,7 @@ const create = () => {
   Object.assign(tags_view.style, styleHyphenFormat(TAGS_VIEW_STYLE));
   Object.assign(view.style, styleHyphenFormat(VIEW_STYLE));
   view.append(tags_view);
+  view.append(bookmarksInTag.create());
   view.append(add.create());
   view.append(del.create());
   view.append(edit.create());
@@ -98,5 +109,6 @@ const create = () => {
 register("tags.tags", update);
 register("tags.editBar.delete.active", update);
 register("tags.editBar.edit.active", update);
+register("tags.bookmarksInTag.active", update);
 const tags = { create };
 export default tags;

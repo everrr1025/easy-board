@@ -5,6 +5,10 @@ let state = {
   },
   tags: {
     tags: null,
+    bookmarksInTag: {
+      current: null,
+      active: false,
+    },
     editBar: {
       current: null, //add,edit,delete
       tags: null,
@@ -59,6 +63,11 @@ let lis = {
     listener: [],
     tags: {
       listener: [],
+    },
+    bookmarksInTag: {
+      listener: [],
+      current: { listener: [] },
+      active: { listener: [] },
     },
     editBar: {
       current: {
