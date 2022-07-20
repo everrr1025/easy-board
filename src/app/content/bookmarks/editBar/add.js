@@ -33,6 +33,7 @@ const onBookmarkNameInput = (e) => {
 };
 const closeModal = (e) => {
   setState1("bookmarks.editBar.add.active", false);
+  setState1("bookmarks.editBar.add.isFolder", false);
   setState1("bookmarks.editBar.current", null);
   setState1("bookmarks.editBar.tags", null);
 };
@@ -95,7 +96,7 @@ const content = () => {
 
   _content.append(addButton);
 
-  //create customized title
+  //create customized titleq
   const title = document.createElement("div");
   title.textContent = "Add Bookmark";
   title.style.fontSize = "14px";
@@ -112,7 +113,7 @@ const content = () => {
 };
 
 let ID;
-const create = (display) => {
+const create = () => {
   let popup;
   if (!(popup = document.getElementById(ID))) {
     popup = document.createElement("div");
