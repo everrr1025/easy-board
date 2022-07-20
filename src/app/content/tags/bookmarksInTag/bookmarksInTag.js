@@ -4,6 +4,7 @@ import { styleHyphenFormat } from "../../../utils/utils.js";
 
 const BOOKMARKS_VIEW_STYLE = {
   display: "flex",
+  flexWrap: "wrap",
   marginTop: "1rem",
 };
 
@@ -12,7 +13,7 @@ const BOOKMARK_ITEM_VIEW_STYLE = {
   cursor: "pointer",
   border: "1px solid black",
   padding: "0.5rem",
-  margin: "0 1rem 0 0 ",
+  margin: "0 1rem 1rem 0 ",
   minWidth: "1rem",
   maxWidth: "8rem",
   overflow: "hidden",

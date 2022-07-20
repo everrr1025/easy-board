@@ -2,6 +2,7 @@
   "name": "Easy Board",
   "description": "Manage your bookmarks with tags quickly & easily.",
   "version": "1.0",
+  "key": "hckeclljbbngoopemmgpmbkomphapifk",
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js"
