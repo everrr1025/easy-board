@@ -2,7 +2,7 @@ import { Modal, Input, Button } from "../component/index.js";
 import { createWorkspace } from "../utils/workspace.js";
 
 async function onClickCreate(e, details) {
-  let ws = await createWorkspace(details);
+  await createWorkspace(details);
   window.location.reload();
 }
 const update = () => {};
@@ -11,7 +11,7 @@ const content = () => {
   const _content = document.createElement("div");
 
   const _workspace = new Input({
-    label: "Workspace",
+    label: "",
     style: { marginTop: "1rem" },
   });
 
@@ -32,7 +32,7 @@ const content = () => {
   });
 
   _content.append(_workspace.create());
-  _content.append(_isSync);
+  //_content.append(_isSync);
   _content.append(_createButton);
 
   return Modal({

@@ -13,14 +13,14 @@ const VIEW_STYLE = {
   marginTop: "2rem",
 };
 const TOOL_STYLE = {
-  padding: "0.3rem",
+  padding: "0.5rem",
   cursor: "pointer",
   border: "1px solid black",
   marginRight: "0.3rem",
 };
 
 const TOOL_STYLE_ACTIVE = {
-  padding: "0.3rem",
+  padding: "0.5rem",
   cursor: "pointer",
   border: "1px solid black",
   marginRight: "0.3rem",

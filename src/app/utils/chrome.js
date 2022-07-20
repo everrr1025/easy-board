@@ -57,11 +57,11 @@ export const compareNodes = (a, b) => {
 };
 //storage api
 export async function setUserData(obj) {
-  return await chrome.storage.local.set(obj);
+  return await chrome.storage.sync.set(obj);
 }
 
 export async function getUserData(key) {
-  return await chrome.storage.local.get(key);
+  return await chrome.storage.sync.get(key);
 }
 
 //listen to chrome bookmark updated

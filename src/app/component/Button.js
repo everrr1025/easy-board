@@ -2,9 +2,9 @@ import { styleHyphenFormat } from "../utils/utils.js";
 
 const STYLE = {
   border: "1px solid black",
-  //boxSizing: "border-box",
+
   display: "inline-block",
-  padding: "0.3rem",
+  padding: "0.5rem",
   cursor: "pointer",
 };
 
