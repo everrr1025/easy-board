@@ -1,6 +1,6 @@
 {
-  "name": "Pinecone",
-  "description": "A test extension integrated with pinecone ability!",
+  "name": "Easy Board",
+  "description": "Manage your bookmarks with tags quickly & easily.",
   "version": "1.0",
   "manifest_version": 3,
   "background": {

@@ -93,15 +93,17 @@ function create() {
     view.id = "bookmarks";
   }
 
-  let nodes;
+  let nodes = [];
 
   const bks = getState1("bookmarks.bks");
 
   const children = getChildren(bks, isSelected);
+
   if (isSelected && children && children.length > 0) {
     nodes = bks.children.sort(compareNodes);
-  } else {
+  } else if (children && children.children.length > 0) {
     nodes = children.children.sort(compareNodes);
+  } else {
   }
 
   nodes.forEach((node) => {
