@@ -1,4 +1,5 @@
-import { getBookmarks, getSubtree } from "../src/app/utils/chrome.js";
+import { getSubtree } from "../src/app/utils/chrome.js";
+
 let state = {
   workspace: {
     isSelected: null,
@@ -187,9 +188,9 @@ export const getState1 = (key) => {
 };
 
 //each time adding/deleting/moving bookmark, sych the latest bk tree with chrome
+//shoud move this func out of there later...
 export async function bookmarkAdded() {
   const wsId = getState1("workspace.isSelected");
   const nodes = await getSubtree(wsId);
-
   setState1("bookmarks.bks", nodes[0]);
 }

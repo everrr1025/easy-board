@@ -116,8 +116,8 @@ async function deleteHandler(request) {
 
   //if workspace folder get deleted
   if (id == bks.id) {
-    //clear workspace info in localStorage,and reload the app
-    await setUserData({ easyDashboard: "" });
+    //clear localStorage,and reload the app
+    await chrome.storage.sync.clear();
     window.location.reload();
   } else {
     const removedBookmark = getChildren(bks, id);
