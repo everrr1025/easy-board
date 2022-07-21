@@ -67,13 +67,15 @@ export const getFullPath = (ob, id, exlude) => {
       return;
     }
     const current = getChildren(ob, id);
-    paths.push(current.title);
-
-    if (!current.parentId || current.parentId == 1) {
-      //return;
-    } else {
-      inner(ob, current.parentId);
+    //
+    if (current) {
+      paths.push(current.title);
+      if (current.parentId && current.parentId != 1) {
+        inner(ob, current.parentId);
+      } else {
+      }
     }
+
     return paths;
   };
 
