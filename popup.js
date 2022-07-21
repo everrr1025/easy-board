@@ -62,11 +62,7 @@ if (!userData.easyDashboard || !userData.easyDashboard.bookmarks) {
       title: extractTitle(nameInput.getValue()),
       parentId: selectFolder.getValue(),
     });
-    await saveTags(
-      createdBookmark.id,
-      extractTags(nameInput.getValue()),
-      "add"
-    );
+    await saveTags(createdBookmark, extractTags(nameInput.getValue()), "add");
     window.close();
   });
 }

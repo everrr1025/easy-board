@@ -56,6 +56,7 @@ export const compareNodes = (a, b) => {
   }
 };
 //storage api
+//ATTENTION: MAX_WRITE_OPERATIONS_PER_MINUTE / 120 per minute
 export async function setUserData(obj) {
   return await chrome.storage.sync.set(obj);
 }

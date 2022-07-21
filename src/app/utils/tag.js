@@ -38,7 +38,7 @@ export async function createNewTag(tag) {
   return tagsMap;
 }
 
-export async function saveTags(bookmarkId, tags, operation) {
+export async function saveTags(bookmark, tags, operation) {
   const toUpdateTags = [];
   const toUpdateBookmarkTags = [];
   for (const tag of tags) {
@@ -48,15 +48,15 @@ export async function saveTags(bookmarkId, tags, operation) {
     //should add bookmark in to the tags while update tags in storage
     const tagObjCopy = { ...tagObj };
     tagObjCopy.bookmarks = [];
-    tagObjCopy.bookmarks.push(bookmarkId);
+    tagObjCopy.bookmarks.push(bookmark.id);
     toUpdateTags.push(tagObjCopy);
   }
   if (operation == "add") {
     await addTagsInStorage(toUpdateTags);
   } else if (operation == "edit") {
-    await updateTagsInStorage(bookmarkId, toUpdateTags);
+    await updateTagsInStorage(bookmark.id, toUpdateTags);
   }
-  await addBookmarksWithTagsInStorage(bookmarkId, toUpdateBookmarkTags);
+  await addBookmarksWithTagsInStorage([bookmark], toUpdateBookmarkTags);
 }
 
 async function addTagsInStorage(tags) {
@@ -119,32 +119,36 @@ async function updateTagsInStorage(bookmarkId, inTags) {
 
   return await setUserData({ tags: JSON.stringify([...tagsMap]) });
 }
-async function addBookmarksWithTagsInStorage(bookmarkId, tags) {
+async function addBookmarksWithTagsInStorage(bookmarks, tags) {
   const storage = await getUserData(["bookmarkTags"]); //Map
   const bookmarkTagsMap = new Map(JSON.parse(storage.bookmarkTags));
-  bookmarkTagsMap.set(bookmarkId, tags);
+  for (const bk of bookmarks) {
+    bookmarkTagsMap.set(bk.id, tags);
+  }
 
   return await setUserData({
     bookmarkTags: JSON.stringify([...bookmarkTagsMap]),
   });
 }
 
-export async function deleteTags(bookmarkId) {
-  await removeTagsInStorage(bookmarkId);
-  await removeBookmarksWithTagsInStorage(bookmarkId);
+export async function deleteTags(bookmarks) {
+  await removeTagsInStorage(bookmarks);
+  await removeBookmarksWithTagsInStorage(bookmarks);
 }
 
-async function removeTagsInStorage(bookmarkId) {
+async function removeTagsInStorage(bookmarks) {
   const { bookmarkTags, tags } = await getUserData(["bookmarkTags", "tags"]);
   const bookmarkTagsMap = new Map(JSON.parse(bookmarkTags));
   const tagsMap = new Map(JSON.parse(tags));
-  const theDeletedBookmarkTags = bookmarkTagsMap.get(bookmarkId);
-  for (const tag of theDeletedBookmarkTags) {
-    if (tagsMap.has(tag.title)) {
-      const tagInMap = tagsMap.get(tag.title);
-      tagInMap.bookmarks.splice(tagInMap.bookmarks.indexOf(bookmarkId), 1);
+  for (const bk of bookmarks) {
+    const theDeletedBookmarkTags = bookmarkTagsMap.get(bk.id);
+    for (const tag of theDeletedBookmarkTags) {
+      if (tagsMap.has(tag.title)) {
+        const tagInMap = tagsMap.get(tag.title);
+        tagInMap.bookmarks.splice(tagInMap.bookmarks.indexOf(bk.id), 1);
 
-      tagsMap.set(tag.title, tagInMap);
+        tagsMap.set(tag.title, tagInMap);
+      }
     }
   }
   return await setUserData({
@@ -152,10 +156,12 @@ async function removeTagsInStorage(bookmarkId) {
   });
 }
 
-async function removeBookmarksWithTagsInStorage(bookmarkId) {
+async function removeBookmarksWithTagsInStorage(bookmarks) {
   const storage = await getUserData(["bookmarkTags"]); //Map
   const bookmarkTagsMap = new Map(JSON.parse(storage.bookmarkTags));
-  bookmarkTagsMap.delete(bookmarkId);
+  for (const bk of bookmarks) {
+    bookmarkTagsMap.delete(bk.id);
+  }
 
   return await setUserData({
     bookmarkTags: JSON.stringify([...bookmarkTagsMap]),
@@ -227,22 +233,20 @@ export async function editTag(editingTag, newTagName) {
 export async function updateBookmarkTags(bookmark, tags) {
   const bk = bookmark[0];
   if (bk.url) {
-    await addBookmarksWithTagsInStorage(bk.id, tags);
+    await addBookmarksWithTagsInStorage([bk], tags);
   } else {
     const xx = getBookmarks(bk);
-    for (const x of xx) {
-      await addBookmarksWithTagsInStorage(x.id, tags);
-    }
+
+    await addBookmarksWithTagsInStorage(xx, tags);
   }
 }
 export async function removeBookmarkTags(bookmark) {
   const bk = bookmark[0];
   if (bk.url) {
-    await deleteTags(bk.id);
+    await deleteTags([bk]);
   } else {
     const xx = getBookmarks(bk);
-    for (const x of xx) {
-      await deleteTags(x.id);
-    }
+
+    await deleteTags(xx);
   }
 }

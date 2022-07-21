@@ -23,7 +23,7 @@ async function addBookmark(details) {
   });
   await bookmarkAdded(parentId);
 
-  url && (await saveTags(createdBookmark.id, extractTags(title), "add"));
+  url && (await saveTags(createdBookmark, extractTags(title), "add"));
   closeModal();
 }
 
