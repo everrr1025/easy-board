@@ -131,6 +131,7 @@ async function deleteHandler(request) {
         setState1("bookmarks.isSelected", bks.id);
       }
       await bookmarkAdded();
+      await removeBookmarkTags([removedBookmark]);
       return { farewell: "workspace bookmarks updated" };
     } else {
       return { farewell: "do nothing" };
