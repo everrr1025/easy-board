@@ -72,6 +72,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 const handler = async (request, sender, sendResponse) => {
+  if (!getState1("workspace.isSelected")) {
+    sendResponse({ farewell: "do nothing" });
+    return;
+  }
   const { action } = request;
   let message;
   switch (action) {

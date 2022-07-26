@@ -10,13 +10,11 @@ import {
 import { setState1 } from "../src/state.js";
 
 function init() {
-  getUserData(["easyDashboard"]).then((userData) => {
-    if (
-      !(userData.easyDashboard && userData.easyDashboard.bookmarks.isSelected)
-    ) {
+  getUserData(["easyBoard"]).then((userData) => {
+    if (!(userData.easyBoard && userData.easyBoard.bookmarks.isSelected)) {
       document.getElementById("container").append(setting.create());
     } else {
-      const isSelectedNodeId = userData.easyDashboard.bookmarks.isSelected.id;
+      const isSelectedNodeId = userData.easyBoard.bookmarks.isSelected.id;
 
       getSubtree(isSelectedNodeId).then((bkNodes) => {
         setState1("bookmarks.bks", bkNodes[0]);

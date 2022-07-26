@@ -7,7 +7,7 @@ async function createWorkspace({ name, isSync }) {
     const ws = await createBookmark({ title: name, parentId: "1" }); //create workspace
     if (ws) {
       await setUserData({
-        easyDashboard: {
+        easyBoard: {
           bookmarks: { isSelected: ws },
         },
       });
