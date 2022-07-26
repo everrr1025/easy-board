@@ -173,3 +173,9 @@ async function moveHandler(request) {
   }
   return farewell;
 }
+
+export const openExtensionTab = async (url) => {
+  chrome.tabs.create({
+    url: url,
+  });
+};

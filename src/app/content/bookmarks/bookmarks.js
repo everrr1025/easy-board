@@ -1,5 +1,9 @@
 import { getState1, register, setState1 } from "../../../state.js";
-import { getBookmarks, compareNodes } from "../../utils/chrome.js";
+import {
+  getBookmarks,
+  compareNodes,
+  openExtensionTab,
+} from "../../utils/chrome.js";
 import { styleHyphenFormat, getChildren } from "../../utils/utils.js";
 import { getTags } from "../../utils/tag.js";
 import breadcrumb from "./breadcrumb.js";
@@ -55,7 +59,8 @@ const BOOKMARK_STYLE = {
 async function onClickBookmark(event, bookmark, current) {
   if (current == null) {
     if (bookmark.url) {
-      window.open(bookmark.url, "_blank");
+      if (bookmark.url.startsWith("chrome://")) openExtensionTab(bookmark.url);
+      else window.open(bookmark.url, "_blank");
     } else {
       let currentPath = getState1("bookmarks.path");
       currentPath.push(bookmark);
