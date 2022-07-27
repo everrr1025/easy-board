@@ -14,16 +14,16 @@
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "16": "/src/static/pinecone.png",
-      "32": "/src/static/pinecone.png",
-      "48": "/src/static/pinecone.png",
-      "128": "/src/static/pinecone.png"
+      "16": "/src/static/eb.png",
+      "32": "/src/static/eb.png",
+      "48": "/src/static/eb.png",
+      "128": "/src/static/eb.png"
     }
   },
   "icons": {
-    "16": "/src/static/pinecone.png",
-    "32": "/src/static/pinecone.png",
-    "48": "/src/static/pinecone.png",
-    "128": "/src/static/pinecone.png"
+    "16": "/src/static/eb.png",
+    "32": "/src/static/eb.png",
+    "48": "/src/static/eb.png",
+    "128": "/src/static/eb.png"
   }
 }
