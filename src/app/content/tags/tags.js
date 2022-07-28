@@ -11,15 +11,21 @@ const VIEW_STYLE = {
   flexDirection: "column",
 };
 
+const MSG_STYLE = {
+  // border: "1px dashed black",
+
+  padding: "1rem 0",
+};
 const TAGS_VIEW_STYLE = {
   display: "flex",
   flexWrap: "wrap",
 };
 
 const TAG_STYLE = {
+  color: "red",
   backgroundColor: "white",
   cursor: "pointer",
-  border: "1px solid black",
+  border: "1px solid red",
   padding: "0.5rem",
   margin: "0 1rem 1rem 0 ",
   minWidth: "1rem",
@@ -78,23 +84,31 @@ const create = () => {
   const xx = [...tagsMap.tags].sort((a, b) => {
     return b[1].bookmarks.length - a[1].bookmarks.length;
   });
-  const mapAsc = new Map(xx);
 
-  mapAsc.forEach((item) => {
-    let tag = createTagsLabel(item);
-    Object.assign(tag.style, styleHyphenFormat(TAG_STYLE));
+  if (xx.length != 0) {
+    const mapAsc = new Map(xx);
 
-    tag.addEventListener("click", async (e) => {
-      await onClickTag(e, item, getState1("tags.editBar.current"));
+    mapAsc.forEach((item) => {
+      let tag = createTagsLabel(item);
+      Object.assign(tag.style, styleHyphenFormat(TAG_STYLE));
+
+      tag.addEventListener("click", async (e) => {
+        await onClickTag(e, item, getState1("tags.editBar.current"));
+      });
+      if (
+        getState1("tags.editBar.delete.active") ||
+        getState1("tags.editBar.edit.active")
+      ) {
+        tag.style.border = "1px dashed red";
+      }
+      tags_view.append(tag);
     });
-    if (
-      getState1("tags.editBar.delete.active") ||
-      getState1("tags.editBar.edit.active")
-    ) {
-      tag.style.border = "1px dashed red";
-    }
-    tags_view.append(tag);
-  });
+  } else {
+    const msg = document.createElement("div");
+    msg.innerText = "click 'add' button to create tag";
+    Object.assign(msg.style, styleHyphenFormat(MSG_STYLE));
+    view.append(msg);
+  }
   Object.assign(tags_view.style, styleHyphenFormat(TAGS_VIEW_STYLE));
   Object.assign(view.style, styleHyphenFormat(VIEW_STYLE));
   view.append(tags_view);

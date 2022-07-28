@@ -9,6 +9,7 @@ const BOOKMARKS_VIEW_STYLE = {
 };
 
 const BOOKMARK_ITEM_VIEW_STYLE = {
+  // fontSize: "14px",
   backgroundColor: "white",
   cursor: "pointer",
   border: "1px solid black",
@@ -51,8 +52,12 @@ const content = (currentTag) => {
 
   _content.append(_bookmarksView);
 
+  const titleEle = document.createElement("div");
+  titleEle.style.color = "red";
+  titleEle.innerText = title;
+
   return Modal({
-    title: title,
+    title: titleEle,
     id: "bookmarks-in-tag-modal",
     content: _content,
     onClickOverlay: (e) => {

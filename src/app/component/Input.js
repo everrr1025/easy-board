@@ -10,11 +10,12 @@ const STYLE = {
 };
 
 const CHECKBOX_STYLE = {
-  fontSize: "12px",
+  // fontSize: "12px",
 };
 const TEXT_STYLE = {
   marginTop: "0.25rem",
   height: "2rem",
+  fontSize: "14px",
 };
 
 const createCheckbox = (details) => {

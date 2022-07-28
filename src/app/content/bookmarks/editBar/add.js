@@ -99,7 +99,7 @@ const content = () => {
   //create customized titleq
   const title = document.createElement("div");
   title.textContent = "Add Bookmark";
-  title.style.fontSize = "14px";
+  // title.style.fontSize = "14px";
   title.append(isFolderCheck.create());
 
   return Modal({

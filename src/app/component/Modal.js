@@ -27,7 +27,7 @@ const CONTENT_STYLE = {
 
 const TITLE_STYLE = {
   backgroundColor: "white",
-  fontSize: "14px",
+  // fontSize: "14px",
 };
 
 const Modal = (details) => {

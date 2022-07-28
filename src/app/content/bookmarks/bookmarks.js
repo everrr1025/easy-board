@@ -19,7 +19,11 @@ const VIEW_STYLE = {
   display: "flex",
   flexDirection: "column",
 };
+const MSG_STYLE = {
+  // border: "1px dashed black",
 
+  padding: "1rem 0",
+};
 const BOOKMARK_VIEW_STYLE = {
   display: "flex",
   flexWrap: "wrap",
@@ -110,34 +114,40 @@ function create() {
     nodes = children.children.sort(compareNodes);
   } else {
   }
-
-  nodes.forEach((node) => {
-    const bookmarkDiv = document.createElement("div");
-    bookmarkDiv.innerText = node.title;
-    const isFolder = !node.url ? true : false;
-    bookmarkDiv.addEventListener("click", async (e) => {
-      onClickBookmark(e, node, getState1("bookmarks.editBar.current"));
-    });
-    Object.assign(
-      bookmarkDiv.style,
-      isFolder
-        ? styleHyphenFormat(FOLDER_STYLE)
-        : styleHyphenFormat(BOOKMARK_STYLE)
-    );
-
-    if (
-      getState1("bookmarks.editBar.edit.active") ||
-      getState1("bookmarks.editBar.delete.active")
-    ) {
-      bookmarkDiv.style.border = "1px dashed red";
-    }
-
-    bkView.append(bookmarkDiv);
-  });
-  Object.assign(bkView.style, styleHyphenFormat(BOOKMARK_VIEW_STYLE));
-
   view.append(breadcrumb.create());
-  view.append(bkView);
+  if (nodes.length != 0) {
+    nodes.forEach((node) => {
+      const bookmarkDiv = document.createElement("div");
+      bookmarkDiv.innerText = node.title;
+      const isFolder = !node.url ? true : false;
+      bookmarkDiv.addEventListener("click", async (e) => {
+        onClickBookmark(e, node, getState1("bookmarks.editBar.current"));
+      });
+      Object.assign(
+        bookmarkDiv.style,
+        isFolder
+          ? styleHyphenFormat(FOLDER_STYLE)
+          : styleHyphenFormat(BOOKMARK_STYLE)
+      );
+
+      if (
+        getState1("bookmarks.editBar.edit.active") ||
+        getState1("bookmarks.editBar.delete.active")
+      ) {
+        bookmarkDiv.style.border = "1px dashed red";
+      }
+
+      bkView.append(bookmarkDiv);
+      Object.assign(bkView.style, styleHyphenFormat(BOOKMARK_VIEW_STYLE));
+      view.append(bkView);
+    });
+  } else {
+    const msg = document.createElement("div");
+    msg.innerText = "click 'add' button to create bookmark";
+    Object.assign(msg.style, styleHyphenFormat(MSG_STYLE));
+    view.append(msg);
+  }
+
   view.append(add.create());
   view.append(edit.create());
   view.append(del.create());
