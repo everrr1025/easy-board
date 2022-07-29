@@ -28,7 +28,7 @@ const content = () => {
   const tagInput = new Input({
     type: "text",
     value: editing && editing.title,
-    inputStyle: { color: primaryColor, borderColor: primaryColor },
+    inputStyle: { color: primaryColor, border: `1px solid ${primaryColor}` },
     style: { marginTop: "1rem" },
   });
   const editButton = Button({

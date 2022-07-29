@@ -8,18 +8,18 @@ import { Select, Input } from "./src/app/component/index.js";
 import { extractTags, extractTitle, saveTags } from "./src/app/utils/tag.js";
 
 //check if workspace has been created.
-let userData = await getUserData(["easyDashboard"]);
+let userData = await getUserData(["easyBoard"]);
 const createView = document.getElementById("createView");
 const addView = document.getElementById("addView");
 
-if (!userData.easyDashboard || !userData.easyDashboard.bookmarks) {
+if (!userData.easyBoard || !userData.easyBoard.bookmarks) {
   createView.style.display = "flex";
   document.getElementById("create").addEventListener("click", async () => {
     await chrome.tabs.create({ active: true });
   });
 } else {
   addView.style.display = "flex";
-  const wsId = userData.easyDashboard.bookmarks.isSelected.id;
+  const wsId = userData.easyBoard.bookmarks.isSelected.id;
 
   //initialize title and folder
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
