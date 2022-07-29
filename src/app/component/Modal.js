@@ -1,8 +1,10 @@
 import { styleHyphenFormat } from "../utils/utils.js";
+import { getColorSettings } from "../utils/workspace.js";
 
 /**
  * modal component
  */
+const COLORSETTINGS = getColorSettings();
 const VIEW = {
   display: "block",
   width: "100%",
@@ -20,7 +22,7 @@ const CONTENT_STYLE = {
   //flexDirection: "column",
   width: "500px",
   margin: "10% auto auto",
-  border: "1px solid black",
+  border: `1px solid ${COLORSETTINGS.primaryColor}`,
   backgroundColor: "white",
   padding: "1.5rem",
 };

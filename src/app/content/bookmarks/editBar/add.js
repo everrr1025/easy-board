@@ -1,4 +1,5 @@
 import { extractTags, extractTitle, saveTags } from "../../../utils/tag.js";
+import { getColorSettings } from "../../../utils/workspace.js";
 import { createBookmark } from "../../../utils/chrome.js";
 import {
   getState1,
@@ -13,6 +14,7 @@ import tag from "../tag.js";
  * add component in edit bar
  */
 
+const COLORSETTINGS = await getColorSettings();
 //action
 async function addBookmark(details) {
   const { parentId, title, url } = details;
@@ -41,23 +43,27 @@ const closeModal = (e) => {
 //view
 
 const update = () => {
-  document.getElementById(ID).innerHTML = "";
+  if (document.getElementById(ID)) {
+    document.getElementById(ID).innerHTML = "";
+  }
   create();
 };
 const content = () => {
   let isFolder = getState1("bookmarks.editBar.add.isFolder");
-
+  const primaryColor = getState1("workspace.primaryColor");
   const _content = document.createElement("div");
   const urlInput = new Input({
     type: "text",
     label: "URL",
     value: "https://",
+    inputStyle: { color: primaryColor, border: `1px solid ${primaryColor}` },
     style: { marginTop: "1rem" },
   });
   const nameInput = new Input({
     type: "text",
     label: "Bookmark Name",
     style: { marginTop: "1rem" },
+    inputStyle: { color: primaryColor, border: `1px solid ${primaryColor}` },
     onInput: (e) => {
       !isFolder && onBookmarkNameInput(e);
     },
@@ -80,7 +86,10 @@ const content = () => {
   if (!isFolder) {
     _content.append(tag.create());
   }
-  const addButton = Button({ label: "add", style: { marginTop: "1rem" } });
+  const addButton = Button({
+    label: "add",
+    style: { marginTop: "1rem", borderColor: primaryColor },
+  });
 
   addButton.addEventListener("click", async () => {
     let url = urlInput.getValue();
@@ -125,6 +134,7 @@ const create = () => {
   return popup;
 };
 register("bookmarks.editBar.add.active", update);
+
 register("bookmarks.editBar.add.isFolder", update);
 const add = { create };
 

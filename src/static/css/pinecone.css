@@ -9,6 +9,7 @@ body {
 
 #container {
   background-color: #fff;
+  position: relative;
   margin: 3rem auto;
   padding: 2rem;
   width: 80%;
@@ -41,7 +42,27 @@ body {
 .app-icon > img {
   width: 3rem;
 }
-@font-face {
+/* @font-face {
   font-family: "CustomFont";
   src: url("./static/IndieFlower-Regular.ttf");
+} */
+
+input[type="color"] {
+  position: absolute;
+  bottom: 1rem;
+  right: 2rem;
+  -webkit-appearance: none;
+  width: 25px;
+  height: 25px;
+  border: 0;
+  border-radius: 50%;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+input[type="color"]::-webkit-color-swatch {
+  border: none;
 }

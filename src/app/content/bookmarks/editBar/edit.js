@@ -1,5 +1,6 @@
 import { Input, Modal, Button, Select } from "../../../component/index.js";
 import { extractTags, extractTitle, saveTags } from "../../../utils/tag.js";
+import { getColorSettings } from "../../../utils/workspace.js";
 import {
   register,
   getState1,
@@ -13,7 +14,7 @@ import tag from "../tag.js";
 /**
  * edit window
  */
-
+const COLORSETTINGS = await getColorSettings();
 async function onEditSaveClick(details) {
   const { editing, title, url, selectedFolderId } = details;
 
@@ -39,11 +40,14 @@ const closeEditModal = (e) => {
 
 let ID;
 const update = () => {
-  document.getElementById(ID).innerHTML = "";
+  if (document.getElementById(ID)) {
+    document.getElementById(ID).innerHTML = "";
+  }
   create();
 };
 
 const content = () => {
+  const primaryColor = getState1("workspace.primaryColor");
   const editing = getState1("bookmarks.editBar.edit.editing");
   const tags = getState1("bookmarks.editBar.tags");
   const bks = getState1("bookmarks.bks");
@@ -63,6 +67,7 @@ const content = () => {
   const urlInput = new Input({
     label: "URL",
     value: editing.url,
+    inputStyle: { color: primaryColor, border: `1px solid ${primaryColor}` },
     style: { marginTop: "1rem" },
   });
   const nameWithTags = editing.url
@@ -73,6 +78,7 @@ const content = () => {
   const nameInput = new Input({
     label: "Bookmark Name",
     value: nameWithTags,
+    inputStyle: { color: primaryColor, border: `1px solid ${primaryColor}` },
     style: { marginTop: "1rem" },
     onInput: (e) => {
       editing.url && onBookmarkNameInput(e);
@@ -82,10 +88,14 @@ const content = () => {
   const selectFolder = new Select({
     label: "Select folder to move",
     style: { marginTop: "1rem" },
+    selectStyle: { color: primaryColor, border: `1px solid ${primaryColor}` },
     selected: editing.parentId,
     options: options,
   });
-  const editButton = Button({ label: "save", style: { marginTop: "1rem" } });
+  const editButton = Button({
+    label: "save",
+    style: { marginTop: "1rem", borderColor: primaryColor },
+  });
   editButton.addEventListener("click", async () => {
     await onEditSaveClick({
       url: editing.url ? urlInput.getValue() : "",

@@ -1,7 +1,9 @@
 import { Input, Button, Modal } from "../../../component/index.js";
+import { getColorSettings } from "../../../utils/workspace.js";
 import { setState1, getState1, register } from "../../../../state.js";
 import { createNewTag } from "../../../utils/tag.js";
 
+const COLORSETTINGS = await getColorSettings();
 //action
 async function addTag(tagName) {
   if (tagName) {
@@ -20,13 +22,18 @@ const closeModal = (e) => {
 let ID;
 
 const content = () => {
+  const primaryColor = getState1("workspace.primaryColor");
   const _content = document.createElement("div");
   const tagInput = new Input({
     type: "text",
     style: { marginTop: "1rem" },
+    inputStyle: { color: primaryColor, borderColor: primaryColor },
     onInput: (e) => {},
   });
-  const addButton = Button({ label: "add", style: { marginTop: "1rem" } });
+  const addButton = Button({
+    label: "add",
+    style: { marginTop: "1rem", borderColor: primaryColor },
+  });
 
   addButton.addEventListener("click", async () => {
     let tagName = tagInput.getValue().trim();
@@ -46,7 +53,9 @@ const content = () => {
 };
 
 const update = () => {
-  document.getElementById(ID).innerHTML = "";
+  if (document.getElementById(ID)) {
+    document.getElementById(ID).innerHTML = "";
+  }
   create();
 };
 

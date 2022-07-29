@@ -1,4 +1,5 @@
 import { styleHyphenFormat } from "../../../utils/utils.js";
+import { getColorSettings } from "../../../utils/workspace.js";
 import { getState1, setState1, register } from "../../../../state.js";
 
 /**
@@ -7,7 +8,7 @@ import { getState1, setState1, register } from "../../../../state.js";
 
 const TOOLS = ["add", "edit", "delete"];
 const ID = "tag-edit-bar";
-
+const COLORSETTINGS = await getColorSettings();
 const VIEW_STYLE = {
   display: "flex",
   marginTop: "2rem",
@@ -15,16 +16,16 @@ const VIEW_STYLE = {
 const TOOL_STYLE = {
   padding: "0.5rem",
   cursor: "pointer",
-  border: "1px solid black",
+  border: `1px solid ${COLORSETTINGS.primaryColor}`,
   marginRight: "0.3rem",
 };
 
 const TOOL_STYLE_ACTIVE = {
   padding: "0.5rem",
   cursor: "pointer",
-  border: "1px solid black",
+  border: `1px solid ${COLORSETTINGS.primaryColor}`,
   marginRight: "0.3rem",
-  backgroundColor: "black",
+  backgroundColor: getColorSettings().primaryColor,
   color: "white",
 };
 
@@ -53,7 +54,7 @@ const update = () => {
 
 const create = () => {
   let view;
-
+  const primaryColor = getState1("workspace.primaryColor");
   if (!(view = document.getElementById(ID))) {
     view = document.createElement("div");
     view.id = ID;
@@ -84,7 +85,12 @@ const create = () => {
     Object.assign(
       toolView.style,
       styleHyphenFormat(
-        !current || current != tool ? TOOL_STYLE : TOOL_STYLE_ACTIVE
+        !current || current != tool
+          ? Object.assign(TOOL_STYLE, { borderColor: primaryColor })
+          : Object.assign(TOOL_STYLE_ACTIVE, {
+              borderColor: primaryColor,
+              backgroundColor: primaryColor,
+            })
       )
     );
 

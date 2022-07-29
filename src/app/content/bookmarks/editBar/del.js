@@ -1,5 +1,6 @@
 import { styleHyphenFormat } from "../../../utils/utils.js";
-import { Input } from "../../../component/index.js";
+import { getColorSettings } from "../../../utils/workspace.js";
+import { Input, Button } from "../../../component/index.js";
 import {
   register,
   getState1,
@@ -11,6 +12,8 @@ import { deleteTags } from "../../../utils/tag.js";
 /**
  * edit window
  */
+
+const COLORSETTINGS = await getColorSettings();
 const VIEW_STYLE = {
   display: "block",
   width: "100%",
@@ -51,13 +54,16 @@ const closeEditModal = (e) => {
     setState1("bookmarks.editBar.delete.deleting", null);
 };
 const update = () => {
-  document.getElementById(ID).innerHTML = "";
+  if (document.getElementById(ID)) {
+    document.getElementById(ID).innerHTML = "";
+  }
   create();
 };
 
 let ID = "";
 
 const content = () => {
+  const primaryColor = getState1("workspace.primaryColor");
   const { deleting } = getState1("bookmarks.editBar.delete");
   let view;
   if (!document.getElementById("delete-modal")) {
@@ -79,6 +85,7 @@ const content = () => {
     label: "Name",
     id: "delete-name",
     disabled: true,
+    inputStyle: { color: primaryColor, borderColor: primaryColor },
     value: !deleting ? "" : deleting.title,
   }).create();
 
@@ -95,20 +102,18 @@ const content = () => {
   const bnWrapper = document.createElement("div");
   bnWrapper.style.display = "flex";
   bnWrapper.style.marginTop = "0.5rem";
-  const delBn = document.createElement("div");
-  delBn.innerText = "delete";
+  const delButton = Button({
+    label: "delete",
+    style: { marginTop: "1rem", borderColor: primaryColor },
+  });
 
-  delBn.style.padding = "0.3rem";
-
-  delBn.style.cursor = "pointer";
-  delBn.style.border = "1px solid black";
-  delBn.addEventListener("click", async () => {
+  delButton.addEventListener("click", async () => {
     await deleteBookmark({
       id: deleting.id,
       url: deleting.url,
     });
   });
-  bnWrapper.append(delBn);
+  bnWrapper.append(delButton);
   content.append(bnWrapper);
   view.append(content);
   Object.assign(head.style, styleHyphenFormat(HEAD_STYLE));
@@ -129,6 +134,7 @@ const create = () => {
   return popup;
 };
 register("bookmarks.editBar.delete.deleting", update);
+
 const del = { create, update };
 
 export default del;

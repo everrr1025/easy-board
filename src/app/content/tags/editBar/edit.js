@@ -1,9 +1,9 @@
 import { Input, Button, Modal } from "../../../component/index.js";
 import { setState1, getState1, register } from "../../../../state.js";
 import { editTag } from "../../../utils/tag.js";
-
+import { getColorSettings } from "../../../utils/workspace.js";
 let ID;
-
+const COLORSETTINGS = await getColorSettings();
 async function onEditTag(newTagName) {
   const editingTag = getState1("tags.editBar.edit.editing");
   const tags = await editTag(editingTag, newTagName);
@@ -13,22 +13,28 @@ async function onEditTag(newTagName) {
 
 const closeModal = (e) => {
   setState1("tags.editBar.edit.editing", false);
-  //setState1("tags.editBar.current", null);
 };
 const update = () => {
-  document.getElementById(ID).innerHTML = "";
+  if (document.getElementById(ID)) {
+    document.getElementById(ID).innerHTML = "";
+  }
   create();
 };
 
 const content = () => {
+  const primaryColor = getState1("workspace.primaryColor");
   const { editing } = getState1("tags.editBar.edit");
   const _content = document.createElement("div");
   const tagInput = new Input({
     type: "text",
     value: editing && editing.title,
+    inputStyle: { color: primaryColor, borderColor: primaryColor },
     style: { marginTop: "1rem" },
   });
-  const editButton = Button({ label: "edit", style: { marginTop: "1rem" } });
+  const editButton = Button({
+    label: "edit",
+    style: { marginTop: "1rem", borderColor: primaryColor },
+  });
 
   editButton.addEventListener("click", async () => {
     let tagName = tagInput.getValue().trim();

@@ -1,7 +1,9 @@
 import { Input, Button, Modal } from "../../../component/index.js";
 import { setState1, getState1, register } from "../../../../state.js";
 import { deleteTag } from "../../../utils/tag.js";
+import { getColorSettings } from "../../../utils/workspace.js";
 
+const COLORSETTINGS = await getColorSettings();
 //action
 async function onDeleteTag(tagName) {
   if (tagName) {
@@ -20,15 +22,20 @@ const closeModal = (e) => {
 let ID;
 
 const content = () => {
+  const primaryColor = getState1("workspace.primaryColor");
   const { deleting } = getState1("tags.editBar.delete");
   const _content = document.createElement("div");
   const tagInput = new Input({
     type: "text",
     value: deleting && deleting.title,
+    inputStyle: { color: primaryColor, borderColor: primaryColor },
     style: { marginTop: "1rem" },
     disabled: true,
   });
-  const delButton = Button({ label: "delete", style: { marginTop: "1rem" } });
+  const delButton = Button({
+    label: "delete",
+    style: { marginTop: "1rem", borderColor: primaryColor },
+  });
 
   delButton.addEventListener("click", async () => {
     let tagName = tagInput.getValue().trim();
@@ -48,7 +55,9 @@ const content = () => {
 };
 
 const update = () => {
-  document.getElementById(ID).innerHTML = "";
+  if (document.getElementById(ID)) {
+    document.getElementById(ID).innerHTML = "";
+  }
   create();
 };
 
@@ -67,6 +76,6 @@ const create = () => {
 };
 
 register("tags.editBar.delete.deleting", update);
-const add = { create };
+const del = { create };
 
-export default add;
+export default del;

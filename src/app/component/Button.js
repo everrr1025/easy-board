@@ -1,4 +1,5 @@
 import { styleHyphenFormat } from "../utils/utils.js";
+import { getColorSettings } from "../utils/workspace.js";
 
 const STYLE = {
   border: "1px solid black",

@@ -5,6 +5,7 @@ import {
   openExtensionTab,
 } from "../../utils/chrome.js";
 import { styleHyphenFormat, getChildren } from "../../utils/utils.js";
+import { getColorSettings } from "../../utils/workspace.js";
 import { getTags } from "../../utils/tag.js";
 import breadcrumb from "./breadcrumb.js";
 import editBar from "./editBar/editBar.js";
@@ -15,6 +16,7 @@ import add from "../bookmarks/editBar/add.js";
 /*
  * component bookmarks
  */
+const COLORSETTINGS = await getColorSettings();
 const VIEW_STYLE = {
   display: "flex",
   flexDirection: "column",
@@ -32,7 +34,7 @@ const BOOKMARK_VIEW_STYLE = {
 
 const FOLDER_STYLE = {
   backgroundColor: "#ddd",
-  border: "1px solid black",
+  border: `1px solid ${COLORSETTINGS.primaryColor}`,
   padding: "0.5rem",
   margin: "0 1rem 1rem 0 ",
   cursor: "pointer",
@@ -47,7 +49,7 @@ const FOLDER_STYLE = {
 const BOOKMARK_STYLE = {
   backgroundColor: "white",
   cursor: "pointer",
-  border: "1px solid black",
+  border: `1px solid ${COLORSETTINGS.primaryColor}`,
   padding: "0.5rem",
   margin: "0 1rem 1rem 0 ",
   minWidth: "1rem",
@@ -92,7 +94,7 @@ const update = () => {
 
 function create() {
   const isSelected = getState1("bookmarks.isSelected");
-  const deleting = getState1("bookmarks.editBar.delete.deleting");
+  const primaryColor = getState1("workspace.primaryColor");
   let view;
   let bkView = document.createElement("div");
   if (document.getElementById("bookmarks"))
@@ -126,8 +128,12 @@ function create() {
       Object.assign(
         bookmarkDiv.style,
         isFolder
-          ? styleHyphenFormat(FOLDER_STYLE)
-          : styleHyphenFormat(BOOKMARK_STYLE)
+          ? Object.assign(styleHyphenFormat(FOLDER_STYLE), {
+              borderColor: primaryColor,
+            })
+          : Object.assign(styleHyphenFormat(BOOKMARK_STYLE), {
+              borderColor: primaryColor,
+            })
       );
 
       if (

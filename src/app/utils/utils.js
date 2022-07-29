@@ -12,6 +12,7 @@ export const styleHyphenFormat = (styleIn) => {
 };
 
 export const getChildren = (bk, id) => {
+  if (!bk || !id) return;
   let result;
   let inner = (bk, id) => {
     if (bk.id == id) {

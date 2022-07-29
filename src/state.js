@@ -3,6 +3,8 @@ import { getSubtree } from "../src/app/utils/chrome.js";
 let state = {
   workspace: {
     isSelected: null,
+
+    primaryColor: null,
   },
   tags: {
     tags: null,
@@ -57,6 +59,9 @@ let lis = {
   workspace: {
     listener: [],
     isSelected: {
+      listener: [],
+    },
+    primaryColor: {
       listener: [],
     },
   },

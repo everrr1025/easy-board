@@ -35,6 +35,7 @@ const update = () => {
 };
 
 const content = (currentTag) => {
+  const primaryColor = getState1("workspace.primaryColor");
   const { title, bookmarksInTag } = currentTag;
   const _content = document.createElement("div");
   const _bookmarksView = document.createElement("div");
@@ -46,7 +47,12 @@ const content = (currentTag) => {
       window.open(bk.url, "_blank");
     });
     bk_view.innerText = bk.title;
-    Object.assign(bk_view.style, styleHyphenFormat(BOOKMARK_ITEM_VIEW_STYLE));
+    Object.assign(
+      bk_view.style,
+      Object.assign(styleHyphenFormat(BOOKMARK_ITEM_VIEW_STYLE), {
+        borderColor: primaryColor,
+      })
+    );
     _bookmarksView.append(bk_view);
   }
 

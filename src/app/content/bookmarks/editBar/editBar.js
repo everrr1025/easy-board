@@ -1,10 +1,11 @@
 import { getState1, setState1, register } from "../../../../state.js";
+import { getColorSettings } from "../../../utils/workspace.js";
 import { styleHyphenFormat } from "../../../utils/utils.js";
 /**
  * edit bar
  */
 const TOOLS = ["add", "edit", "delete"];
-
+const COLORSETTINGS = await getColorSettings();
 const VIEW_STYLE = {
   display: "flex",
   marginTop: "2rem",
@@ -12,16 +13,16 @@ const VIEW_STYLE = {
 const TOOL_STYLE = {
   padding: "0.5rem",
   cursor: "pointer",
-  border: "1px solid black",
+  border: `1px solid ${COLORSETTINGS.primaryColor}`,
   marginRight: "0.3rem",
 };
 
 const TOOL_STYLE_ACTIVE = {
   padding: "0.5rem",
   cursor: "pointer",
-  border: "1px solid black",
+  border: `1px solid ${COLORSETTINGS.primaryColor}`,
   marginRight: "0.3rem",
-  backgroundColor: "black",
+  backgroundColor: COLORSETTINGS.primaryColor,
   color: "white",
 };
 //actions
@@ -44,15 +45,6 @@ const createEditTool = () => {
   return view;
 };
 
-// const popup = (display) => {
-//   const view = document.createElement("div");
-//   view.append(add.create());
-//   Object.assign(
-//     view.style,
-//     styleHyphenFormat(display ? POPUP_STYLE : POPUP_STYLE_HIDE)
-//   );
-//   return view;
-// };
 const update = () => {
   if (document.getElementById("edit-bar")) {
     document.getElementById("edit-bar").innerText = "";
@@ -61,6 +53,7 @@ const update = () => {
 };
 const create = () => {
   let view;
+  const primaryColor = getState1("workspace.primaryColor");
 
   if (!document.getElementById("edit-bar")) {
     view = document.createElement("div");
@@ -95,12 +88,18 @@ const create = () => {
     Object.assign(
       toolView.style,
       styleHyphenFormat(
-        !current || current != tool ? TOOL_STYLE : TOOL_STYLE_ACTIVE
+        !current || current != tool
+          ? Object.assign(TOOL_STYLE, { borderColor: primaryColor })
+          : Object.assign(TOOL_STYLE_ACTIVE, {
+              borderColor: primaryColor,
+              backgroundColor: primaryColor,
+            })
       )
     );
 
     view.append(toolView);
   });
+
   Object.assign(view.style, styleHyphenFormat(VIEW_STYLE));
   return view;
 };

@@ -1,21 +1,25 @@
 import { styleHyphenFormat } from "../utils/utils.js";
+import { getColorSettings } from "../utils/workspace.js";
 
 /**
  * pure component - input with label
  */
+
+const COLORSETTING = await getColorSettings();
 const STYLE = {
   display: "flex",
   flexDirection: "column",
   margin: "0.5rem 0",
 };
 
-const CHECKBOX_STYLE = {
-  // fontSize: "12px",
-};
+const CHECKBOX_STYLE = {};
 const TEXT_STYLE = {
   marginTop: "0.25rem",
+  padding: "0 0 0 5px ",
   height: "2rem",
   fontSize: "14px",
+  border: `1px solid ${COLORSETTING.primaryColor}`,
+  color: COLORSETTING.primaryColor,
 };
 
 const createCheckbox = (details) => {
@@ -25,8 +29,9 @@ const createCheckbox = (details) => {
   const _label = document.createElement("label");
   const _input = document.createElement("input");
   _input.type = "checkbox";
+
   _input.checked = checked;
-  _input.style.verticalAlign = "middle";
+  _input.style.verticalAlign = "text-top";
 
   if (labelFirst) {
     _label.append(document.createTextNode(label ?? ""));
@@ -63,6 +68,7 @@ function Input(details) {
       id,
       value,
       disabled,
+      inputStyle,
       style,
       onClick,
       onInput,
@@ -99,6 +105,7 @@ function Input(details) {
       view.append(_input);
       Object.assign(_input.style, styleHyphenFormat(TEXT_STYLE));
       Object.assign(view.style, styleHyphenFormat(STYLE));
+      inputStyle && Object.assign(_input.style, styleHyphenFormat(inputStyle));
       style && Object.assign(view.style, styleHyphenFormat(style));
     }
     return view;
