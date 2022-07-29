@@ -3,7 +3,7 @@ import { setState1, getState1, register } from "../../../../state.js";
 import { deleteTag } from "../../../utils/tag.js";
 import { getColorSettings } from "../../../utils/workspace.js";
 
-const COLORSETTINGS = await getColorSettings();
+//const COLORSETTINGS = await getColorSettings();
 //action
 async function onDeleteTag(tagName) {
   if (tagName) {
@@ -28,13 +28,13 @@ const content = () => {
   const tagInput = new Input({
     type: "text",
     value: deleting && deleting.title,
-    inputStyle: { color: primaryColor, borderColor: primaryColor },
+    inputStyle: { color: primaryColor, border: `1px solid ${primaryColor}` },
     style: { marginTop: "1rem" },
     disabled: true,
   });
   const delButton = Button({
     label: "delete",
-    style: { marginTop: "1rem", borderColor: primaryColor },
+    style: { marginTop: "1rem", border: `1px solid ${primaryColor}` },
   });
 
   delButton.addEventListener("click", async () => {

@@ -3,7 +3,7 @@ import { setState1, getState1, register } from "../../../../state.js";
 import { editTag } from "../../../utils/tag.js";
 import { getColorSettings } from "../../../utils/workspace.js";
 let ID;
-const COLORSETTINGS = await getColorSettings();
+//const COLORSETTINGS = await getColorSettings();
 async function onEditTag(newTagName) {
   const editingTag = getState1("tags.editBar.edit.editing");
   const tags = await editTag(editingTag, newTagName);
@@ -33,7 +33,7 @@ const content = () => {
   });
   const editButton = Button({
     label: "edit",
-    style: { marginTop: "1rem", borderColor: primaryColor },
+    style: { marginTop: "1rem", border: `1px solid ${primaryColor}` },
   });
 
   editButton.addEventListener("click", async () => {

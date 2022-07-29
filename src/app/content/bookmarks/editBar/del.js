@@ -13,7 +13,7 @@ import { deleteTags } from "../../../utils/tag.js";
  * edit window
  */
 
-const COLORSETTINGS = await getColorSettings();
+//const COLORSETTINGS = await getColorSettings();
 const VIEW_STYLE = {
   display: "block",
   width: "100%",
@@ -85,7 +85,7 @@ const content = () => {
     label: "Name",
     id: "delete-name",
     disabled: true,
-    inputStyle: { color: primaryColor, borderColor: primaryColor },
+    inputStyle: { color: primaryColor, border: `1px solid ${primaryColor}` },
     value: !deleting ? "" : deleting.title,
   }).create();
 
@@ -104,7 +104,7 @@ const content = () => {
   bnWrapper.style.marginTop = "0.5rem";
   const delButton = Button({
     label: "delete",
-    style: { marginTop: "1rem", borderColor: primaryColor },
+    style: { marginTop: "1rem", border: `1px solid ${primaryColor}` },
   });
 
   delButton.addEventListener("click", async () => {

@@ -10,14 +10,16 @@ function init() {
       document.getElementById("container").append(workspace.create());
     } else {
       //shoud update body style here since it doesn't belong to any component.
+      const primaryColor = userData.easyBoard.setting.colorSetting.primaryColor;
       Object.assign(document.body.style, {
-        color: userData.easyBoard.setting.colorSetting.primaryColor,
-        backgroundColor: userData.easyBoard.setting.colorSetting.primaryColor,
+        color: primaryColor,
+        backgroundColor: primaryColor,
       });
 
       const isSelectedNodeId = userData.easyBoard.bookmarks.isSelected.id;
 
       getSubtree(isSelectedNodeId).then((bkNodes) => {
+        setState1("workspace.primaryColor", primaryColor);
         setState1("bookmarks.bks", bkNodes[0]);
         setState1("bookmarks.path", [bkNodes[0]]);
         setState1("bookmarks.isSelected", isSelectedNodeId);

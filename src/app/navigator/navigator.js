@@ -15,13 +15,13 @@ const NAVI_STYLE = {
   display: "flex",
 };
 
-let COLORSETTING = await getColorSettings();
+//let COLORSETTING = await getColorSettings();
 //tabs style
 const TAB_STYLE = {
   width: "5rem",
   textAlign: "center",
   backgroundColor: "#fff",
-  border: `1px solid ${COLORSETTING.primaryColor}`,
+  //border: `1px solid ${COLORSETTING.primaryColor}`,
   padding: "0.5rem",
   margin: "0 1rem 0 0",
   cursor: "pointer",
@@ -29,9 +29,9 @@ const TAB_STYLE = {
 const TAB_STYLE_SELECTED = {
   width: "5rem",
   textAlign: "center",
-  backgroundColor: COLORSETTING.primaryColor,
+  //backgroundColor: COLORSETTING.primaryColor,
   color: "#fff",
-  border: `1px solid ${COLORSETTING.primaryColor}`,
+  //border: `1px solid ${COLORSETTING.primaryColor}`,
   padding: "0.5rem",
   margin: "0 1rem 0 0",
   cursor: "pointer",
@@ -66,7 +66,6 @@ const create = () => {
   TABS_CATEGORY.forEach((category) => {
     const isSelected = getState1("navigator.isSelected"); //upadte state
     const naviTab = document.createElement("div");
-    naviTab.className = "eb-theme";
     naviTab.dataset.category = category;
     naviTab.innerText = category;
     naviTab.addEventListener(

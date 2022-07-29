@@ -3,7 +3,6 @@ import { getColorSettings } from "../../../utils/workspace.js";
 import { setState1, getState1, register } from "../../../../state.js";
 import { createNewTag } from "../../../utils/tag.js";
 
-const COLORSETTINGS = await getColorSettings();
 //action
 async function addTag(tagName) {
   if (tagName) {
@@ -27,12 +26,12 @@ const content = () => {
   const tagInput = new Input({
     type: "text",
     style: { marginTop: "1rem" },
-    inputStyle: { color: primaryColor, borderColor: primaryColor },
+    inputStyle: { color: primaryColor, border: `1px solid ${primaryColor}` },
     onInput: (e) => {},
   });
   const addButton = Button({
     label: "add",
-    style: { marginTop: "1rem", borderColor: primaryColor },
+    style: { marginTop: "1rem", border: `1px solid ${primaryColor}` },
   });
 
   addButton.addEventListener("click", async () => {

@@ -1,7 +1,7 @@
 import { styleHyphenFormat } from "../utils/utils.js";
 import { getColorSettings } from "../utils/workspace.js";
 
-const COLORSETTING = await getColorSettings();
+//const COLORSETTING = await getColorSettings();
 const STYLE = {
   display: "flex",
   flexDirection: "column",
@@ -11,8 +11,8 @@ const STYLE = {
 const SELECT_STYLE = {
   marginTop: "0.25rem",
   height: "2rem",
-  border: `1px solid ${COLORSETTING.primaryColor}`,
-  color: COLORSETTING.primaryColor,
+  // border: `1px solid ${COLORSETTING.primaryColor}`,
+  // color: COLORSETTING.primaryColor,
 };
 
 function Select(details) {

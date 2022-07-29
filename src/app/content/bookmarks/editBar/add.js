@@ -14,7 +14,7 @@ import tag from "../tag.js";
  * add component in edit bar
  */
 
-const COLORSETTINGS = await getColorSettings();
+//const COLORSETTINGS = await getColorSettings();
 //action
 async function addBookmark(details) {
   const { parentId, title, url } = details;

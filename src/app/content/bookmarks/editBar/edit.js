@@ -14,7 +14,7 @@ import tag from "../tag.js";
 /**
  * edit window
  */
-const COLORSETTINGS = await getColorSettings();
+//const COLORSETTINGS = await getColorSettings();
 async function onEditSaveClick(details) {
   const { editing, title, url, selectedFolderId } = details;
 

@@ -5,7 +5,7 @@ import { getColorSettings } from "../utils/workspace.js";
  * pure component - input with label
  */
 
-const COLORSETTING = await getColorSettings();
+//const COLORSETTING = await getColorSettings();
 const STYLE = {
   display: "flex",
   flexDirection: "column",
@@ -18,8 +18,8 @@ const TEXT_STYLE = {
   padding: "0 0 0 5px ",
   height: "2rem",
   fontSize: "14px",
-  border: `1px solid ${COLORSETTING.primaryColor}`,
-  color: COLORSETTING.primaryColor,
+  //border: `1px solid ${COLORSETTING.primaryColor}`,
+  //color: COLORSETTING.primaryColor,
 };
 
 const createCheckbox = (details) => {

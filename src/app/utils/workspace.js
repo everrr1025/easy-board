@@ -12,7 +12,7 @@ async function createWorkspace({ name, isSync }) {
           bookmarks: { isSelected: ws },
           setting: {
             colorSetting: {
-              primaryColor: "#ffffff",
+              primaryColor: "#000000",
             },
           },
         },

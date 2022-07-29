@@ -7,9 +7,9 @@ import tags from "./tags/tags.js";
  *
  * view to hold the content of bookmarks,tabs,etc.
  */
-const COLORSETTING = await getColorSettings();
+//const COLORSETTING = await getColorSettings();
 const STYLE = {
-  border: `1px solid ${COLORSETTING.primaryColor}`,
+  //border: `1px solid ${COLORSETTING.primaryColor}`,
   margin: "1rem 0 1rem 0",
   padding: "1rem",
 };
@@ -42,7 +42,9 @@ function create() {
 
   Object.assign(
     view.style,
-    Object.assign(styleHyphenFormat(STYLE), { borderColor: primaryColor })
+    Object.assign(styleHyphenFormat(STYLE), {
+      border: `1px solid ${primaryColor}`,
+    })
   );
   return view;
 }

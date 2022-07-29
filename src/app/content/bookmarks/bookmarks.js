@@ -16,7 +16,7 @@ import add from "../bookmarks/editBar/add.js";
 /*
  * component bookmarks
  */
-const COLORSETTINGS = await getColorSettings();
+//const COLORSETTINGS = await getColorSettings();
 const VIEW_STYLE = {
   display: "flex",
   flexDirection: "column",
@@ -34,7 +34,7 @@ const BOOKMARK_VIEW_STYLE = {
 
 const FOLDER_STYLE = {
   backgroundColor: "#ddd",
-  border: `1px solid ${COLORSETTINGS.primaryColor}`,
+  //border: `1px solid ${COLORSETTINGS.primaryColor}`,
   padding: "0.5rem",
   margin: "0 1rem 1rem 0 ",
   cursor: "pointer",
@@ -49,7 +49,6 @@ const FOLDER_STYLE = {
 const BOOKMARK_STYLE = {
   backgroundColor: "white",
   cursor: "pointer",
-  border: `1px solid ${COLORSETTINGS.primaryColor}`,
   padding: "0.5rem",
   margin: "0 1rem 1rem 0 ",
   minWidth: "1rem",
@@ -129,10 +128,10 @@ function create() {
         bookmarkDiv.style,
         isFolder
           ? Object.assign(styleHyphenFormat(FOLDER_STYLE), {
-              borderColor: primaryColor,
+              border: `1px solid ${primaryColor}`,
             })
           : Object.assign(styleHyphenFormat(BOOKMARK_STYLE), {
-              borderColor: primaryColor,
+              border: `1px solid ${primaryColor}`,
             })
       );
 

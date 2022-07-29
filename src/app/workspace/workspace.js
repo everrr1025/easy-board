@@ -1,7 +1,7 @@
 import { Modal, Input, Button } from "../component/index.js";
-import { createWorkspace, getColorSettings } from "../utils/workspace.js";
-
-const COLORSETTINGS = await getColorSettings();
+import { createWorkspace } from "../utils/workspace.js";
+import { getState1 } from "../../state.js";
+//const COLORSETTINGS = await getColorSettings();
 async function onClickCreate(e, details) {
   await createWorkspace(details);
   window.location.reload();
@@ -9,6 +9,7 @@ async function onClickCreate(e, details) {
 const update = () => {};
 
 const content = () => {
+  const primaryColor = getState1("workspace.primaryColor");
   const _content = document.createElement("div");
 
   const _workspace = new Input({
@@ -26,7 +27,7 @@ const content = () => {
 
   const _createButton = Button({
     label: "create",
-    style: { marginTop: "1rem", borderColor: COLORSETTINGS.primaryColor },
+    style: { marginTop: "1rem", borderColor: primaryColor },
   });
   _createButton.addEventListener("click", async (e) => {
     await onClickCreate(e, { name: _workspace.getValue(), isSync: true });
