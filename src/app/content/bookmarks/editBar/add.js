@@ -72,7 +72,8 @@ const content = () => {
     type: "checkbox",
     label: "is folder",
     checked: isFolder,
-    style: { display: "inline", paddingLeft: "1rem" },
+    boxStyle: { border: `1px solid ${primaryColor}` },
+    style: { display: "inline", marginLeft: "1rem" },
     onClick: (e, checked) => {
       setState1("bookmarks.editBar.add.isFolder", checked);
     },
@@ -105,7 +106,7 @@ const content = () => {
 
   _content.append(addButton);
 
-  //create customized titleq
+  //create customized title
   const title = document.createElement("div");
   title.textContent = "Add Bookmark";
   // title.style.fontSize = "14px";

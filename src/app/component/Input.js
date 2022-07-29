@@ -23,15 +23,19 @@ const TEXT_STYLE = {
 };
 
 const createCheckbox = (details) => {
-  const { label, style, checked, labelFirst, onClick } = details;
+  const { label, style, boxStyle, checked, labelFirst, onClick } = details;
 
-  const view = document.createElement("div");
+  //const view = document.createElement("div");
   const _label = document.createElement("label");
-  const _input = document.createElement("input");
-  _input.type = "checkbox";
+  _label.className = "cb-container";
 
+  const _input = document.createElement("input");
+  const _checkmark = document.createElement("span");
+  _checkmark.className = "checkmark";
+
+  _input.type = "checkbox";
   _input.checked = checked;
-  _input.style.verticalAlign = "text-top";
+  // _input.style.verticalAlign = "text-top";
 
   if (labelFirst) {
     _label.append(document.createTextNode(label ?? ""));
@@ -40,16 +44,17 @@ const createCheckbox = (details) => {
     _label.append(_input);
     _label.append(document.createTextNode(label ?? ""));
   }
-  view.append(_label);
+  _label.append(_checkmark);
+  // view.append(_label);
   _input.addEventListener("change", (e) => {
     onClick(e, !checked);
   });
 
-  Object.assign(view.style, styleHyphenFormat(CHECKBOX_STYLE));
-  if (style) {
-    Object.assign(view.style, styleHyphenFormat(style));
-  }
-  return view;
+  Object.assign(_label.style, styleHyphenFormat(CHECKBOX_STYLE));
+  boxStyle && Object.assign(_checkmark.style, styleHyphenFormat(boxStyle));
+  style && Object.assign(_label.style, styleHyphenFormat(style));
+
+  return _label;
 };
 
 function Input(details) {
@@ -71,6 +76,7 @@ function Input(details) {
       inputStyle,
       style,
       onClick,
+      boxStyle,
       onInput,
       checked,
       labelFirst,
@@ -80,6 +86,7 @@ function Input(details) {
       view = createCheckbox({
         label,
         style,
+        boxStyle,
         checked,
         labelFirst,
         onClick,
