@@ -6,6 +6,7 @@ import {
 import { getFolders, getFullPath } from "./src/app/utils/utils.js";
 import { Select, Input } from "./src/app/component/index.js";
 import { extractTags, extractTitle, saveTags } from "./src/app/utils/tag.js";
+import { getState1 } from "./src/state.js";
 
 //check if workspace has been created.
 let userData = await getUserData(["easyBoard"]);
@@ -56,7 +57,11 @@ if (!userData.easyBoard || !userData.easyBoard.bookmarks) {
   selectWrapper.append(selectFolder.create()); //set folder
 
   //onclick add
-  document.getElementById("add").addEventListener("click", async () => {
+
+  const addButton = document.getElementById("add");
+  const primaryColor = userData.easyBoard.setting.colorSetting.primaryColor;
+  addButton.style.backgroundColor = primaryColor;
+  addButton.addEventListener("click", async () => {
     const createdBookmark = await createBookmark({
       url: tab.url,
       title: extractTitle(nameInput.getValue()),
