@@ -79,13 +79,14 @@ const content = () => {
     label: "URL",
     id: "delete-url",
     disabled: true,
+    inputStyle: { border: "none", color: primaryColor },
     value: !deleting ? "" : deleting.url,
   }).create();
   const nameInput = new Input({
     label: "Name",
     id: "delete-name",
     disabled: true,
-    inputStyle: { color: primaryColor, border: `1px solid ${primaryColor}` },
+    inputStyle: { border: "none", color: primaryColor },
     value: !deleting ? "" : deleting.title,
   }).create();
 

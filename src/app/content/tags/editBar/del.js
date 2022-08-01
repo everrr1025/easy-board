@@ -28,7 +28,7 @@ const content = () => {
   const tagInput = new Input({
     type: "text",
     value: deleting && deleting.title,
-    inputStyle: { color: primaryColor, border: `1px solid ${primaryColor}` },
+    inputStyle: { border: "none", color: primaryColor },
     style: { marginTop: "1rem" },
     disabled: true,
   });
