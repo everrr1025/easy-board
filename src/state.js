@@ -3,7 +3,7 @@ import { getSubtree } from "../src/app/utils/chrome.js";
 let state = {
   workspace: {
     isSelected: null,
-
+    preventEvent: false, //sometime should prevent event fired by chrome, if the event is fired with a extention operation
     primaryColor: null,
   },
   tags: {
@@ -59,6 +59,9 @@ let lis = {
   workspace: {
     listener: [],
     isSelected: {
+      listener: [],
+    },
+    preventEvent: {
       listener: [],
     },
     primaryColor: {

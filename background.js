@@ -6,7 +6,7 @@ chrome.bookmarks.onCreated.addListener((id, bookmark) => {
   chrome.runtime.sendMessage(
     { id, bookmark, action: "create" },
     function (response) {
-      console.log(response.farewell);
+      response && console.log(response.farewell);
     }
   );
 });

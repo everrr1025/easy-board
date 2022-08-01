@@ -23,22 +23,24 @@ export async function getBookmarksByID(nodeId) {
 }
 
 export async function createBookmark(details) {
+  setState1("workspace.preventEvent", true);
   let node = await chrome.bookmarks.create(details);
   return node;
 }
 
 export async function updateBookmark(details) {
+  setState1("workspace.preventEvent", true);
   const { id, url, title } = details;
-
   return await chrome.bookmarks.update(id, { url, title });
 }
 
 export async function moveBookmark(details) {
+  setState1("workspace.preventEvent", true);
   const { id, selectedFolderId } = details;
-
   return await chrome.bookmarks.move(id, { parentId: selectedFolderId });
 }
 export async function removeBookmark(details) {
+  setState1("workspace.preventEvent", true);
   const { id } = details;
   return await chrome.bookmarks.remove(id);
 }
@@ -67,6 +69,14 @@ export async function getUserData(key) {
 
 //listen to chrome bookmark updated
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  const preventEvent = getState1("workspace.preventEvent");
+  console.log(`preventEvent is ${preventEvent}`);
+  if (preventEvent) {
+    setState1("workspace.preventEvent", false);
+    console.log(`set preventEvent to false`);
+    sendResponse({ farewell: "event get prevented" });
+    return true;
+  }
   handler(request, sender, sendResponse);
   return true;
 });
