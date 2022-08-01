@@ -70,10 +70,10 @@ export async function getUserData(key) {
 //listen to chrome bookmark updated
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   const preventEvent = getState1("workspace.preventEvent");
-  console.log(`preventEvent is ${preventEvent}`);
+  // console.log(`preventEvent is ${preventEvent}`);
   if (preventEvent) {
     setState1("workspace.preventEvent", false);
-    console.log(`set preventEvent to false`);
+    // console.log(`set preventEvent to false`);
     sendResponse({ farewell: "event get prevented" });
     return true;
   }
@@ -113,9 +113,12 @@ async function createHandler(request) {
   const { bookmark } = request; //updated bookmark id
   //check if it belongs to the selected workspace
   const bks = getState1("bookmarks.bks");
-  const parent = getChildren(bks, bookmark.parentId);
+  const inside = getChildren(bks, bookmark.parentId);
   //if parent found, then update the workspace bookmark tree
-  if (parent) {
+  if (inside) {
+    if (bookmark.url) {
+      updateBookmarkTags([bookmark], []);
+    }
     await bookmarkAdded();
     return { farewell: "workspace bookmarks updated" };
   } else {
