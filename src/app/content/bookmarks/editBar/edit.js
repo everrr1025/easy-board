@@ -30,7 +30,7 @@ async function onEditSaveClick(details) {
 
   await bookmarkAdded();
   url && (await saveTags(editing, extractTagsFromBookmarkName(title), "edit"));
-  setState1("bookmarks.editBar.edit.editing", null);
+  closeEditModal();
 }
 const onBookmarkNameInput = (e) => {
   const tags = extractTagsFromBookmarkName(e.target.value);
