@@ -22,7 +22,11 @@ async function onEditSaveClick(details) {
   const { editing, title, url, selectedFolderId } = details;
 
   if (editing.title != title || editing.url !== url) {
-    await updateBookmark({ id: editing.id, url, title: extractTitle(title) });
+    await updateBookmark({
+      id: editing.id,
+      url,
+      title: url ? extractTitle(title) : title,
+    });
   }
   if (editing.parentId != selectedFolderId) {
     await moveBookmark({ id: editing.id, selectedFolderId });

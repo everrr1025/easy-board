@@ -8,6 +8,9 @@ async function onEditTag(newTagName) {
   if (newTagName.indexOf("##") >= 0) {
     alert(`'##' is not allowed in tag name`);
     return;
+  } else if (newTagName.trim() == "") {
+    alert(`please input a valid tag name`);
+    return;
   }
   const editingTag = getState1("tags.editBar.edit.editing");
   const tags = await editTag(editingTag, newTagName);

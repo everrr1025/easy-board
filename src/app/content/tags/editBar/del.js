@@ -6,7 +6,7 @@ import { getColorSettings } from "../../../utils/workspace.js";
 //const COLORSETTINGS = await getColorSettings();
 //action
 async function onDeleteTag(tagName) {
-  if (tagName) {
+  if (tagName.trim()) {
     const tags = await deleteTag(tagName);
     closeModal();
     setState1("tags.tags", tags);

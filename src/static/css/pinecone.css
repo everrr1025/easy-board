@@ -134,3 +134,7 @@ input[type="color"]::-webkit-color-swatch {
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 }
+::placeholder {
+  color: var(--c);
+  opacity: 0.5;
+}

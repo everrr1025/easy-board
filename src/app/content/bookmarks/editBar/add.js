@@ -24,7 +24,7 @@ async function addBookmark(details) {
   const createdBookmark = await createBookmark({
     parentId,
     url,
-    title: extractTitle(title),
+    title: url ? extractTitle(title) : title,
   });
   await bookmarkAdded(parentId);
 
@@ -71,6 +71,7 @@ const content = () => {
     type: "text",
     label: "Bookmark Name",
     style: { marginTop: "1rem" },
+    placeholder: isFolder ? "" : "add '##' after bookmark name to add tags",
     inputStyle: { color: primaryColor, border: `1px solid ${primaryColor}` },
     onInput: (e) => {
       !isFolder && onBookmarkNameInput(e);

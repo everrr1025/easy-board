@@ -80,6 +80,7 @@ function Input(details) {
       onInput,
       checked,
       labelFirst,
+      placeholder,
     } = details;
     let view;
     if (type == "checkbox") {
@@ -100,6 +101,7 @@ function Input(details) {
       _input.type = type ?? "text";
       _input.value = value ?? "";
       _input.disabled = disabled ?? "";
+      _input.placeholder = placeholder ?? "";
 
       _input.addEventListener("change", (e) => {
         this.value = e.target.value;

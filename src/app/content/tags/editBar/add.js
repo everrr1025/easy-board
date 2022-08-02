@@ -4,7 +4,7 @@ import { createNewTag, extractTagsFromTagInput } from "../../../utils/tag.js";
 
 //action
 async function addTag(tagName) {
-  if (tagName) {
+  if (tagName.trim()) {
     const tags = await createNewTag(extractTagsFromTagInput(tagName));
     closeModal();
     setState1("tags.tags", tags);
@@ -27,6 +27,7 @@ const content = () => {
     style: { marginTop: "1rem" },
     inputStyle: { color: primaryColor, border: `1px solid ${primaryColor}` },
     onInput: (e) => {},
+    placeholder: "use '##' to add multiple tags at once",
   });
   const addButton = Button({
     label: "add",
@@ -59,6 +60,7 @@ const update = () => {
 
 const create = () => {
   let popup;
+
   if (!(popup = document.getElementById(ID))) {
     popup = document.createElement("div");
     popup.id = ID = "tag-add-modal-wrapper";
@@ -67,6 +69,7 @@ const create = () => {
   if (getState1("tags.editBar.add.active")) {
     popup.append(content());
   }
+
   return popup;
 };
 
