@@ -10,7 +10,7 @@ export const createTag = ({ title }) => {
   return { title };
 };
 
-export const extractTags = (bookmarkName) => {
+export const extractTagsFromBookmarkName = (bookmarkName) => {
   let tags = [];
   const words = bookmarkName.split("##");
 
@@ -24,16 +24,30 @@ export const extractTags = (bookmarkName) => {
 
   return tags;
 };
+/**
+ * retrieve tags from input
+ * ##web##china, web##china, will both retrieve 'web','china'
+ * @param {*} input
+ * @returns
+ */
+export const extractTagsFromTagInput = (input) => {
+  let result = [];
+  const tags = input.split("##");
+  result = [...new Set(tags)].filter((tag) => tag); //remove duplicates and empty
+  return result;
+};
 
 export const extractTitle = (bookmarkName) => {
   const words = bookmarkName.split("##");
   return words[0];
 };
 
-export async function createNewTag(tag) {
+export async function createNewTag(tags) {
   const storage = await getUserData(["tags"]);
   const tagsMap = new Map(JSON.parse(storage.tags));
-  !tagsMap.has(tag) && tagsMap.set(tag, { title: tag, bookmarks: [] });
+  for (const tag of tags) {
+    !tagsMap.has(tag) && tagsMap.set(tag, { title: tag, bookmarks: [] });
+  }
   await setUserData({ tags: JSON.stringify([...tagsMap]) });
   return tagsMap;
 }
@@ -42,11 +56,11 @@ export async function saveTags(bookmark, tags, operation) {
   const toUpdateTags = [];
   const toUpdateBookmarkTags = [];
   for (const tag of tags) {
-    const tagObj = createTag(tag);
-    toUpdateBookmarkTags.push(tagObj);
+    //const tagObj = createTag(tag);
+    toUpdateBookmarkTags.push(tag);
 
     //should add bookmark in to the tags while update tags in storage
-    const tagObjCopy = { ...tagObj };
+    const tagObjCopy = { ...tag };
     tagObjCopy.bookmarks = [];
     tagObjCopy.bookmarks.push(bookmark.id);
     toUpdateTags.push(tagObjCopy);

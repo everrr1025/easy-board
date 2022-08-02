@@ -1,4 +1,7 @@
-import { createTag, extractTags } from "../src/app/utils/tag.js";
+import {
+  createTag,
+  extractTagsFromBookmarkName,
+} from "../src/app/utils/tag.js";
 
 const createTagTest = () => {
   const tag = createTag({ title: "react" });
@@ -12,11 +15,11 @@ const createTagTest = () => {
 const extractTagsTest = () => {
   let passed = false;
   const bookmarkName = "react tutorial ##react##js ##frontend";
-  const tags = extractTags(bookmarkName);
+  const tags = extractTagsFromBookmarkName(bookmarkName);
   if (tags[0] == "react" && tags[1] === "js" && tags[2] === "frontend") {
     passed = true;
   }
-  console.log(`extractTags() test passed --- ${passed}`);
+  console.log(`extractTagsFromBookmarkName() test passed --- ${passed}`);
 };
 export const tagTest = () => {
   console.log(`tag test suite start \n`);

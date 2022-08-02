@@ -1,5 +1,8 @@
-import { extractTags, extractTitle, saveTags } from "../../../utils/tag.js";
-import { getColorSettings } from "../../../utils/workspace.js";
+import {
+  extractTagsFromBookmarkName,
+  extractTitle,
+  saveTags,
+} from "../../../utils/tag.js";
 import { createBookmark } from "../../../utils/chrome.js";
 import {
   getState1,
@@ -25,12 +28,17 @@ async function addBookmark(details) {
   });
   await bookmarkAdded(parentId);
 
-  url && (await saveTags(createdBookmark, extractTags(title), "add"));
+  url &&
+    (await saveTags(
+      createdBookmark,
+      extractTagsFromBookmarkName(title),
+      "add"
+    ));
   closeModal();
 }
 
 const onBookmarkNameInput = (e) => {
-  const tags = extractTags(e.target.value);
+  const tags = extractTagsFromBookmarkName(e.target.value);
   setState1("bookmarks.editBar.tags", tags);
 };
 const closeModal = (e) => {

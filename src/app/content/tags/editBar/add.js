@@ -1,12 +1,11 @@
 import { Input, Button, Modal } from "../../../component/index.js";
-import { getColorSettings } from "../../../utils/workspace.js";
 import { setState1, getState1, register } from "../../../../state.js";
-import { createNewTag } from "../../../utils/tag.js";
+import { createNewTag, extractTagsFromTagInput } from "../../../utils/tag.js";
 
 //action
 async function addTag(tagName) {
   if (tagName) {
-    const tags = await createNewTag(tagName);
+    const tags = await createNewTag(extractTagsFromTagInput(tagName));
     closeModal();
     setState1("tags.tags", tags);
   } else {

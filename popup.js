@@ -5,7 +5,11 @@ import {
 } from "./src/app/utils/chrome.js";
 import { getFolders, getFullPath } from "./src/app/utils/utils.js";
 import { Select, Input } from "./src/app/component/index.js";
-import { extractTags, extractTitle, saveTags } from "./src/app/utils/tag.js";
+import {
+  extractTagsFromBookmarkName,
+  extractTitle,
+  saveTags,
+} from "./src/app/utils/tag.js";
 import { getState1 } from "./src/state.js";
 
 //check if workspace has been created.
@@ -67,7 +71,11 @@ if (!userData.easyBoard || !userData.easyBoard.bookmarks) {
       title: extractTitle(nameInput.getValue()),
       parentId: selectFolder.getValue(),
     });
-    await saveTags(createdBookmark, extractTags(nameInput.getValue()), "add");
+    await saveTags(
+      createdBookmark,
+      extractTagsFromBookmarkName(nameInput.getValue()),
+      "add"
+    );
     window.close();
   });
 }

@@ -1,10 +1,14 @@
 import { Input, Button, Modal } from "../../../component/index.js";
 import { setState1, getState1, register } from "../../../../state.js";
-import { editTag } from "../../../utils/tag.js";
-import { getColorSettings } from "../../../utils/workspace.js";
+import { editTag, extractTagsFromTagInput } from "../../../utils/tag.js";
+
 let ID;
 //const COLORSETTINGS = await getColorSettings();
 async function onEditTag(newTagName) {
+  if (newTagName.indexOf("##") >= 0) {
+    alert(`'##' is not allowed in tag name`);
+    return;
+  }
   const editingTag = getState1("tags.editBar.edit.editing");
   const tags = await editTag(editingTag, newTagName);
   setState1("tags.tags", tags);

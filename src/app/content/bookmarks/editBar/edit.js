@@ -1,6 +1,9 @@
 import { Input, Modal, Button, Select } from "../../../component/index.js";
-import { extractTags, extractTitle, saveTags } from "../../../utils/tag.js";
-import { getColorSettings } from "../../../utils/workspace.js";
+import {
+  extractTagsFromBookmarkName,
+  extractTitle,
+  saveTags,
+} from "../../../utils/tag.js";
 import {
   register,
   getState1,
@@ -26,11 +29,11 @@ async function onEditSaveClick(details) {
   }
 
   await bookmarkAdded();
-  url && (await saveTags(editing, extractTags(title), "edit"));
+  url && (await saveTags(editing, extractTagsFromBookmarkName(title), "edit"));
   setState1("bookmarks.editBar.edit.editing", null);
 }
 const onBookmarkNameInput = (e) => {
-  const tags = extractTags(e.target.value);
+  const tags = extractTagsFromBookmarkName(e.target.value);
   setState1("bookmarks.editBar.tags", tags);
 };
 const closeEditModal = (e) => {
