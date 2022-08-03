@@ -97,12 +97,10 @@ input[type="color"]::-webkit-color-swatch {
   left: 0;
   height: 1rem;
   width: 1rem;
-  background-color: #eee;
 }
 
 /* On mouse-over, add a grey background color */
 .cb-container:hover input ~ .checkmark {
-  background-color: #ccc;
 }
 
 /* When the checkbox is checked, add a blue background */

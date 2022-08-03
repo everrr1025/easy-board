@@ -1,6 +1,13 @@
 import { getChildren } from "./utils.js";
 import { setState1, getState1, bookmarkAdded } from "../../state.js";
-import { updateBookmarkTags, removeBookmarkTags } from "./tag.js";
+import {
+  updateBookmarkTags,
+  removeBookmarkTags,
+  saveTags,
+  extractTitle,
+  extractTagsFromBookmarkName,
+} from "./tag.js";
+
 /**
  * module to encapsulate chrome extension API
  */
@@ -105,10 +112,24 @@ const handler = async (request, sender, sendResponse) => {
       message = await moveHandler(request);
       break;
     }
+    case "create from popup": {
+      message = await createFromPopupHandler(request);
+    }
   }
-
   sendResponse(message);
 };
+
+async function createFromPopupHandler(request) {
+  const { url, name, parentId } = request;
+  const createdBookmark = await createBookmark({
+    url,
+    title: extractTitle(name),
+    parentId,
+  });
+  await bookmarkAdded();
+  await saveTags(createdBookmark, extractTagsFromBookmarkName(name), "add");
+  return { farewell: "bookmark created in popup" };
+}
 async function createHandler(request) {
   const { bookmark } = request; //updated bookmark id
   //check if it belongs to the selected workspace

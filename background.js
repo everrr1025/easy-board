@@ -15,7 +15,7 @@ chrome.bookmarks.onRemoved.addListener((id, removeInfo) => {
   chrome.runtime.sendMessage(
     { id, removeInfo, action: "delete" },
     function (response) {
-      console.log(response.farewell);
+      response && console.log(response.farewell);
     }
   );
 });
