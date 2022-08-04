@@ -1,6 +1,5 @@
 import { getSubtree } from "../src/app/utils/chrome.js";
-
-let state = {
+const state = {
   workspace: {
     isSelected: null,
     preventEvent: false, //sometime should prevent event fired by chrome, if the event is fired with a extention operation

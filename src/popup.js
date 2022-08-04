@@ -1,13 +1,10 @@
-import {
-  createBookmark,
-  getUserData,
-  getSubtree,
-} from "./src/app/utils/chrome.js";
-import { getFolders, getFullPath } from "./src/app/utils/utils.js";
-import { Select, Input } from "./src/app/component/index.js";
+import { getUserData, getSubtree } from "./app/utils/chrome.js";
+import { getFolders, getFullPath } from "./app/utils/utils.js";
+import { Select, Input } from "./app/component/index.js";
 
 //check if workspace has been created.
 let userData = await getUserData(["easyBoard"]);
+
 const createView = document.getElementById("createView");
 const addView = document.getElementById("addView");
 

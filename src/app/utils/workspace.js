@@ -4,7 +4,8 @@ import { setUserData, getUserData } from "./chrome.js";
 
 //return promise
 async function createWorkspace({ name, isSync }) {
-  if (isSync) {
+  const userData = await getUserData(["easyBoard"]);
+  if (!userData.easyBoard && isSync) {
     const ws = await createBookmark({ title: name, parentId: "1" }); //create workspace
     if (ws) {
       await setUserData({

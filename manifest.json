@@ -4,11 +4,11 @@
   "version": "1.0",
   "manifest_version": 3,
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "/src/background.js"
   },
 
   "chrome_url_overrides": {
-    "newtab": "/src/index.html"
+    "newtab": "index.html"
   },
   "permissions": ["storage", "tabs", "bookmarks", "activeTab", "scripting"],
   "action": {
