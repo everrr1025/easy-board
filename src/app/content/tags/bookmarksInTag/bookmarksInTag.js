@@ -1,6 +1,7 @@
 import { Modal } from "../../../component/index.js";
 import { setState1, getState1, register } from "../../../../state.js";
 import { styleHyphenFormat } from "../../../utils/utils.js";
+import { openExtensionTab } from "../../../utils/chrome.js";
 
 const BOOKMARKS_VIEW_STYLE = {
   display: "flex",
@@ -44,7 +45,8 @@ const content = (currentTag) => {
   for (const bk of bookmarksInTag) {
     const bk_view = document.createElement("div");
     bk_view.addEventListener("click", async (e) => {
-      window.open(bk.url, "_blank");
+      if (bk.url.startsWith("chrome://")) openExtensionTab(bk.url);
+      else window.open(bk.url, "_blank");
     });
     bk_view.innerText = bk.title;
     Object.assign(

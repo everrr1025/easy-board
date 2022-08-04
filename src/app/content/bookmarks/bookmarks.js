@@ -1,11 +1,7 @@
 import { getState1, register, setState1 } from "../../../state.js";
-import {
-  getBookmarks,
-  compareNodes,
-  openExtensionTab,
-} from "../../utils/chrome.js";
+import { compareNodes, openExtensionTab } from "../../utils/chrome.js";
 import { styleHyphenFormat, getChildren } from "../../utils/utils.js";
-import { getColorSettings } from "../../utils/workspace.js";
+
 import { getTags } from "../../utils/tag.js";
 import breadcrumb from "./breadcrumb.js";
 import editBar from "./editBar/editBar.js";
