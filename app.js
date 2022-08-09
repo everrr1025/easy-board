@@ -18,7 +18,7 @@ function init() {
 
       const isSelectedNodeId = userData.easyBoard.bookmarks.isSelected.id;
 
-      getSubtree("1").then((bkNodes) => {
+      getSubtree(isSelectedNodeId).then((bkNodes) => {
         setState1("workspace.primaryColor", primaryColor);
         setState1("bookmarks.bks", bkNodes[0]);
         setState1("bookmarks.path", [bkNodes[0]]);

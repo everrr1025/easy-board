@@ -1,6 +1,11 @@
 import { getUserData, getSubtree } from "./app/utils/chrome.js";
 import { getFolders, getFullPath } from "./app/utils/utils.js";
 import { Select, Input } from "./app/component/index.js";
+import {
+  extractTitle,
+  saveTags,
+  extractTagsFromBookmarkName,
+} from "../src/app/utils/tag.js";
 
 //check if workspace has been created.
 let userData = await getUserData(["easyBoard"]);
@@ -57,17 +62,25 @@ if (!userData.easyBoard || !userData.easyBoard.bookmarks) {
   const primaryColor = userData.easyBoard.setting.colorSetting.primaryColor;
   addButton.style.backgroundColor = primaryColor;
   addButton.addEventListener("click", async () => {
-    chrome.runtime.sendMessage(
-      {
-        url: tab.url,
-        name: nameInput.getValue(),
-        parentId: selectFolder.getValue(),
-        action: "create from popup",
-      },
-      function (response) {
-        console.log(response.farewell);
-        window.close();
-      }
-    );
+    const createdBookmark = await chrome.bookmarks.create({
+      url: tab.url,
+      parentId: selectFolder.getValue(),
+      title: extractTitle(nameInput.getValue()),
+    });
+    // await saveTags(
+    //   createdBookmark,
+    //   extractTagsFromBookmarkName(nameInput.getValue()),
+    //   "add"
+    // );
+    // chrome.runtime.sendMessage(
+    //   {
+    //     action: "created in popup",
+    //   },
+    //   function (response) {
+    //     console.log(response.farewell);
+    //   }
+    // );
+
+    window.close();
   });
 }

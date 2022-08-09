@@ -76,6 +76,11 @@ export async function getUserData(key) {
 
 //listen to chrome bookmark updated
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  const { action } = request;
+  if (action == "isEasyBoardTabsOpen") {
+    const views = chrome.extension.getViews({ type: "tab" });
+    sendResponse({ result: views.length > 0 ? true : false });
+  }
   const preventEvent = getState1("workspace.preventEvent");
   // console.log(`preventEvent is ${preventEvent}`);
   if (preventEvent) {
@@ -89,10 +94,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 const handler = async (request, sender, sendResponse) => {
-  if (!getState1("workspace.isSelected")) {
-    sendResponse({ farewell: "do nothing" });
-    return;
-  }
   const { action } = request;
   let message;
   switch (action) {
@@ -112,7 +113,7 @@ const handler = async (request, sender, sendResponse) => {
       message = await moveHandler(request);
       break;
     }
-    case "create from popup": {
+    case "created in popup": {
       message = await createFromPopupHandler(request);
     }
   }
@@ -120,15 +121,8 @@ const handler = async (request, sender, sendResponse) => {
 };
 
 async function createFromPopupHandler(request) {
-  const { url, name, parentId } = request;
-  const createdBookmark = await createBookmark({
-    url,
-    title: extractTitle(name),
-    parentId,
-  });
   await bookmarkAdded();
-  await saveTags(createdBookmark, extractTagsFromBookmarkName(name), "add");
-  return { farewell: "bookmark created in popup" };
+  return { farewell: "bk updated" };
 }
 async function createHandler(request) {
   const { bookmark } = request; //updated bookmark id
