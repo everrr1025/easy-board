@@ -31,16 +31,20 @@ export const isEasyBoardTabsOpen = async () => {
   return x.result;
 };
 
-function sendMessagePromise(details) {
+const sendMessagePromise = async (details) => {
   return new Promise((resolve, reject) => {
     chrome.runtime.sendMessage(details, (response) => {
-      if (response) {
-        resolve(response);
-      } else {
+      const lastError = chrome.runtime.lastError;
+      if (lastError) {
+        console.log(lastError.message);
         resolve({ result: false });
+      } else {
+        if (response) {
+          resolve(response);
+        }
       }
     });
   }).catch((error) => {
     //do nothing
   });
-}
+};
