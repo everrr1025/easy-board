@@ -12,7 +12,7 @@ export async function getUserData(key) {
 
 /**
  *
- * @param {*} bookmark - chrome bookmakr node
+ * @param {*} bookmark - chrome bookmark node
  * @param {*} tags - tags array
  * @returns
  */
@@ -21,6 +21,30 @@ export const addBookmarkInStorage = async (bookmark, tags) => {
   const bookmarksMap = new Map(JSON.parse(storage.bookmarkTags));
   bookmarksMap.set(bookmark.id, tags);
   return await setUserData({
+    bookmarkTags: JSON.stringify([...bookmarksMap]),
+  });
+};
+
+/**
+ *
+ * @param {*} bookmark - chrome bookmark node
+ */
+export const removeBookmarkInStorage = async (bookmarkId) => {
+  const storage = await getUserData(["bookmarkTags", "tags"]);
+  const bookmarksMap = new Map(JSON.parse(storage.bookmarkTags));
+  const tagsMap = new Map(JSON.parse(storage.tags));
+
+  const bkTags = bookmarksMap.get(bookmarkId);
+  for (const tag of bkTags) {
+    if (tagsMap.has(tag.title)) {
+      const tagInMap = tagsMap.get(tag.title);
+      tagInMap.bookmarks.splice(tagInMap.bookmarks.indexOf(bookmarkId), 1);
+      tagsMap.set(tag.title, tagInMap);
+    }
+  }
+  bookmarksMap.delete(bookmarkId);
+  return await setUserData({
+    tags: JSON.stringify([...tagsMap]),
     bookmarkTags: JSON.stringify([...bookmarksMap]),
   });
 };

@@ -1,12 +1,6 @@
 import { getChildren } from "./utils.js";
 import { setState1, getState1, bookmarkAdded } from "../../state.js";
-import {
-  updateBookmarkTags,
-  removeBookmarkTags,
-  saveTags,
-  extractTitle,
-  extractTagsFromBookmarkName,
-} from "./tag.js";
+import { updateBookmarkTags, removeBookmarkTags } from "./tag.js";
 
 /**
  * module to encapsulate chrome extension API
@@ -80,6 +74,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (action == "isEasyBoardTabsOpen") {
     const views = chrome.extension.getViews({ type: "tab" });
     sendResponse({ result: views.length > 0 ? true : false });
+    return false;
   }
   const preventEvent = getState1("workspace.preventEvent");
   // console.log(`preventEvent is ${preventEvent}`);
