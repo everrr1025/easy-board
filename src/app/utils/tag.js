@@ -92,7 +92,7 @@ export async function getTags(bookmarkId) {
   return bookmarkTagsMap.get(bookmarkId);
 }
 async function updateTagsInStorage(bookmarkId, inTags) {
-  const { bookmarkTags, tags } = await getUserData([]);
+  const { bookmarkTags, tags } = await getUserData(null);
   const tagsMap = new Map(JSON.parse(tags));
   const bookmarkTagsMap = new Map(JSON.parse(bookmarkTags));
 

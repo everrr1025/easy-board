@@ -20,19 +20,25 @@ import tag from "../tag.js";
 //const COLORSETTINGS = await getColorSettings();
 async function onEditSaveClick(details) {
   const { editing, title, url, selectedFolderId } = details;
+  const bookmarkTitle = url ? extractTitle(title) : title;
 
-  if (editing.title != title || editing.url !== url) {
+  //update bookmark url,title in chrome
+  if (editing.title != bookmarkTitle || editing.url !== url) {
     await updateBookmark({
       id: editing.id,
       url,
-      title: url ? extractTitle(title) : title,
+      title: bookmarkTitle,
     });
   }
+
+  //update bookmark parent in chrome
   if (editing.parentId != selectedFolderId) {
     await moveBookmark({ id: editing.id, selectedFolderId });
   }
 
   await bookmarkAdded();
+
+  //no need to compare with the saved tags, just update the storage
   url && (await saveTags(editing, extractTagsFromBookmarkName(title), "edit"));
   closeEditModal();
 }
