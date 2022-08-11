@@ -40,14 +40,20 @@ chrome.bookmarks.onRemoved.addListener((id, removeInfo) => {
     }
   });
 });
-
+//only title and url changes trigger this
 chrome.bookmarks.onChanged.addListener((id, changeInfo) => {
-  chrome.runtime.sendMessage(
-    { id, changeInfo, action: "change" },
-    function (response) {
-      console.log(response.farewell);
+  isEasyBoardTabsOpen().then((isOpen) => {
+    if (isOpen) {
+      chrome.runtime.sendMessage(
+        { id, changeInfo, action: "change" },
+        function (response) {
+          response && console.log(response.farewell);
+        }
+      );
+    } else {
+      //no need to sycn up with storage,since only id stored in storage
     }
-  );
+  });
 });
 
 chrome.bookmarks.onMoved.addListener((id, moveInfo) => {
@@ -68,6 +74,10 @@ const syncUp = async (request) => {
     }
     case "delete": {
       await deleteHandler(details);
+      break;
+    }
+    case "change": {
+      await changeHandler(details);
       break;
     }
   }
@@ -96,6 +106,9 @@ const deleteHandler = async (details) => {
   }
 };
 
+const changeHandler = async (details) => {
+  const { id, changeInfo } = details;
+};
 const isWorkspace = async (id) => {
   const userData = await getUserData(["easyBoard"]);
   const wsId = userData.easyBoard.bookmarks.isSelected.id;
