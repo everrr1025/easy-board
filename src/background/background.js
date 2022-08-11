@@ -1,5 +1,5 @@
 import { getUserData } from "../app/utils/chrome.js";
-import { getChildren } from "../app/utils/utils.js";
+import { shouldSyncStorage } from "./utils.js";
 
 import {
   addBookmarkInStorage,
@@ -75,7 +75,7 @@ const syncUp = async (request) => {
 
 const createHandler = async (details) => {
   const { id, bookmark } = details;
-  const shoudSync = await shoudSyncStorage(id);
+  const shoudSync = await shouldSyncStorage(bookmark, "create");
   if (shoudSync) {
     await addBookmarkInStorage(bookmark, []);
   } else {
@@ -89,22 +89,11 @@ const deleteHandler = async (details) => {
 
   if (isWS) {
     await chrome.storage.sync.clear();
-  } else if (await shoudSyncStorage(id)) {
-    await removeBookmarkInStorage(id);
+  } else if (await shouldSyncStorage(removeInfo.node, "remove")) {
+    await removeBookmarkInStorage(removeInfo.node);
   } else {
     //do nothing
   }
-};
-
-const shoudSyncStorage = async (id) => {
-  const storage = await getUserData(["easyBoard", "bookmarkTags"]);
-  const wsId = storage.easyBoard.bookmarks.isSelected.id;
-  const bookmarks = new Map(JSON.parse(storage.bookmarkTags));
-  const aa = bookmarks.has(id);
-  const sub = await chrome.bookmarks.getSubTree(wsId);
-  const xx = getChildren(sub[0], id); //undefined if not found
-
-  return xx || aa ? true : false;
 };
 
 const isWorkspace = async (id) => {
