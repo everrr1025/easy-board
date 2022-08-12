@@ -44,6 +44,10 @@ const HEAD_STYLE = {
 };
 
 async function deleteBookmark(details) {
+  const { notEmpty } = details;
+  if (notEmpty) {
+    alert("not allow to remove non-empty folder");
+  }
   await removeBookmark(details);
   details.url && (await deleteTags([details])); //if not folder, remove related tags info from local storage
   await bookmarkAdded(getState1("bookmarks.isSelected"));
@@ -64,6 +68,7 @@ let ID = "";
 
 const content = () => {
   const primaryColor = getState1("workspace.primaryColor");
+
   const { deleting } = getState1("bookmarks.editBar.delete");
   let view;
   if (!document.getElementById("delete-modal")) {
@@ -112,6 +117,7 @@ const content = () => {
     await deleteBookmark({
       id: deleting.id,
       url: deleting.url,
+      notEmpty: deleting.children.length > 0 ? true : false,
     });
   });
   bnWrapper.append(delButton);
