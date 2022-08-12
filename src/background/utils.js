@@ -65,12 +65,15 @@ export const shouldSyncStorage = async (info, action) => {
   let shouldSync = false;
   const storage = await getUserData(["easyBoard", "bookmarkTags"]);
   const wsId = storage.easyBoard.bookmarks.isSelected.id;
-  if (action == "create" && bookmarkNode.url) {
+  //pass bookmark as info for creation
+  if (action == "create" && info.url) {
     const bookmark = info;
+    if (bookmark.url) {
+      const subTree = await chrome.bookmarks.getSubTree(wsId);
+      const bk = getChildren(subTree[0], bookmark.id);
+      shouldSync = bk ? true : false;
+    }
     //no need to update storage for folder
-    const subTree = await chrome.bookmarks.getSubTree(wsId);
-    const bk = getChildren(subTree[0], bookmark.id);
-    shouldSync = bk ? true : false;
   } else if (action == "remove") {
     const { node: bookmark } = info;
     const deletedBookmarks = getChildBookmarks(bookmark);
