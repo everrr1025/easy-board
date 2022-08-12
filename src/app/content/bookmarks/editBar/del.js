@@ -117,7 +117,8 @@ const content = () => {
     await deleteBookmark({
       id: deleting.id,
       url: deleting.url,
-      notEmpty: deleting.children.length > 0 ? true : false,
+      notEmpty:
+        deleting.children && deleting.children.length > 0 ? true : false,
     });
   });
   bnWrapper.append(delButton);

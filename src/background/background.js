@@ -8,8 +8,14 @@ import {
   isEasyBoardTabsOpen,
 } from "./utils.js";
 
-chrome.tabs.onCreated.addListener(() => {
-  console.log(`new tab created`);
+chrome.tabs.onCreated.addListener((y) => {
+  chrome.tabs
+    .query({ windowId: y.windowId, url: "chrome://newtab/" })
+    .then((x) => {
+      if (x.length == 1) return;
+      chrome.tabs.update(x[0].id, { active: true });
+      chrome.tabs.remove(y.id);
+    });
 });
 
 chrome.bookmarks.onCreated.addListener((id, bookmark) => {
