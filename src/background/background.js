@@ -1,5 +1,6 @@
 import { getUserData } from "../app/utils/chrome.js";
-import { shouldSyncStorage } from "./utils.js";
+import { shouldSyncStorage, getChildBookmarks } from "./utils.js";
+import { getChildren } from "../app/utils/utils.js";
 
 import {
   addBookmarkInStorage,
@@ -57,12 +58,18 @@ chrome.bookmarks.onChanged.addListener((id, changeInfo) => {
 });
 
 chrome.bookmarks.onMoved.addListener((id, moveInfo) => {
-  chrome.runtime.sendMessage(
-    { id, moveInfo, action: "move" },
-    function (response) {
-      console.log(response.farewell);
+  isEasyBoardTabsOpen().then((isOpen) => {
+    if (isOpen) {
+      chrome.runtime.sendMessage(
+        { id, moveInfo, action: "move" },
+        function (response) {
+          console.log(response.farewell);
+        }
+      );
+    } else {
+      syncUp({ details: { id, moveInfo }, action: "move" });
     }
-  );
+  });
 });
 
 const syncUp = async (request) => {
@@ -80,14 +87,18 @@ const syncUp = async (request) => {
       await changeHandler(details);
       break;
     }
+    case "move": {
+      await moveHandler(details);
+      break;
+    }
   }
 };
 
 const createHandler = async (details) => {
   const { id, bookmark } = details;
-  const shoudSync = await shouldSyncStorage(bookmark, "create");
-  if (shoudSync) {
-    await addBookmarkInStorage(bookmark, []);
+  const shouldSync = await shouldSyncStorage(bookmark, "create");
+  if (shouldSync) {
+    await addBookmarkInStorage([bookmark], []);
   } else {
     //do nothing
   }
@@ -95,19 +106,54 @@ const createHandler = async (details) => {
 
 const deleteHandler = async (details) => {
   const { id, removeInfo } = details;
+  const { node: bookmark } = removeInfo;
   const isWS = await isWorkspace(id);
 
   if (isWS) {
     await chrome.storage.sync.clear();
-  } else if (await shouldSyncStorage(removeInfo.node, "remove")) {
-    await removeBookmarkInStorage(removeInfo.node);
+  } else if (await shouldSyncStorage(removeInfo, "remove")) {
+    const bookmarks = bookmark.url ? [bookmark] : getChildBookmarks(bookmark);
+    await removeBookmarkInStorage(bookmarks);
   } else {
     //do nothing
   }
 };
 
 const changeHandler = async (details) => {
-  const { id, changeInfo } = details;
+  // const { id, changeInfo } = details;
+  // const shoudSync = await shouldSyncStorage(changeInfo, "change");
+  // if (shoudSync) {
+  // } else {
+  //   //do nothing
+  // }
+};
+
+const moveHandler = async (details) => {
+  const { id, moveInfo } = details;
+  const shouldSync = await shouldSyncStorage(moveInfo, "move");
+  if (shouldSync) {
+    const storage = await getUserData(["easyBoard", "bookmarkTags"]);
+    const wsId = storage.easyBoard.bookmarks.isSelected.id;
+    const { parentId, oldParentId } = moveInfo;
+    const subTree = await chrome.bookmarks.getSubTree(wsId);
+    const inWorkspace = getChildren(subTree[0], parentId) ? true : false;
+    const oldInWorkspace = getChildren(subTree[0], oldParentId) ? true : false;
+    if (inWorkspace && !oldInWorkspace) {
+      //move in
+      const bookmarks = await chrome.bookmarks.getSubTree(id);
+      const bks = bookmarks[0].url
+        ? bookmarks[0]
+        : getChildBookmarks(bookmarks[0]);
+      await addBookmarkInStorage(bks, []);
+    } else if (!inWorkspace && oldInWorkspace) {
+      //move out
+      const bookmarks = await chrome.bookmarks.getSubTree(id);
+      const bks = bookmarks[0].url
+        ? bookmarks[0]
+        : getChildBookmarks(bookmarks[0]);
+      await removeBookmarkInStorage(bks);
+    }
+  }
 };
 const isWorkspace = async (id) => {
   const userData = await getUserData(["easyBoard"]);

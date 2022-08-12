@@ -1,7 +1,6 @@
 /**
  * utils for background
  */
-import { getBookmarks, getSubtree } from "../app/utils/chrome.js";
 import { getChildren } from "../app/utils/utils.js";
 
 export async function setUserData(obj) {
@@ -18,10 +17,12 @@ export async function getUserData(key) {
  * @param {*} tags - tags array
  * @returns
  */
-export const addBookmarkInStorage = async (bookmark, tags) => {
+export const addBookmarkInStorage = async (bookmarks, tags) => {
   const storage = await getUserData(["bookmarkTags"]); //Map
   const bookmarksMap = new Map(JSON.parse(storage.bookmarkTags));
-  bookmarksMap.set(bookmark.id, tags);
+  for (const bk of bookmarks) {
+    bookmarksMap.set(bk.id, tags);
+  }
   return await setUserData({
     bookmarkTags: JSON.stringify([...bookmarksMap]),
   });
@@ -31,15 +32,12 @@ export const addBookmarkInStorage = async (bookmark, tags) => {
  *
  * @param {*} bookmark - chrome bookmark node
  */
-export const removeBookmarkInStorage = async (bookmarkNode) => {
+export const removeBookmarkInStorage = async (bookmarks) => {
   const storage = await getUserData(["bookmarkTags", "tags"]);
   const bookmarksMap = new Map(JSON.parse(storage.bookmarkTags));
   const tagsMap = new Map(JSON.parse(storage.tags));
 
-  const xx = bookmarkNode.url
-    ? [bookmarkNode]
-    : getChildBookmarks(bookmarkNode);
-  for (const bk of xx) {
+  for (const bk of bookmarks) {
     const bkTags = bookmarksMap.get(bk.id);
     for (const tag of bkTags) {
       if (tagsMap.has(tag.title)) {
@@ -63,21 +61,37 @@ export const isEasyBoardTabsOpen = async () => {
   return x.result;
 };
 
-export const shouldSyncStorage = async (bookmarkNode, action) => {
+export const shouldSyncStorage = async (info, action) => {
   let shouldSync = false;
   const storage = await getUserData(["easyBoard", "bookmarkTags"]);
   const wsId = storage.easyBoard.bookmarks.isSelected.id;
   if (action == "create" && bookmarkNode.url) {
+    const bookmark = info;
     //no need to update storage for folder
     const subTree = await chrome.bookmarks.getSubTree(wsId);
-    const bk = getChildren(subTree[0], bookmarkNode.id);
+    const bk = getChildren(subTree[0], bookmark.id);
     shouldSync = bk ? true : false;
   } else if (action == "remove") {
-    const deletedBookmarks = getChildBookmarks(bookmarkNode);
+    const { node: bookmark } = info;
+    const deletedBookmarks = getChildBookmarks(bookmark);
     const bookmarksMap = new Map(JSON.parse(storage.bookmarkTags));
     shouldSync = !deletedBookmarks.every((bk) => {
       return !bookmarksMap.has(bk.id);
     });
+  } else if (action == "move") {
+    const { parentId, oldParentId } = info;
+    const subTree = await chrome.bookmarks.getSubTree(wsId);
+    const inWorkspace = getChildren(subTree[0], parentId) ? true : null;
+    const oldInWorkspace = getChildren(subTree[0], oldParentId) ? true : null;
+    if ((inWorkspace && oldInWorkspace) || (!inWorkspace && !oldInWorkspace)) {
+      //move inside workspace, do nothing
+    } else if (inWorkspace && !oldInWorkspace) {
+      //move in
+      shouldSync = true;
+    } else if (!inWorkspace && oldInWorkspace) {
+      //move out ,
+      shouldSync = true;
+    }
   }
   return shouldSync;
 };
@@ -100,7 +114,7 @@ const sendMessagePromise = async (details) => {
   });
 };
 
-const getChildBookmarks = (bookmarkNode) => {
+export const getChildBookmarks = (bookmarkNode) => {
   const result = [];
   let inner = (bookmarkNode) => {
     if (bookmarkNode.url) {
