@@ -67,19 +67,11 @@ if (!userData.easyBoard || !userData.easyBoard.bookmarks) {
       parentId: selectFolder.getValue(),
       title: extractTitle(nameInput.getValue()),
     });
-    // await saveTags(
-    //   createdBookmark,
-    //   extractTagsFromBookmarkName(nameInput.getValue()),
-    //   "add"
-    // );
-    // chrome.runtime.sendMessage(
-    //   {
-    //     action: "created in popup",
-    //   },
-    //   function (response) {
-    //     console.log(response.farewell);
-    //   }
-    // );
+    await saveTags(
+      createdBookmark,
+      extractTagsFromBookmarkName(nameInput.getValue()),
+      "add"
+    );
 
     window.close();
   });
