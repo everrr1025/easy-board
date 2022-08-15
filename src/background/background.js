@@ -8,13 +8,13 @@ import {
   isEasyBoardTabsOpen,
 } from "./utils.js";
 
-chrome.tabs.onCreated.addListener((y) => {
+chrome.tabs.onCreated.addListener((tab) => {
   chrome.tabs
-    .query({ windowId: y.windowId, url: "chrome://newtab/" })
+    .query({ windowId: tab.windowId, url: "chrome://newtab/" })
     .then((x) => {
-      if (x.length == 1) return;
+      if (x.length == 1) return; //only 1 tab is active in a window
       chrome.tabs.update(x[0].id, { active: true });
-      chrome.tabs.remove(y.id);
+      chrome.tabs.remove(tab.id);
     });
 });
 
