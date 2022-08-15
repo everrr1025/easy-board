@@ -27,11 +27,13 @@ if (!userData.easyBoard || !userData.easyBoard.bookmarks) {
   const nameInput = new Input({
     type: "text",
     label: "Name",
+    id: "popup-add-bk-name",
     value: tab.title,
     style: { fontSize: "14px" },
   });
 
   document.getElementById("name").append(nameInput.create()); //set name
+  setTimeout(() => document.getElementById("popup-add-bk-name").focus(), 0);
 
   let [bks] = await getSubtree(wsId);
   const folders = getFolders(bks);

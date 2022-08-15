@@ -35,6 +35,7 @@ const content = () => {
   const tagInput = new Input({
     type: "text",
     value: editing && editing.title,
+    id: "edit-tag-name",
     inputStyle: { color: primaryColor, border: `1px solid ${primaryColor}` },
     style: { marginTop: "1rem" },
   });
@@ -51,6 +52,7 @@ const content = () => {
 
   _content.append(tagInput.create());
   _content.append(editButton);
+  setTimeout(() => document.getElementById("edit-tag-name").focus(), 0);
   return Modal({
     title: "Edit Tag",
     id: "tag-edit-modal",

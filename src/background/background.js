@@ -11,8 +11,8 @@ import {
 chrome.tabs.onCreated.addListener((tab) => {
   chrome.tabs
     .query({ windowId: tab.windowId, url: "chrome://newtab/" })
-    .then((x) => {
-      if (x.length == 1) return; //only 1 tab is active in a window
+    .then((result) => {
+      if (result.length == 1) return; //only 1 tab is active in a window
       chrome.tabs.update(x[0].id, { active: true });
       chrome.tabs.remove(tab.id);
     });

@@ -12,8 +12,9 @@ const content = () => {
   const primaryColor = getState1("workspace.primaryColor");
   const _content = document.createElement("div");
 
-  const _workspace = new Input({
+  const _workspaceName = new Input({
     label: "",
+
     style: { marginTop: "1rem" },
   });
 
@@ -30,10 +31,10 @@ const content = () => {
     style: { marginTop: "1rem", borderColor: primaryColor },
   });
   _createButton.addEventListener("click", async (e) => {
-    await onClickCreate(e, { name: _workspace.getValue(), isSync: true });
+    await onClickCreate(e, { name: _workspaceName.getValue(), isSync: true });
   });
 
-  _content.append(_workspace.create());
+  _content.append(_workspaceName.create());
   //_content.append(_isSync);
   _content.append(_createButton);
 
@@ -49,6 +50,7 @@ const content = () => {
 const create = () => {
   let view = document.createElement("div");
   view.append(content());
+
   return view;
 };
 
