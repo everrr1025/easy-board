@@ -21,20 +21,24 @@ import tag from "../tag.js";
 //action
 async function addBookmark(details) {
   const { parentId, title, url } = details;
-  const createdBookmark = await createBookmark({
-    parentId,
-    url,
-    title: url ? extractTitle(title) : title,
-  });
-  await bookmarkAdded(parentId);
+  try {
+    const createdBookmark = await createBookmark({
+      parentId,
+      url,
+      title: url ? extractTitle(title) : title,
+    });
+    await bookmarkAdded(parentId);
 
-  url &&
-    (await saveTags(
-      createdBookmark,
-      extractTagsFromBookmarkName(title),
-      "add"
-    ));
-  closeModal();
+    url &&
+      (await saveTags(
+        createdBookmark,
+        extractTagsFromBookmarkName(title),
+        "add"
+      ));
+    closeModal();
+  } catch (error) {
+    alert("Invalid URL");
+  }
 }
 
 const onBookmarkNameInput = (e) => {

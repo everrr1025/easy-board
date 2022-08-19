@@ -9,7 +9,7 @@ async function addTag(tagName) {
     closeModal();
     setState1("tags.tags", tags);
   } else {
-    closeModal();
+    alert("Invalid tag name");
   }
 }
 const closeModal = (e) => {
