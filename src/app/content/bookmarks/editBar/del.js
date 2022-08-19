@@ -82,14 +82,14 @@ const content = () => {
 
   const urlInput = new Input({
     label: "URL",
-    id: "delete-url",
+    //id: "delete-url",
     disabled: true,
     inputStyle: { border: "none", color: primaryColor },
     value: !deleting ? "" : deleting.url,
   }).create();
   const nameInput = new Input({
     label: "Name",
-    id: "delete-name",
+    //id: "delete-name",
     disabled: true,
     inputStyle: { border: "none", color: primaryColor },
     value: !deleting ? "" : deleting.title,

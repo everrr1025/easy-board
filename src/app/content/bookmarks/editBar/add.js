@@ -63,7 +63,6 @@ const content = () => {
   const urlInput = new Input({
     type: "text",
     label: "URL",
-    id: "add-bk-url",
     value: "https://",
     inputStyle: { color: primaryColor, border: `1px solid ${primaryColor}` },
     style: { marginTop: "1rem" },
@@ -71,7 +70,6 @@ const content = () => {
   const nameInput = new Input({
     type: "text",
     label: "Bookmark Name",
-    id: "add-bk-name",
     style: { marginTop: "1rem" },
     placeholder: isFolder ? "" : "add '##' after bookmark name to add tags",
     inputStyle: { color: primaryColor, border: `1px solid ${primaryColor}` },
@@ -92,11 +90,10 @@ const content = () => {
 
   if (!isFolder) {
     _content.append(urlInput.create());
-    setTimeout(() => document.getElementById("add-bk-url").focus(), 0);
+    setTimeout(() => urlInput.getInputElement().focus(), 0);
   }
   _content.append(nameInput.create());
-  isFolder &&
-    setTimeout(() => document.getElementById("add-bk-name").focus(), 0);
+  isFolder && setTimeout(() => nameInput.getInputElement().focus(), 0);
 
   if (!isFolder) {
     _content.append(tag.create());

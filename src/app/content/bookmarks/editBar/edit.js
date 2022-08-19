@@ -80,7 +80,6 @@ const content = () => {
   const urlInput = new Input({
     label: "URL",
     value: editing.url,
-    id: "edit-bk-url",
     inputStyle: { color: primaryColor, border: `1px solid ${primaryColor}` },
     style: { marginTop: "1rem" },
   });
@@ -92,7 +91,7 @@ const content = () => {
   const nameInput = new Input({
     label: "Bookmark Name",
     value: nameWithTags,
-    id: "edit-bk-name",
+
     inputStyle: { color: primaryColor, border: `1px solid ${primaryColor}` },
     style: { marginTop: "1rem" },
     onInput: (e) => {
@@ -122,11 +121,10 @@ const content = () => {
   const _content = document.createElement("div");
   if (editing.url) {
     _content.append(urlInput.create());
-    setTimeout(() => document.getElementById("edit-bk-url").focus(), 0);
+    setTimeout(() => urlInput.getInputElement().focus(), 0);
   }
   _content.append(nameInput.create());
-  !editing.url &&
-    setTimeout(() => document.getElementById("edit-bk-name").focus(), 0);
+  !editing.url && setTimeout(() => nameInput.getInputElement().focus(), 0);
   if (editing.url) {
     _content.append(tag.create());
   }

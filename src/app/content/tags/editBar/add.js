@@ -25,7 +25,6 @@ const content = () => {
   const tagInput = new Input({
     type: "text",
     style: { marginTop: "1rem" },
-    id: "add-tag-name",
     inputStyle: { color: primaryColor, border: `1px solid ${primaryColor}` },
     onInput: (e) => {},
     placeholder: "use '##' to add multiple tags at once",
@@ -42,7 +41,10 @@ const content = () => {
 
   _content.append(tagInput.create());
   _content.append(addButton);
-  setTimeout(() => document.getElementById("add-tag-name").focus(), 0);
+
+  setTimeout(() => {
+    tagInput.getInputElement().focus();
+  }, 0);
   return Modal({
     title: "Add Tag",
     id: "tag-add-modal",

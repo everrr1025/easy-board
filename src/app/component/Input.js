@@ -62,10 +62,14 @@ function Input(details) {
   this.id = id ?? "";
   this.value = value ?? "";
   this.type = type ?? "";
+  this.inputFiled;
   this.getValue = () => {
     return this.value;
   };
 
+  this.getInputElement = () => {
+    return this.inputFiled;
+  };
   this.create = () => {
     const {
       type,
@@ -96,6 +100,7 @@ function Input(details) {
       view = document.createElement("div");
       const _label = document.createElement("label");
       const _input = document.createElement("input");
+      this.inputFiled = _input;
       _label.innerText = label ?? "";
       _input.id = id ?? "";
       _input.type = type ?? "text";
