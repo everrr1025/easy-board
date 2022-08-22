@@ -4,6 +4,9 @@ import {
   updateBookmarkTags,
   removeBookmarkTags,
   isBookmarkExistInStorage,
+  extractTagsFromBookmarkName,
+  extractTitle,
+  saveTags,
 } from "./tag.js";
 
 /**
@@ -131,9 +134,21 @@ async function createHandler(request) {
   //if parent found, then update the workspace bookmark tree
   if (inside) {
     if (bookmark.url) {
-      const isExist = await isBookmarkExistInStorage(bookmark.id);
-      if (!isExist) updateBookmarkTags([bookmark], []);
-      else return { farewell: "do nothing" };
+      const tags = extractTagsFromBookmarkName(bookmark.title);
+      if (tags.length > 0) {
+        //means bookmark created in bookmark bar with '##', we can only deal with it after its creation, unlike
+        //those are created in popup or easy board
+        const details = {
+          title: extractTitle(bookmark.title),
+          id: bookmark.id,
+          url: bookmark.url,
+        };
+        await updateBookmark(details);
+      }
+      const isExist = await isBookmarkExistInStorage(); //bk created via popup,and msg recevied here send by onCreate
+      if (!isExist) {
+        await saveTags(bookmark, tags, "add");
+      } else return { farewell: "do nothing" };
     }
     await bookmarkAdded();
     return { farewell: "workspace bookmarks updated" };
@@ -173,10 +188,18 @@ async function deleteHandler(request) {
 }
 
 async function changeHandler(request) {
-  const { id } = request;
+  const { id, changeInfo } = request;
+  const { title, url } = changeInfo;
   const bks = getState1("bookmarks.bks");
   const changedBookmark = getChildren(bks, id);
   if (changedBookmark) {
+    const tags = extractTagsFromBookmarkName(title);
+    if (url && tags.length > 0) {
+      //bookmark name changed with '##' in chrome bookmark bar
+      const titleWithoutTags = extractTitle(title);
+      await updateBookmark({ id, title: titleWithoutTags, url });
+      await saveTags({ id, title: titleWithoutTags, url }, tags, "add");
+    }
     await bookmarkAdded();
     return { farewell: "workspace bookmarks updated" };
   } else {

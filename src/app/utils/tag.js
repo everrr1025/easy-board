@@ -271,3 +271,8 @@ export async function isBookmarkExistInStorage(bookmarkId) {
   const bkTags = bookmarkTagsMap.get(bookmarkId);
   return bkTags && bkTags.length > 0;
 }
+
+export async function xxx(bookmark) {
+  if (bookmark.indexOf("##") < 0) return;
+  const tags = extractTagsFromBookmarkName(bookmark.title);
+}
