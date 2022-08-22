@@ -1,6 +1,10 @@
 import { getChildren } from "./utils.js";
 import { setState1, getState1, bookmarkAdded } from "../../state.js";
-import { updateBookmarkTags, removeBookmarkTags } from "./tag.js";
+import {
+  updateBookmarkTags,
+  removeBookmarkTags,
+  isBookmarkExistInStorage,
+} from "./tag.js";
 
 /**
  * module to encapsulate chrome extension API
@@ -127,7 +131,9 @@ async function createHandler(request) {
   //if parent found, then update the workspace bookmark tree
   if (inside) {
     if (bookmark.url) {
-      updateBookmarkTags([bookmark], []);
+      const isExist = await isBookmarkExistInStorage(bookmark.id);
+      if (!isExist) updateBookmarkTags([bookmark], []);
+      else return { farewell: "do nothing" };
     }
     await bookmarkAdded();
     return { farewell: "workspace bookmarks updated" };

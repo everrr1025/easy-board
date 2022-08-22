@@ -1,6 +1,7 @@
 import { getUserData } from "../app/utils/chrome.js";
 import { shouldSyncStorage, getChildBookmarks } from "./utils.js";
 import { getChildren } from "../app/utils/utils.js";
+import { isBookmarkExistInStorage } from "../app/utils/tag.js";
 
 import {
   addBookmarkInStorage,
@@ -108,7 +109,8 @@ const createHandler = async (details) => {
   const { id, bookmark } = details;
   const shouldSync = await shouldSyncStorage(bookmark, "create");
   if (shouldSync) {
-    await addBookmarkInStorage([bookmark], []);
+    const isExist = await isBookmarkExistInStorage(id);
+    if (!isExist) await addBookmarkInStorage([bookmark], []);
   } else {
     //do nothing
   }
@@ -152,14 +154,14 @@ const moveHandler = async (details) => {
       //move in
       const bookmarks = await chrome.bookmarks.getSubTree(id);
       const bks = bookmarks[0].url
-        ? bookmarks[0]
+        ? bookmarks
         : getChildBookmarks(bookmarks[0]);
       await addBookmarkInStorage(bks, []);
     } else if (!inWorkspace && oldInWorkspace) {
       //move out
       const bookmarks = await chrome.bookmarks.getSubTree(id);
       const bks = bookmarks[0].url
-        ? bookmarks[0]
+        ? bookmarks
         : getChildBookmarks(bookmarks[0]);
       await removeBookmarkInStorage(bks);
     }

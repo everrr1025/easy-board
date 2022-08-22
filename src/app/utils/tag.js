@@ -264,3 +264,10 @@ export async function removeBookmarkTags(bookmark) {
     await deleteTags(xx);
   }
 }
+
+export async function isBookmarkExistInStorage(bookmarkId) {
+  const storage = await getUserData(["bookmarkTags"]); //Map
+  const bookmarkTagsMap = new Map(JSON.parse(storage.bookmarkTags));
+  const bkTags = bookmarkTagsMap.get(bookmarkId);
+  return bkTags && bkTags.length > 0;
+}

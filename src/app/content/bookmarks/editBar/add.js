@@ -1,17 +1,17 @@
 import {
+  bookmarkAdded,
+  getState1,
+  register,
+  setState1,
+} from "../../../../state.js";
+import { createBookmark } from "../../../utils/chrome.js";
+import {
   extractTagsFromBookmarkName,
   extractTitle,
   saveTags,
 } from "../../../utils/tag.js";
-import { createBookmark } from "../../../utils/chrome.js";
-import {
-  getState1,
-  setState1,
-  register,
-  bookmarkAdded,
-} from "../../../../state.js";
 
-import { Modal, Input, Button } from "../../../component/index.js";
+import { Button, Input, Modal } from "../../../component/index.js";
 import tag from "../tag.js";
 /**
  * add component in edit bar
