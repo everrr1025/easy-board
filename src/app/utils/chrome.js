@@ -198,7 +198,7 @@ async function changeHandler(request) {
       //bookmark name changed with '##' in chrome bookmark bar
       const titleWithoutTags = extractTitle(title);
       await updateBookmark({ id, title: titleWithoutTags, url });
-      await saveTags({ id, title: titleWithoutTags, url }, tags, "add");
+      await saveTags({ id, title: titleWithoutTags, url }, tags, "edit");
     }
     await bookmarkAdded();
     return { farewell: "workspace bookmarks updated" };
@@ -213,14 +213,28 @@ async function moveHandler(request) {
   const bks = getState1("bookmarks.bks");
   const moveIn = getChildren(bks, parentId) ? true : null;
   const moveOut = getChildren(bks, oldParentId) ? true : null;
+  const [bookmark] = await getBookmarksByID(id);
+
   //check if the new parentId or old parentId belongs to the workspace
   let farewell = { farewell: "workspace bookmarks updated" };
   if (moveIn && moveOut) {
     //bookmark moved inside workspace
     await bookmarkAdded();
   } else if (moveIn && !moveOut) {
+    const tags = extractTagsFromBookmarkName(bookmark.title);
+    if (bookmark.url && tags.length > 0) {
+      //bookmark name changed with '##' in chrome bookmark bar
+      const titleWithoutTags = extractTitle(bookmark.title);
+      await updateBookmark({ id, title: titleWithoutTags, url: bookmark.url });
+      await saveTags(
+        { id, title: titleWithoutTags, url: bookmark.url },
+        tags,
+        "add"
+      );
+    } else {
+      await updateBookmarkTags(await getSubtree(id), []);
+    }
     await bookmarkAdded();
-    await updateBookmarkTags(await getSubtree(id), []);
   } else if (!moveIn && moveOut) {
     await bookmarkAdded();
     await removeBookmarkTags(await getSubtree(id));
