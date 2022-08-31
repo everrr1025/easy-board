@@ -1,7 +1,11 @@
-import { getUserData } from "../app/utils/chrome.js";
+import { getUserData, updateBookmark } from "../app/utils/chrome.js";
 import { shouldSyncStorage, getChildBookmarks } from "./utils.js";
 import { getChildren } from "../app/utils/utils.js";
-import { isBookmarkExistInStorage } from "../app/utils/tag.js";
+import {
+  isBookmarkExistInStorage,
+  extractTagsFromBookmarkName,
+  extractTitle,
+} from "../app/utils/tag.js";
 
 import {
   addBookmarkInStorage,
@@ -156,6 +160,25 @@ const moveHandler = async (details) => {
       const bks = bookmarks[0].url
         ? bookmarks
         : getChildBookmarks(bookmarks[0]);
+
+      for (const bk of bks) {
+        if (bk.url) {
+          const tags = extractTagsFromBookmarkName(bk.title);
+          if (tags.length > 0) {
+            const titleWithoutTags = extractTitle(bk.title);
+            await updateBookmark({
+              id,
+              title: titleWithoutTags,
+              url: bk.url,
+            });
+            await saveTags(
+              { id, title: titleWithoutTags, url: bookmark.url },
+              tags,
+              "add"
+            );
+          }
+        }
+      }
       await addBookmarkInStorage(bks, []);
     } else if (!inWorkspace && oldInWorkspace) {
       //move out

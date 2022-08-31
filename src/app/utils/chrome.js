@@ -1,4 +1,4 @@
-import { getChildren } from "./utils.js";
+import { getChildren, getBookmarks } from "./utils.js";
 import { setState1, getState1, bookmarkAdded } from "../../state.js";
 import {
   updateBookmarkTags,
@@ -14,13 +14,13 @@ import {
  */
 const FOLDER = "pinecone"; //the default folder to query bookmarks
 
-export async function getBookmarks(folder) {
-  const search = folder ? folder : FOLDER;
-  let nodes = await chrome.bookmarks.search(search);
-  let node = nodes.filter((bookmark) => !bookmark.url)[0]; //suppose the 1st one that matched
-  let xx = await chrome.bookmarks.getSubTree(node.id);
-  return xx[0];
-}
+// export async function getBookmarks(folder) {
+//   const search = folder ? folder : FOLDER;
+//   let nodes = await chrome.bookmarks.search(search);
+//   let node = nodes.filter((bookmark) => !bookmark.url)[0]; //suppose the 1st one that matched
+//   let xx = await chrome.bookmarks.getSubTree(node.id);
+//   return xx[0];
+// }
 
 export async function getSubtree(id) {
   return await chrome.bookmarks.getSubTree(id);
@@ -221,19 +221,51 @@ async function moveHandler(request) {
     //bookmark moved inside workspace
     await bookmarkAdded();
   } else if (moveIn && !moveOut) {
-    const tags = extractTagsFromBookmarkName(bookmark.title);
-    if (bookmark.url && tags.length > 0) {
-      //bookmark name changed with '##' in chrome bookmark bar
-      const titleWithoutTags = extractTitle(bookmark.title);
-      await updateBookmark({ id, title: titleWithoutTags, url: bookmark.url });
-      await saveTags(
-        { id, title: titleWithoutTags, url: bookmark.url },
-        tags,
-        "add"
-      );
+    if (bookmark.url) {
+      const tags = extractTagsFromBookmarkName(bookmark.title);
+      if (tags.length > 0) {
+        const titleWithoutTags = extractTitle(bookmark.title);
+        await updateBookmark({
+          id,
+          title: titleWithoutTags,
+          url: bookmark.url,
+        });
+        await saveTags(
+          { id, title: titleWithoutTags, url: bookmark.url },
+          tags,
+          "add"
+        );
+      }
     } else {
-      await updateBookmarkTags(await getSubtree(id), []);
+      const [bkWithChildren] = await getSubtree(bookmark.id);
+      const bookmarks = getBookmarks(bkWithChildren);
+      for (const bk of bookmarks) {
+        const tags = extractTagsFromBookmarkName(bk.title);
+        if (tags.length > 0) {
+          const titleWithoutTags = extractTitle(bk.title);
+          await updateBookmark({
+            id: bk.id,
+            title: titleWithoutTags,
+          });
+          await saveTags({ id: bk.id, title: titleWithoutTags }, tags, "add");
+        } else {
+          await saveTags({ id: bk.id, title: bk.title }, tags, "add");
+        }
+      }
     }
+    // const tags = extractTagsFromBookmarkName(bookmark.title);
+    // if (bookmark.url && tags.length > 0) {
+    //   //bookmark name changed with '##' in chrome bookmark bar
+    //   const titleWithoutTags = extractTitle(bookmark.title);
+    //   await updateBookmark({ id, title: titleWithoutTags, url: bookmark.url });
+    //   await saveTags(
+    //     { id, title: titleWithoutTags, url: bookmark.url },
+    //     tags,
+    //     "add"
+    //   );
+    // } else {
+    //   await updateBookmarkTags(await getSubtree(id), []);
+    // }
     await bookmarkAdded();
   } else if (!moveIn && moveOut) {
     await bookmarkAdded();
