@@ -95,6 +95,13 @@ export const shouldSyncStorage = async (info, action) => {
       //move out ,
       shouldSync = true;
     }
+  } else if (action == "change") {
+    const { title, url, id } = info;
+    const subTree = await chrome.bookmarks.getSubTree(wsId);
+    const inWorkspace = getChildren(subTree[0], id) ? true : null;
+    if (inWorkspace && url) {
+      shouldSync = true;
+    }
   }
   return shouldSync;
 };

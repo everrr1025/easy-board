@@ -69,7 +69,7 @@ chrome.bookmarks.onChanged.addListener((id, changeInfo) => {
         }
       );
     } else {
-      //no need to sycn up with storage,since only id stored in storage
+      syncUp({ details: { id, changeInfo }, action: "change" });
     }
   });
 });
@@ -138,12 +138,20 @@ const deleteHandler = async (details) => {
 };
 
 const changeHandler = async (details) => {
-  // const { id, changeInfo } = details;
-  // const shoudSync = await shouldSyncStorage(changeInfo, "change");
-  // if (shoudSync) {
-  // } else {
-  //   //do nothing
-  // }
+  const { id, changeInfo } = details;
+  const shouldSync = await shouldSyncStorage({ ...changeInfo, id }, "change");
+  if (shouldSync) {
+    const { title, url } = changeInfo;
+    const tags = extractTagsFromBookmarkName(title);
+    if (url && tags.length > 0) {
+      //bookmark name changed with '##' in chrome bookmark bar
+      const titleWithoutTags = extractTitle(title);
+      await updateBookmark({ id, title: titleWithoutTags });
+      await saveTags({ id, title: titleWithoutTags }, tags, "edit");
+    }
+  } else {
+    //do nothing
+  }
 };
 
 const moveHandler = async (details) => {
