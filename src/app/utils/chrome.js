@@ -253,19 +253,6 @@ async function moveHandler(request) {
         }
       }
     }
-    // const tags = extractTagsFromBookmarkName(bookmark.title);
-    // if (bookmark.url && tags.length > 0) {
-    //   //bookmark name changed with '##' in chrome bookmark bar
-    //   const titleWithoutTags = extractTitle(bookmark.title);
-    //   await updateBookmark({ id, title: titleWithoutTags, url: bookmark.url });
-    //   await saveTags(
-    //     { id, title: titleWithoutTags, url: bookmark.url },
-    //     tags,
-    //     "add"
-    //   );
-    // } else {
-    //   await updateBookmarkTags(await getSubtree(id), []);
-    // }
     await bookmarkAdded();
   } else if (!moveIn && moveOut) {
     await bookmarkAdded();

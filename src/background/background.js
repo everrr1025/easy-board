@@ -5,6 +5,8 @@ import {
   isBookmarkExistInStorage,
   extractTagsFromBookmarkName,
   extractTitle,
+  saveTags,
+  removeBookmarkTags,
 } from "../app/utils/tag.js";
 
 import {
@@ -162,31 +164,28 @@ const moveHandler = async (details) => {
         : getChildBookmarks(bookmarks[0]);
 
       for (const bk of bks) {
-        if (bk.url) {
-          const tags = extractTagsFromBookmarkName(bk.title);
-          if (tags.length > 0) {
-            const titleWithoutTags = extractTitle(bk.title);
-            await updateBookmark({
-              id,
-              title: titleWithoutTags,
-              url: bk.url,
-            });
-            await saveTags(
-              { id, title: titleWithoutTags, url: bookmark.url },
-              tags,
-              "add"
-            );
-          }
+        // if (bk.url) {
+        const tags = extractTagsFromBookmarkName(bk.title); //const 可以重复定义？
+        if (tags.length > 0) {
+          const titleWithoutTags = extractTitle(bk.title);
+          await updateBookmark({
+            id: bk.id,
+            title: titleWithoutTags,
+          });
+          await saveTags({ id: bk.id, title: titleWithoutTags }, tags, "add");
+        } else {
+          await saveTags({ id: bk.id, title: bk.title }, tags, "add");
         }
+        //}
       }
-      await addBookmarkInStorage(bks, []);
+      // await addBookmarkInStorage(bks, []);
     } else if (!inWorkspace && oldInWorkspace) {
       //move out
       const bookmarks = await chrome.bookmarks.getSubTree(id);
-      const bks = bookmarks[0].url
-        ? bookmarks
-        : getChildBookmarks(bookmarks[0]);
-      await removeBookmarkInStorage(bks);
+      // const bks = bookmarks[0].url
+      //   ? bookmarks
+      //   : getChildBookmarks(bookmarks[0]);
+      await removeBookmarkTags(bookmarks);
     }
   }
 };
