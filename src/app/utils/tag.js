@@ -1,5 +1,6 @@
 import { setUserData, getUserData } from "./chrome.js";
 import { getBookmarks } from "./utils.js";
+import { LOG_ENABLED } from "../../constants.js";
 
 /**
  * module to handle tag opreation
@@ -49,9 +50,11 @@ export async function createNewTag(tags) {
     !tagsMap.has(tag) && tagsMap.set(tag, { title: tag, bookmarks: [] });
   }
   await setUserData({ tags: JSON.stringify([...tagsMap]) });
+  LOG_ENABLED && console.log(`[create new tag]`, tags, tagsMap);
   return tagsMap;
 }
 
+//save tags while bookmarks created with tags
 export async function saveTags(bookmark, tags, operation) {
   const toUpdateTags = [];
   const toUpdateBookmarkTags = [];
@@ -83,6 +86,8 @@ async function addTagsInStorage(tags) {
     }
     tagsMap.set(tag.title, tag);
   }
+
+  LOG_ENABLED && console.log(`[add tags]:`, tags, `, tagsMap:`, tagsMap);
   return await setUserData({ tags: JSON.stringify([...tagsMap]) });
 }
 
@@ -130,7 +135,7 @@ async function updateTagsInStorage(bookmarkId, inTags) {
       tagsMap.set(tag.title, tag);
     }
   }
-
+  LOG_ENABLED && console.log(`[update tags]:`, inTags, `, tagsMap:`, tagsMap);
   return await setUserData({ tags: JSON.stringify([...tagsMap]) });
 }
 async function addBookmarksWithTagsInStorage(bookmarks, tags) {
@@ -140,11 +145,18 @@ async function addBookmarksWithTagsInStorage(bookmarks, tags) {
     bookmarkTagsMap.set(bk.id, tags);
   }
 
+  LOG_ENABLED &&
+    console.log(
+      `[update bookmarksWithTags]:`,
+      `bookmarkTagsMap:`,
+      bookmarkTagsMap
+    );
+
   return await setUserData({
     bookmarkTags: JSON.stringify([...bookmarkTagsMap]),
   });
 }
-
+//delete related tags while bookmark get deleted
 export async function deleteTags(bookmarks) {
   await removeTagsInStorage(bookmarks);
   await removeBookmarksWithTagsInStorage(bookmarks);
@@ -160,11 +172,11 @@ async function removeTagsInStorage(bookmarks) {
       if (tagsMap.has(tag.title)) {
         const tagInMap = tagsMap.get(tag.title);
         tagInMap.bookmarks.splice(tagInMap.bookmarks.indexOf(bk.id), 1);
-
         tagsMap.set(tag.title, tagInMap);
       }
     }
   }
+  LOG_ENABLED && console.log(`[remove tags]:`, `tagsMap:`, tagsMap);
   return await setUserData({
     tags: JSON.stringify([...tagsMap]),
   });
@@ -176,7 +188,8 @@ async function removeBookmarksWithTagsInStorage(bookmarks) {
   for (const bk of bookmarks) {
     bookmarkTagsMap.delete(bk.id);
   }
-
+  LOG_ENABLED &&
+    console.log(`[remove bookmarksTags]:`, `bookmarkTagsMap:`, bookmarkTagsMap);
   return await setUserData({
     bookmarkTags: JSON.stringify([...bookmarkTagsMap]),
   });
@@ -199,10 +212,18 @@ export async function deleteTag(tagName) {
   }
   //delete this tag from tags map
   tagsMap.delete(tagName);
+  LOG_ENABLED && console.log(`[delete tag]:`, tagName, `, tagsMap:`, tagsMap);
   //sync with storage
   await setUserData({
     tags: JSON.stringify([...tagsMap]),
   });
+  LOG_ENABLED &&
+    console.log(
+      `[delete tag]:`,
+      tagName,
+      `, bookmarkTagsMap:`,
+      bookmarkTagsMap
+    );
   await setUserData({
     bookmarkTags: JSON.stringify([...bookmarkTagsMap]),
   });
@@ -234,6 +255,14 @@ export async function editTag(editingTag, newTagName) {
     tags.push({ title: newTagName });
     bookmarkTagsMap.set(bookmarkId, tags);
   }
+  LOG_ENABLED && console.log(`[edit tag]:`, newTagName, `, tagsMap:`, tagsMap);
+  LOG_ENABLED &&
+    console.log(
+      `[edit tag]:`,
+      newTagName,
+      `, bookmarkTagsMap`,
+      bookmarkTagsMap
+    );
   //sync with storage
   await setUserData({
     tags: JSON.stringify([...tagsMap]),

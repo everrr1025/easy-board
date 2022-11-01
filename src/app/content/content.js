@@ -47,7 +47,8 @@ function create() {
       bottom: 0,
     };
     const version = document.createElement("div");
-    version.innerText = "1.0.0-alpha.1";
+    version.innerText =
+      "1.0.0-alpha.1 - c1143af21deeab12c58721a9a3ad1718a304a16d";
     Object.assign(version.style, VERSION_STYLE);
     view.append(version);
   }
