@@ -1,4 +1,4 @@
-import { getSubtree } from "../src/app/utils/chrome.js";
+import { getSubtree, getUserData } from "../src/app/utils/chrome.js";
 const state = {
   workspace: {
     isSelected: null,
@@ -199,5 +199,8 @@ export const getState1 = (key) => {
 export async function bookmarkAdded() {
   const wsId = getState1("workspace.isSelected");
   const nodes = await getSubtree(wsId);
+  const storage = await getUserData(["tags"]);
+  const tagsMap = new Map(JSON.parse(storage.tags));
   setState1("bookmarks.bks", nodes[0]);
+  setState1("tags.tags", tagsMap);
 }

@@ -297,8 +297,7 @@ export async function removeBookmarkTags(bookmark) {
 export async function isBookmarkExistInStorage(bookmarkId) {
   const storage = await getUserData(["bookmarkTags"]); //Map
   const bookmarkTagsMap = new Map(JSON.parse(storage.bookmarkTags));
-  const bkTags = bookmarkTagsMap.get(bookmarkId);
-  return bkTags && bkTags.length > 0;
+  return bookmarkTagsMap.has(bookmarkId);
 }
 
 export async function xxx(bookmark) {

@@ -84,10 +84,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return false;
   }
   const preventEvent = getState1("workspace.preventEvent");
-  // console.log(`preventEvent is ${preventEvent}`);
+
+  //if bookmark created in easyboard, then prevent the message
   if (preventEvent) {
     setState1("workspace.preventEvent", false);
-    // console.log(`set preventEvent to false`);
     sendResponse({ farewell: "event get prevented" });
     return true;
   }
@@ -95,6 +95,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   return true;
 });
 
+//in other cases...
 const handler = async (request, sender, sendResponse) => {
   const { action } = request;
   let message;
@@ -134,21 +135,25 @@ async function createHandler(request) {
   //if parent found, then update the workspace bookmark tree
   if (inside) {
     if (bookmark.url) {
-      const tags = extractTagsFromBookmarkName(bookmark.title);
-      if (tags.length > 0) {
-        //means bookmark created in bookmark bar with '##', we can only deal with it after its creation, unlike
-        //those are created in popup or easy board
-        const details = {
-          title: extractTitle(bookmark.title),
-          id: bookmark.id,
-          url: bookmark.url,
-        };
-        await updateBookmark(details);
-      }
-      const isExist = await isBookmarkExistInStorage(); //bk created via popup,and msg recevied here send by onCreate
+      //bk created via popup,and msg recevied here send by onCreate
+      const isExist = await isBookmarkExistInStorage(bookmark.id);
       if (!isExist) {
-        await saveTags(bookmark, tags, "add");
-      } else return { farewell: "do nothing" };
+        const tags = extractTagsFromBookmarkName(bookmark.title);
+        if (tags.length > 0) {
+          //means bookmark created in bookmark bar with '##', we can only deal with it after its creation, unlike
+          //those are created in popup or easy board
+          const details = {
+            title: extractTitle(bookmark.title),
+            id: bookmark.id,
+            url: bookmark.url,
+          };
+          await updateBookmark(details);
+          await saveTags(bookmark, tags, "add");
+        }
+      } else {
+        await bookmarkAdded();
+        return { farewell: "do nothing" };
+      }
     }
     await bookmarkAdded();
     return { farewell: "workspace bookmarks updated" };
