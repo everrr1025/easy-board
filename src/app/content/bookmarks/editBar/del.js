@@ -47,6 +47,7 @@ async function deleteBookmark(details) {
   const { notEmpty } = details;
   if (notEmpty) {
     alert("not allow to remove non-empty folder");
+    return;
   }
   await removeBookmark(details);
   details.url && (await deleteTags([details])); //if not folder, remove related tags info from local storage

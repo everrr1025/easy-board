@@ -48,7 +48,7 @@ function create() {
     };
     const version = document.createElement("div");
     version.innerText =
-      "1.0.0-alpha.2 - 6dc99e0c237409b8c8ccf486062c331ac948d771";
+      "1.0.0-alpha.3 - 434a7cdfaa92afa9fe1f9d675d2c6158079c673c";
     Object.assign(version.style, VERSION_STYLE);
     view.append(version);
   }

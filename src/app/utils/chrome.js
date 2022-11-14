@@ -135,7 +135,7 @@ async function createHandler(request) {
   //if parent found, then update the workspace bookmark tree
   if (inside) {
     if (bookmark.url) {
-      //bk created via popup,and msg recevied here send by onCreate
+      //isExist == true, bk created via popup,and msg recevied here send by onCreate
       const isExist = await isBookmarkExistInStorage(bookmark.id);
       if (!isExist) {
         const tags = extractTagsFromBookmarkName(bookmark.title);
@@ -148,6 +148,8 @@ async function createHandler(request) {
             url: bookmark.url,
           };
           await updateBookmark(details);
+          await saveTags(bookmark, tags, "add");
+        } else {
           await saveTags(bookmark, tags, "add");
         }
       } else {
@@ -228,19 +230,19 @@ async function moveHandler(request) {
   } else if (moveIn && !moveOut) {
     if (bookmark.url) {
       const tags = extractTagsFromBookmarkName(bookmark.title);
+      const titleWithoutTags = extractTitle(bookmark.title);
       if (tags.length > 0) {
-        const titleWithoutTags = extractTitle(bookmark.title);
         await updateBookmark({
           id,
           title: titleWithoutTags,
           url: bookmark.url,
         });
-        await saveTags(
-          { id, title: titleWithoutTags, url: bookmark.url },
-          tags,
-          "add"
-        );
       }
+      await saveTags(
+        { id, title: titleWithoutTags, url: bookmark.url },
+        tags,
+        "add"
+      );
     } else {
       const [bkWithChildren] = await getSubtree(bookmark.id);
       const bookmarks = getBookmarks(bkWithChildren);
