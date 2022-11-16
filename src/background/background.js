@@ -143,11 +143,11 @@ const changeHandler = async (details) => {
   if (shouldSync) {
     const { title, url } = changeInfo;
     const tags = extractTagsFromBookmarkName(title);
-    if (url && tags.length > 0) {
+    if (url) {
       //bookmark name changed with '##' in chrome bookmark bar
       const titleWithoutTags = extractTitle(title);
       await updateBookmark({ id, title: titleWithoutTags });
-      await saveTags({ id, title: titleWithoutTags }, tags, "edit");
+      await saveTags({ id, title: titleWithoutTags }, tags, "xxx");
     }
   } else {
     //do nothing
@@ -180,9 +180,9 @@ const moveHandler = async (details) => {
             id: bk.id,
             title: titleWithoutTags,
           });
-          await saveTags({ id: bk.id, title: titleWithoutTags }, tags, "add");
+          await saveTags({ id: bk.id, title: titleWithoutTags }, tags, "xxx");
         } else {
-          await saveTags({ id: bk.id, title: bk.title }, tags, "add");
+          await saveTags({ id: bk.id, title: bk.title }, tags, "xxx");
         }
         //}
       }

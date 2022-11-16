@@ -205,7 +205,8 @@ async function changeHandler(request) {
       //bookmark name changed with '##' in chrome bookmark bar
       const titleWithoutTags = extractTitle(title);
       await updateBookmark({ id, title: titleWithoutTags, url });
-      await saveTags({ id, title: titleWithoutTags, url }, tags, "edit");
+      console.log(`call saveTags with operation = xxx, tags = `, tags);
+      await saveTags({ id, title: titleWithoutTags, url }, tags, "xxx");
     }
     await bookmarkAdded();
     return { farewell: "workspace bookmarks updated" };
@@ -231,6 +232,12 @@ async function moveHandler(request) {
     if (bookmark.url) {
       const tags = extractTagsFromBookmarkName(bookmark.title);
       const titleWithoutTags = extractTitle(bookmark.title);
+      console.log(`call saveTags with operation = add, tags = `, tags);
+      await saveTags(
+        { id, title: titleWithoutTags, url: bookmark.url },
+        tags,
+        "add"
+      );
       if (tags.length > 0) {
         await updateBookmark({
           id,
@@ -238,11 +245,6 @@ async function moveHandler(request) {
           url: bookmark.url,
         });
       }
-      await saveTags(
-        { id, title: titleWithoutTags, url: bookmark.url },
-        tags,
-        "add"
-      );
     } else {
       const [bkWithChildren] = await getSubtree(bookmark.id);
       const bookmarks = getBookmarks(bkWithChildren);

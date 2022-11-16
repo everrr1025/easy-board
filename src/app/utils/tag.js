@@ -68,12 +68,16 @@ export async function saveTags(bookmark, tags, operation) {
     tagObjCopy.bookmarks.push(bookmark.id);
     toUpdateTags.push(tagObjCopy);
   }
-  if (operation == "add") {
+  if (operation == "add" || operation == "xxx") {
     await addTagsInStorage(toUpdateTags);
   } else if (operation == "edit") {
     await updateTagsInStorage(bookmark.id, toUpdateTags);
   }
-  await addBookmarksWithTagsInStorage([bookmark], toUpdateBookmarkTags);
+  await addBookmarksWithTagsInStorage(
+    [bookmark],
+    toUpdateBookmarkTags,
+    operation
+  );
 }
 
 async function addTagsInStorage(tags) {
@@ -138,11 +142,25 @@ async function updateTagsInStorage(bookmarkId, inTags) {
   LOG_ENABLED && console.log(`[update tags]:`, inTags, `, tagsMap:`, tagsMap);
   return await setUserData({ tags: JSON.stringify([...tagsMap]) });
 }
-async function addBookmarksWithTagsInStorage(bookmarks, tags) {
+async function addBookmarksWithTagsInStorage(bookmarks, tags, operation) {
   const storage = await getUserData(["bookmarkTags"]); //Map
   const bookmarkTagsMap = new Map(JSON.parse(storage.bookmarkTags));
   for (const bk of bookmarks) {
-    bookmarkTagsMap.set(bk.id, tags);
+    if (operation == "add" || operation == "edit") {
+      bookmarkTagsMap.set(bk.id, tags);
+    } else if (operation == "xxx") {
+      if (bookmarkTagsMap.has(bk.id)) {
+        const bookmarkTags = bookmarkTagsMap.get(bk.id);
+        for (const tag of tags) {
+          if (!bookmarkTags.includes(tag)) {
+            bookmarkTags.push(tag);
+          }
+        }
+        bookmarkTagsMap.set(bk.id, bookmarkTags);
+      } else {
+        bookmarkTagsMap.set(bk.id, tags);
+      }
+    }
   }
 
   LOG_ENABLED &&
