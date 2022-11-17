@@ -116,7 +116,20 @@ const createHandler = async (details) => {
   const shouldSync = await shouldSyncStorage(bookmark, "create");
   if (shouldSync) {
     const isExist = await isBookmarkExistInStorage(id);
-    if (!isExist) await addBookmarkInStorage([bookmark], []);
+    if (!isExist) {
+      const tags = extractTagsFromBookmarkName(bookmark.title);
+      if (tags.length > 0) {
+        const details = {
+          title: extractTitle(bookmark.title),
+          id: bookmark.id,
+          url: bookmark.url,
+        };
+        await updateBookmark(details);
+        await saveTags(bookmark, tags, "add");
+      } else {
+        await saveTags(bookmark, tags, "add");
+      }
+    }
   } else {
     //do nothing
   }
