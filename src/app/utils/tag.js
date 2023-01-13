@@ -18,7 +18,9 @@ export const extractTagsFromBookmarkName = (bookmarkName) => {
   words.splice(0, 1); //skip the real bookmark name
 
   tags = [...new Set(words)]
-    .filter((tag) => tag)
+    .filter((tag) => {
+      return tag.trim() != false;
+    })
     .map((tag) => {
       return { title: tag.trim() };
     });
