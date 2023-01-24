@@ -20,15 +20,22 @@ import tag from "../tag.js";
 //const COLORSETTINGS = await getColorSettings();
 async function onEditSaveClick(details) {
   const { editing, title, url, selectedFolderId } = details;
-  const bookmarkTitle = url ? extractTitle(title) : title;
+
+  // const bookmarkTitle = url ? extractTitle(title) : title
+  const bookmarkTitle = extractTitle(title);
 
   //update bookmark url,title in chrome
   if (editing.title != bookmarkTitle || editing.url !== url) {
-    await updateBookmark({
-      id: editing.id,
-      url,
-      title: bookmarkTitle,
-    });
+    try {
+      await updateBookmark({
+        id: editing.id,
+        url,
+        title: bookmarkTitle,
+      });
+    } catch (error) {
+      alert("Invalid URL");
+      return;
+    }
   }
 
   //update bookmark parent in chrome
@@ -42,6 +49,7 @@ async function onEditSaveClick(details) {
   url && (await saveTags(editing, extractTagsFromBookmarkName(title), "edit"));
   closeEditModal();
 }
+
 const onBookmarkNameInput = (e) => {
   const tags = extractTagsFromBookmarkName(e.target.value);
   setState1("bookmarks.editBar.tags", tags);

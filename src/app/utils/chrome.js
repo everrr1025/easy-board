@@ -39,7 +39,7 @@ export async function createBookmark(details) {
 export async function updateBookmark(details) {
   setState1("workspace.preventEvent", true);
   const { id, url, title } = details;
-  return await chrome.bookmarks.update(id, { url, title });
+  return await chrome.bookmarks.update(id, { title, url });
 }
 
 export async function moveBookmark(details) {
