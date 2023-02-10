@@ -218,9 +218,10 @@ async function changeHandler(request) {
 async function moveHandler(request) {
   const { id, moveInfo } = request;
   const { parentId, oldParentId } = moveInfo;
-  const bks = getState1("bookmarks.bks");
-  const moveIn = getChildren(bks, parentId) ? true : null;
-  const moveOut = getChildren(bks, oldParentId) ? true : null;
+  const workspaceId = getState1("workspace.isSelected");
+  const [workspaceTree] = await getSubtree(workspaceId);
+  const moveIn = getChildren(workspaceTree, parentId) ? true : null;
+  const moveOut = getChildren(workspaceTree, oldParentId) ? true : null;
   const [bookmark] = await getBookmarksByID(id);
 
   //check if the new parentId or old parentId belongs to the workspace
