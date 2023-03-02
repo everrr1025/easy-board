@@ -42,7 +42,7 @@ const Modal = (details) => {
   const _content = document.createElement("div");
   //_content.id = id;
   view.id = id;
-  view.addEventListener("click", (e) => {
+  view.addEventListener("mousedown", (e) => {
     if (e.target.id !== view.id) return;
     if (onClickOverlay) {
       onClickOverlay(e);
