@@ -14,7 +14,6 @@ const content = () => {
 
   const _workspaceName = new Input({
     label: "",
-
     style: { marginTop: "1rem" },
   });
 

@@ -25,6 +25,10 @@ const FOLDER = "pinecone"; //the default folder to query bookmarks
 export async function getSubtree(id) {
   return await chrome.bookmarks.getSubTree(id);
 }
+
+export async function getBookmarkChildren(id) {
+  return await chrome.bookmarks.getChildren(id);
+}
 export async function getBookmarksByID(nodeId) {
   let node = await chrome.bookmarks.get(nodeId);
   return node;

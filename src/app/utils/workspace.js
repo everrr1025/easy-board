@@ -1,16 +1,21 @@
 import { getState1, setState1 } from "../../state.js";
-import { createBookmark } from "../utils/chrome.js";
+import { createBookmark, getSubtree } from "../utils/chrome.js";
 import { setUserData, getUserData } from "./chrome.js";
+import { getBookmarks } from "./utils.js";
+import { saveTags } from "./tag.js";
 
 //return promise
 async function createWorkspace({ name, isSync }) {
   const userData = await getUserData(["easyBoard"]);
-  if (!userData.easyBoard && isSync) {
+  const xxx = await getSubtree("1");
+  const folders = xxx[0].children.filter((bk) => !bk.url);
+  const found = folders.find((folder) => folder.title.trim() == name.trim());
+  if (!userData.easyBoard && !found) {
     const ws = await createBookmark({ title: name, parentId: "1" }); //create workspace
     if (ws) {
       await setUserData({
         easyBoard: {
-          bookmarks: { isSelected: ws },
+          bookmarks: { isSelected: { id: ws.id } },
           setting: {
             colorSetting: {
               primaryColor: "#00224d",
@@ -25,7 +30,27 @@ async function createWorkspace({ name, isSync }) {
         bookmarkTags: JSON.stringify([...new Map()]),
       });
     }
-  } else {
+  } else if (found) {
+    await setUserData({
+      easyBoard: {
+        bookmarks: { isSelected: { id: found.id } },
+        setting: {
+          colorSetting: {
+            primaryColor: "#00224d",
+          },
+        },
+      },
+    });
+    await setUserData({
+      tags: JSON.stringify([...new Map()]),
+    });
+    await setUserData({
+      bookmarkTags: JSON.stringify([...new Map()]),
+    });
+    const yy = getBookmarks(found);
+    for (const bk of yy) {
+      await saveTags(bk, [], "add");
+    }
   }
 }
 
